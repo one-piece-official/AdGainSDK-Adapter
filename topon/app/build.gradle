@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+
+apply from: 'taku.gradle'
+
+android {
+//    namespace "com.test.ad.demo"
+    namespace "com.anythink.sdk.demo"
+    compileSdkVersion 34
+    defaultConfig {
+        applicationId "com.test.ad.demo"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled = true
+    }
+    signingConfigs {
+        demo {
+            keyAlias 'anythink'
+            keyPassword '123456'
+            storeFile file('anythink.jks')
+            storePassword '123456'
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.demo
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.demo
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+
+//        sourceCompatibility JavaVersion.VERSION_17
+//        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+
+    compileOnly 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:multidex:1.0.2'
+
+    /*implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.multidex:multidex:2.0.1'*/
+
+    implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
+}

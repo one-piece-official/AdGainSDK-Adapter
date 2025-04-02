@@ -1,0 +1,25 @@
+{
+  "app_id": "a67eb5814ba222",
+  "app_key": "a3b064f21b5ea7e8ef9a9e143e39f16bb",
+  "draw_placement_id": "b6305efb12d408",
+  "patch_placement_id": "b6305efb12d408",
+  "list_placement_id": "b6305efb12d408",
+  "rewarded_video": {
+    "All": "b67eba30ea5bda"
+  },
+  "interstitial": {
+    "All": "b67eb584dc7d2e"
+  },
+  "banner": {
+    "All": "b62b01a36e4572"
+  },
+  "splash": {
+    "All": "b67ec9b1927de9"
+  },
+  "native-express": {
+    "All": "b62b028c2a217d"
+  },
+  "native-selfrender": {
+    "All": "b6305efb12d408"
+  }
+}
