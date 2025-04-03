@@ -16,8 +16,8 @@ public class PlacementIdUtil {
 
     public static final String TAG = PlacementIdUtil.class.getSimpleName();
 
-//    private static String placementIdJson = "placementId.json";
-    private static String placementIdJson = "placementId_test.json";
+    private static String placementIdJson = "placementId.json";
+//    private static String placementIdJson = "placementId_test.json";
     private static Map<String, String> rewardedVideoPlacements;
     private static Map<String, String> interstitialPlacements;
     private static Map<String, String> fullScreenPlacements;

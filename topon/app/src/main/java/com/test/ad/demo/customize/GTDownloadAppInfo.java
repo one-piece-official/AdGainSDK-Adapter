@@ -1,10 +1,10 @@
 
-package com.anythink.custom.adapter;
+package com.test.ad.demo.customize;
 
 import com.anythink.core.api.ATAdAppInfo;
-import com.qq.e.ads.nativ.NativeUnifiedADAppMiitInfo;
+import com.gt.sdk.api.AdAppInfo;
 
-public class GDTATDownloadAppInfo extends ATAdAppInfo {
+public class GTDownloadAppInfo extends ATAdAppInfo {
     public String publisher;
     public String appVersion;
     public String appPrivacyLink;
@@ -13,13 +13,13 @@ public class GDTATDownloadAppInfo extends ATAdAppInfo {
     public long appSize;
     public String appDownloadCount;
 
-    public GDTATDownloadAppInfo(NativeUnifiedADAppMiitInfo nativeUnifiedADAppMiitInfo, String downloadCount) {
+    public GTDownloadAppInfo(AdAppInfo nativeUnifiedADAppMiitInfo, String downloadCount) {
         publisher = nativeUnifiedADAppMiitInfo.getAuthorName();
         appVersion = nativeUnifiedADAppMiitInfo.getVersionName();
-        appPrivacyLink = nativeUnifiedADAppMiitInfo.getPrivacyAgreement();
+        appPrivacyLink = nativeUnifiedADAppMiitInfo.getPrivacyUrl();
         appPermissionLink = nativeUnifiedADAppMiitInfo.getPermissionsUrl();
         appName = nativeUnifiedADAppMiitInfo.getAppName();
-        appSize = nativeUnifiedADAppMiitInfo.getPackageSizeBytes();
+        appSize = nativeUnifiedADAppMiitInfo.getAppSize();
         appDownloadCount = downloadCount;
     }
 

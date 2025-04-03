@@ -8,6 +8,7 @@ import com.anythink.core.api.ATBiddingNotice;
 import com.anythink.core.api.ATInitMediation;
 import com.gt.sdk.api.IBidding;
 import com.gt.sdk.api.InterstitialAd;
+import com.gt.sdk.api.NativeUnifiedAd;
 import com.gt.sdk.api.RewardAd;
 import com.gt.sdk.api.SplashAd;
 import com.gt.sdk.base.common.GtBaseAd;
@@ -125,6 +126,10 @@ public class GTBiddingNotice implements ATBiddingNotice {
 
         if (gtBaseAd instanceof SplashAd) {
             return "splash";
+        }
+
+        if (gtBaseAd instanceof NativeUnifiedAd) {
+            return "native";
         }
 
         return gtBaseAd != null ? gtBaseAd.toString() : "";

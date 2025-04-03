@@ -76,3 +76,8 @@
 -keepclassmembers public class  com.test.ad.demo.customize.GTSplashAdapter{
     public *;
 }
+
+-keep class  com.test.ad.demo.customize.GTNativeAdapter{ *;}
+-keepclassmembers public class  com.test.ad.demo.customize.GTNativeAdapter{
+    public *;
+}
