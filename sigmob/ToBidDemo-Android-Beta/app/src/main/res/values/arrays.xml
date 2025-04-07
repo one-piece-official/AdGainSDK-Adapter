@@ -14,6 +14,7 @@
         <item>趣盟</item>
         <item>TapTap</item>
         <item>自定义穿山甲</item>
+        <item>GTAD</item>
     </array>
 
     <string-array name="splash_id_value">
@@ -29,6 +30,7 @@
         <item>4195993224896991</item>
         <item>8391836162295408</item>
         <item>8592766355131657</item>
+        <item>2231731257649187</item> <!-- GTAD 开屏广告位ID -->
 
     </string-array>
 
