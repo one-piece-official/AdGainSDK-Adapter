@@ -133,7 +133,7 @@ public class GTNativeAd extends CustomNativeAd {
 
             if (mMediaView == null) {
                 mMediaView = new GtNativeAdMediaView(mApplicationContext);
-                mMediaView.setBackgroundColor(0xff000000);
+//                mMediaView.setBackgroundColor(0xff000000);
                 ViewGroup.LayoutParams _params = mMediaView.getLayoutParams();
                 if (_params == null) {
                     _params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

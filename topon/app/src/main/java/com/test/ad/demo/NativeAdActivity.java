@@ -291,6 +291,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             // 下载类原生自渲染广告设置下载状态监听，更新CTA按钮文案
             if (!mNativeAd.isNativeExpress()
                     && mNativeAd.getAdMaterial()
