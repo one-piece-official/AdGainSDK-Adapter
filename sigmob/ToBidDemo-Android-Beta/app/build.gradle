@@ -117,6 +117,8 @@ dependencies {
     //由于多进程场景大数据SDK上报涉及时涉及使用MMKV，还需要单独依赖MMKV的依赖
     implementation "com.tencent:mmkv:1.2.13"
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
+
     configurations {
         cleanedAnnotations
         implementation.exclude group: 'com.intellij', module: 'annotations'
