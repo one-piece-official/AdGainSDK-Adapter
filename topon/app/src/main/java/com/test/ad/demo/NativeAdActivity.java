@@ -212,6 +212,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     private void showAd() {
 //        NativeAd nativeAd = mATNative.getNativeAd();
         NativeAd nativeAd = mATNative.getNativeAd(getATShowConfig());
+
         if (nativeAd != null) {
 
             if (mNativeAd != null) {
@@ -220,6 +221,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             mNativeAd = nativeAd;
 
             mNativeAd.setAdRevenueListener(new AdRevenueListenerImpl());
+
             mNativeAd.setNativeEventListener(new ATNativeEventExListener() {
                 @Override
                 public void onDeeplinkCallback(ATNativeAdView view, ATAdInfo adInfo, boolean isSuccess) {
@@ -275,19 +277,29 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             try {
                 mNativePrepareInfo = new ATNativePrepareExInfo();
                 //bindTTDislikeDialog(mATNativeView, mNativeAd);
+
                 if (mNativeAd.isNativeExpress()) {
                     mNativeAd.renderAdContainer(mATNativeView, null);
+
                 } else {
+
                     SelfRenderViewUtil.bindSelfRenderView(this, mNativeAd.getAdMaterial(), mSelfRenderView, mNativePrepareInfo);
+
                     mNativeAd.renderAdContainer(mATNativeView, mSelfRenderView);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //下载类原生自渲染广告设置下载状态监听，更新CTA按钮文案
-            if (!mNativeAd.isNativeExpress() && mNativeAd.getAdMaterial()
-                    .getNativeAdInteractionType() == NativeAdInteractionType.APP_DOWNLOAD_TYPE && mNativePrepareInfo.getCtaView() != null && mNativePrepareInfo.getCtaView() instanceof TextView) {
+            // 下载类原生自渲染广告设置下载状态监听，更新CTA按钮文案
+            if (!mNativeAd.isNativeExpress()
+                    && mNativeAd.getAdMaterial()
+                    .getNativeAdInteractionType() == NativeAdInteractionType.APP_DOWNLOAD_TYPE
+                    && mNativePrepareInfo.getCtaView() != null
+                    && mNativePrepareInfo.getCtaView() instanceof TextView) {
+
                 TextView ctaTextView = (TextView) mNativePrepareInfo.getCtaView();
+
                 mNativeAd.setAdDownloadListener(new ATAppDownloadListener() {
                     @Override
                     public void onDownloadStart(ATAdInfo adInfo, long totalBytes, long currBytes, String fileName, String appName) {
@@ -356,10 +368,15 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
                     }
                 });
             }
+
             mNativeAd.prepare(mATNativeView, mNativePrepareInfo);
+
             mATNativeView.setVisibility(View.VISIBLE);
+
             mPanel.setVisibility(View.VISIBLE);
+
             initPanelButtonList(mNativeAd.getAdMaterial());
+
         } else {
             printLogOnUI("this placement no cache!");
         }

@@ -6,7 +6,7 @@ import com.gt.sdk.api.NativeAdData;
 
 public class GTNativePatchAd extends GTNativeAd {
 
-    protected GTNativePatchAd(Context context, NativeAdData gdtAd, int videoMuted, int videoAutoPlay, int videoDuration) {
+    protected GTNativePatchAd(Context context, NativeAdData gdtAd, boolean videoMuted, int videoAutoPlay, int videoDuration) {
         super(context, gdtAd, videoMuted, videoAutoPlay, videoDuration);
     }
 

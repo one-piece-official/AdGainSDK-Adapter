@@ -3,13 +3,16 @@ package com.test.ad.demo.customize;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.anythink.nativead.api.ATNativePrepareExInfo;
 import com.anythink.nativead.api.ATNativePrepareInfo;
+import com.anythink.nativead.api.NativeAdInteractionType;
 import com.anythink.nativead.unitgroup.api.CustomNativeAd;
+import com.gt.sdk.api.AdAppInfo;
 import com.gt.sdk.api.AdError;
 import com.gt.sdk.api.GtImage;
 import com.gt.sdk.api.NativeAdData;
@@ -21,7 +24,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//Self-rendering 2.0
 public class GTNativeAd extends CustomNativeAd {
 
     private static final String TAG = GTInitManager.TAG;
@@ -30,25 +33,23 @@ public class GTNativeAd extends CustomNativeAd {
 
     Context mApplicationContext;
 
-    //NativeUnifiedADData mUnifiedAdData;
-    //Self-rendering 2.0
     NativeAdData mUnifiedAdData;
 
-    int mVideoMuted;
+    boolean mVideoMuted;
     int mVideoAutoPlay;
     int mVideoDuration;
 
-    //0:not set,1:set mute,2:not mute
     View mClickView;
+
+    //0:not set,    1:set mute,   2:not mute
     int mMuteApiSet = 0;
 
-    //    MediaView mMediaView;
     GtNativeAdMediaView mMediaView;
 
     //Self-rendering 2.0 must be used
     ViewGroup mContainer;
 
-    protected GTNativeAd(Context context, NativeAdData gdtAd, int videoMuted, int videoAutoPlay, int videoDuration) {
+    protected GTNativeAd(Context context, NativeAdData gdtAd, boolean videoMuted, int videoAutoPlay, int videoDuration) {
 
         mApplicationContext = context.getApplicationContext();
         mContext = new WeakReference<>(context);
@@ -58,6 +59,7 @@ public class GTNativeAd extends CustomNativeAd {
         mVideoDuration = videoDuration;
 
         mUnifiedAdData = gdtAd;
+
         setAdData(mUnifiedAdData);
     }
 
@@ -77,29 +79,48 @@ public class GTNativeAd extends CustomNativeAd {
 
         setCallToActionText(getCallToAction(unifiedADData));
 
+        List<GtImage> list = unifiedADData.getImageList();
+        if (list != null && !list.isEmpty()) {
+            GtImage image = list.get(0);
+
+            Log.d(TAG, "setAdData main image =  " + image.toString());
+
+            setMainImageUrl(image.getImageUrl());
+            setMainImageWidth(image.getWidth());
+            setMainImageHeight(image.getHeight());
+        }
+
         // todo
 //        setStarRating((double) unifiedADData.getAppScore());
-//        setMainImageUrl(unifiedADData.getImgUrl());
-//        setMainImageWidth(unifiedADData.getPictureWidth());
-//        setMainImageHeight(unifiedADData.getPictureHeight());
-//        setNativeInteractionType(unifiedADData.isAppAd() ? NativeAdInteractionType.APP_DOWNLOAD_TYPE : NativeAdInteractionType.UNKNOW);
+
+        setNativeInteractionType(isAPPAD(unifiedADData) ? NativeAdInteractionType.APP_DOWNLOAD_TYPE : NativeAdInteractionType.UNKNOW);
+
+        setAdAppInfo(new GTDownloadAppInfo(unifiedADData.getAdAppInfo(), "5000"));
 
         setImageUrlList(getImgUrls(unifiedADData));
 
         setVideoDuration(unifiedADData.getVideoDuration());
 
-
-        if (unifiedADData.getAdAppInfo() != null) {
-            setAdAppInfo(new GTDownloadAppInfo(unifiedADData.getAdAppInfo(), "5000"));
-        }
+        Log.d(TAG, " type === " + unifiedADData.getAdPatternType());
 
         if (unifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_VIDEO_AD) {
             mAdSourceType = NativeAdConst.VIDEO_TYPE;
+            Log.d(TAG, " ===== VIDEO_TYPE  ====");
+
         } else {
             mAdSourceType = NativeAdConst.IMAGE_TYPE;
         }
 
-        // setNetworkInfoMap(unifiedADData.getExtraInfo());
+//         setNetworkInfoMap(unifiedADData.getExtraInfo());
+    }
+
+    private boolean isAPPAD(NativeAdData data) {
+        AdAppInfo info = data.getAdAppInfo();
+        if (info != null) {
+            Log.d(TAG, "isAPPAD: package_name  = " + info.getPackageName() + "    app_size = " + info.getAppSize());
+        }
+
+        return info != null && !TextUtils.isEmpty(info.getPackageName()) && info.getAppSize() > 0;
     }
 
     @Override
@@ -143,8 +164,6 @@ public class GTNativeAd extends CustomNativeAd {
                 fillChildView(view, clickViewList);
             }
 
-            FrameLayout.LayoutParams layoutParams = nativePrepareInfo.getChoiceViewLayoutParams();
-
             List<View> downloadDirectlyClickViews = new ArrayList<>();
             if (nativePrepareInfo instanceof ATNativePrepareExInfo) {
                 List<View> creativeClickViewList = ((ATNativePrepareExInfo) nativePrepareInfo).getCreativeClickViewList();
@@ -171,8 +190,6 @@ public class GTNativeAd extends CustomNativeAd {
                 }
             });
 
-            //mUnifiedAdData.bindAdToView(view.getContext(), mContainer, layoutParams, clickViewList, downloadDirectlyClickViews);
-
             try {
                 if (mMediaView == null) {
                     return;
@@ -180,13 +197,19 @@ public class GTNativeAd extends CustomNativeAd {
 
                 bindMediaView();
 
-                // todo
-                /*if (mMuteApiSet > 0) {
-                    mUnifiedAdData.setVideoMute(mMuteApiSet == 1);
-                }*/
+                if (mMuteApiSet > 0) {
+                    boolean result = mMuteApiSet == 1;
+                    Log.d(TAG, "mMuteApiSet  setVideoMute " + result);
+
+                    mUnifiedAdData.setVideoMute(result);
+
+                } else {
+                    Log.d(TAG, " setVideoMute " + mVideoMuted);
+                    mUnifiedAdData.setVideoMute(mVideoMuted);
+                }
 
             } catch (Throwable e) {
-                e.printStackTrace();
+                Log.d(TAG, "prepare: exception = " + Log.getStackTraceString(e));
             }
         }
     }
@@ -196,29 +219,34 @@ public class GTNativeAd extends CustomNativeAd {
 
             @Override
             public void onVideoLoad() {
-
+                Log.d(TAG, "onVideoLoad: ");
             }
 
             @Override
             public void onVideoError(AdError error) {
+                Log.d(TAG, "onVideoError: " + error);
                 notifyAdVideoVideoPlayFail("" + error.getErrorCode(), error.getMessage());
             }
 
             @Override
             public void onVideoStart() {
+                Log.d(TAG, "onVideoStart: ");
                 notifyAdVideoStart();
             }
 
             @Override
             public void onVideoPause() {
+                Log.d(TAG, "onVideoPause: ");
             }
 
             @Override
             public void onVideoResume() {
+                Log.d(TAG, "onVideoResume: ");
             }
 
             @Override
             public void onVideoCompleted() {
+                Log.d(TAG, "onVideoCompleted: ");
                 notifyAdVideoEnd();
             }
         });
@@ -267,6 +295,7 @@ public class GTNativeAd extends CustomNativeAd {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume: ");
         if (mUnifiedAdData != null) {
             mUnifiedAdData.resumeVideo();
         }
@@ -274,6 +303,7 @@ public class GTNativeAd extends CustomNativeAd {
 
     @Override
     public void resumeVideo() {
+        Log.d(TAG, "resumeVideo: ");
         if (mUnifiedAdData != null) {
             mUnifiedAdData.resumeVideo();
         }
@@ -281,6 +311,7 @@ public class GTNativeAd extends CustomNativeAd {
 
     @Override
     public void pauseVideo() {
+        Log.d(TAG, "pauseVideo: ");
         if (mUnifiedAdData != null) {
             mUnifiedAdData.pauseVideo();
         }
@@ -288,11 +319,13 @@ public class GTNativeAd extends CustomNativeAd {
 
     @Override
     public void setVideoMute(boolean isMute) {
-        // todo
-        /*mMuteApiSet = isMute ? 1 : 2;
+        Log.d(TAG, "setVideoMute: isMute = " + isMute);
+
+        mMuteApiSet = isMute ? 1 : 2;
+
         if (mUnifiedAdData != null) {
             mUnifiedAdData.setVideoMute(isMute);
-        }*/
+        }
     }
 
     @Override
@@ -330,6 +363,8 @@ public class GTNativeAd extends CustomNativeAd {
     @Override
     public void destroy() {
         super.destroy();
+
+        Log.d(TAG, "destroy: ");
 
         if (mUnifiedAdData != null) {
             mUnifiedAdData.destroy();

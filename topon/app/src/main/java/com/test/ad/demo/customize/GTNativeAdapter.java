@@ -27,16 +27,14 @@ public class GTNativeAdapter extends CustomNativeAdapter {
 
     private static final String TAG = GTInitManager.TAG;
 
+    NativeUnifiedAd nativeAd;
+
     String mAppId;
     String mUnitId;
 
-    int mAdCount;
-
-    String mPayload;
-
     int mUnitType;
 
-    int mVideoMuted;
+    boolean mVideoMuted;
     int mVideoAutoPlay;
     int mVideoDuration;
 
@@ -53,13 +51,24 @@ public class GTNativeAdapter extends CustomNativeAdapter {
         return true;
     }
 
+    void initRequestParams(Map<String, Object> serverExtra, Map<String, Object> localExtra) {
+
+        mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
+        mUnitId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
+        mUnitType = ATInitMediation.getIntFromMap(serverExtra, "unit_type");
+
+        mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0) == 1;
+        mVideoAutoPlay = ATInitMediation.getIntFromMap(serverExtra, "video_autoplay", 1);
+        mVideoDuration = ATInitMediation.getIntFromMap(serverExtra, "video_duration", -1);
+    }
+
     @Override
     public void loadCustomNetworkAd(final Context context, final Map<String, Object> serverExtra, Map<String, Object> localExtra) {
 
         initRequestParams(serverExtra, localExtra);
 
         if (TextUtils.isEmpty(mAppId)) {
-            notifyATLoadFail("", "GTD appid is empty.");
+            notifyATLoadFail("", "GTD appid is empty...  GTNativeAdapter.class");
             return;
         }
 
@@ -80,13 +89,11 @@ public class GTNativeAdapter extends CustomNativeAdapter {
         try {
             switch (mUnitType) {
 
-                case 2://Self Rendering 2.0
-                case 4://Patch, Self Rendering 2.0
-                    loadUnifiedAd(context.getApplicationContext(), serverExtra);
+                case 0:   // self rendering
+                    loadSelfRenderingAd(context.getApplicationContext());
                     break;
 
-                case 1: //Native Express
-                case 3: //Patch, Express
+                case 1:   //Native Express
                 default:
                     defaultLoad(context);
                     break;
@@ -96,18 +103,14 @@ public class GTNativeAdapter extends CustomNativeAdapter {
         }
     }
 
-    NativeUnifiedAd nativeAd;
-    /**
-     * Self-rendering 2.0
-     */
-    private void loadUnifiedAd(final Context context, Map<String, Object> serverExtra) {
+    private void loadSelfRenderingAd(final Context context) {
 
         Map<String, Object> options = new HashMap<>();
         options.put("test_extra_key", "test_extra_value");
 
         AdRequest adRequest = new AdRequest
                 .Builder()
-                .setAdUnitID("1196")
+                .setAdUnitID(mUnitId)
                 .setExtOption(options)
                 .build();
 
@@ -120,16 +123,18 @@ public class GTNativeAdapter extends CustomNativeAdapter {
 
                     if (isC2SBidding) {
 
-                        if (mBiddingListener != null) {
+                        NativeAdData unifiedADData = list.get(0);
 
-                            NativeAdData unifiedADData =list.get(0);
+                        if (unifiedADData != null && mBiddingListener != null) {
                             double price = unifiedADData.getPrice();
 
                             GTNativeAd gdtNativeAd = new GTNativeAd(context, unifiedADData, mVideoMuted, mVideoAutoPlay, mVideoDuration);
 
-                            GTBiddingNotice gdtatBiddingNotice = new GTBiddingNotice(nativeAd);
+                            GTBiddingNotice notice = new GTBiddingNotice(nativeAd);
 
-                            mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(price, System.currentTimeMillis() + "", gdtatBiddingNotice, ATAdConst.CURRENCY.RMB_CENT), gdtNativeAd);
+                            Log.d(TAG, "onAdLoad: onC2SBiddingResultWithCache price = " + price);
+
+                            mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(price, System.currentTimeMillis() + "", notice, ATAdConst.CURRENCY.RMB_CENT), gdtNativeAd);
                         }
 
                         return;
@@ -162,23 +167,6 @@ public class GTNativeAdapter extends CustomNativeAdapter {
         });
 
         nativeAd.loadAd();
-    }
-
-    void initRequestParams(Map<String, Object> serverExtra, Map<String, Object> localExtra) {
-        mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
-        mUnitId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
-        mUnitType = ATInitMediation.getIntFromMap(serverExtra, "unit_type");
-        mPayload = ATInitMediation.getStringFromMap(serverExtra, "payload");
-
-        mAdCount = isC2SBidding ? 1 : mRequestNum;
-
-        int isVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0);
-        int isVideoAutoPlay = ATInitMediation.getIntFromMap(serverExtra, "video_autoplay", 1);
-        int videoDuration = ATInitMediation.getIntFromMap(serverExtra, "video_duration", -1);
-
-        mVideoMuted = isVideoMuted;
-        mVideoAutoPlay = isVideoAutoPlay;
-        mVideoDuration = videoDuration;
     }
 
     private void defaultLoad(Context context) {
@@ -241,6 +229,9 @@ public class GTNativeAdapter extends CustomNativeAdapter {
 
     @Override
     public void destory() {
-
+        if (nativeAd != null) {
+            nativeAd.destroyAd();
+        }
     }
+
 }

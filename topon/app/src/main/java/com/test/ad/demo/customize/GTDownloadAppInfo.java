@@ -10,16 +10,19 @@ public class GTDownloadAppInfo extends ATAdAppInfo {
     public String appPrivacyLink;
     public String appPermissionLink;
     public String appName;
+    public String packageName;
     public long appSize;
     public String appDownloadCount;
 
-    public GTDownloadAppInfo(AdAppInfo nativeUnifiedADAppMiitInfo, String downloadCount) {
-        publisher = nativeUnifiedADAppMiitInfo.getAuthorName();
-        appVersion = nativeUnifiedADAppMiitInfo.getVersionName();
-        appPrivacyLink = nativeUnifiedADAppMiitInfo.getPrivacyUrl();
-        appPermissionLink = nativeUnifiedADAppMiitInfo.getPermissionsUrl();
-        appName = nativeUnifiedADAppMiitInfo.getAppName();
-        appSize = nativeUnifiedADAppMiitInfo.getAppSize();
+    public GTDownloadAppInfo(AdAppInfo info, String downloadCount) {
+        publisher = info.getAuthorName();
+        appVersion = info.getVersionName();
+        appPrivacyLink = info.getPrivacyUrl();
+        appPermissionLink = info.getPermissionsUrl();
+        appName = info.getAppName();
+        packageName = info.getPackageName();
+        appSize = info.getAppSize();
+
         appDownloadCount = downloadCount;
     }
 
@@ -50,7 +53,7 @@ public class GTDownloadAppInfo extends ATAdAppInfo {
 
     @Override
     public String getAppPackageName() {
-        return "";
+        return packageName;
     }
 
     @Override
