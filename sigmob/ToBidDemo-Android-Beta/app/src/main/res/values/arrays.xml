@@ -108,6 +108,7 @@
         <item>趣盟</item>
         <item>百度</item>
         <item>自定义穿山甲</item>
+        <item>GTAD</item>
     </array>
 
     <string-array name="native_id_value">
@@ -120,6 +121,7 @@
         <item>4772764698616709</item>
         <item>6728444626644345</item>
         <item>4952664543881484</item>
+        <item>6246197299556931</item> <!-- GTAD 原生广告位id -->
     </string-array>
 
     <string-array name="native_draw_id_value">
@@ -132,6 +134,7 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+        <item>6246197299556931</item> <!-- GTAD 原生广告位id -->
     </string-array>
 
     <array name="banner_adapter">
