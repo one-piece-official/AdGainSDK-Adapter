@@ -138,6 +138,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public String getCTAText() {
+        Log.d(TAG, "getCTAText: " + nativeAdData);
         if (nativeAdData != null) {
             return nativeAdData.getCTAText();
         }
@@ -146,6 +147,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public String getTitle() {
+        Log.d(TAG, "getTitle: " + nativeAdData);
         if (nativeAdData != null) {
             return nativeAdData.getTitle();
         }
@@ -154,6 +156,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public String getDesc() {
+        Log.d(TAG, "getDesc: " + nativeAdData);
         if (nativeAdData != null) {
             nativeAdData.getDesc();
         }
@@ -162,11 +165,13 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public Bitmap getAdLogo() {
+        Log.d(TAG, "getAdLogo");
         return null;
     }
 
     @Override
     public String getIconUrl() {
+        Log.d(TAG, "getIconUrl: " + nativeAdData);
         if (nativeAdData != null) {
             nativeAdData.getIconUrl();
         }
@@ -175,6 +180,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public int getNetworkId() {
+        Log.d(TAG, "getNetworkId: " + adAdapter);
         if (adAdapter != null) {
             return adAdapter.getChannelId();
         }
@@ -183,6 +189,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void connectAdToView(Activity activity, WMNativeAdContainer adContainer, WMNativeAdRender adRender) {
+        Log.d(TAG, "connectAdToView " + activity + " container: " + adContainer + " render: " + adRender);
         if (adRender != null) {
             View view = adRender.createView(activity, getAdPatternType());
             adRender.renderAdView(view, this);
@@ -195,6 +202,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void bindImageViews(Context context, List<ImageView> imageViews, int defaultImageRes) {
+        Log.d(TAG, "bindImageViews ad: " + nativeAdData);
         if (null == nativeAdData) {
             return;
         }
@@ -203,12 +211,15 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public List<String> getImageUrlList() {
+        Log.d(TAG, "getImageUrlList");
         List<String> ret = new ArrayList<>();
         if (nativeAdData != null) {
             List<GtImage> imgList = nativeAdData.getImageList();
             if (imgList != null) {
                 for (GtImage img : imgList) {
-                    ret.add(img.imageUrl);
+                    if (img != null && img.imageUrl != null) {
+                        ret.add(img.imageUrl);
+                    }
                 }
             }
         }
@@ -217,6 +228,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public List<WMImage> getImageList() {
+        Log.d(TAG, "getImageList");
         List<WMImage> ret = new ArrayList<>();
         if (nativeAdData != null) {
             List<GtImage> imgList = nativeAdData.getImageList();
@@ -301,6 +313,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void setMediaListener(NativeADMediaListener nativeADMediaListener) {
+        Log.d(TAG, "setMediaListener: " + nativeADMediaListener);
         if (nativeADMediaListener != null) {
             this.nativeADMediaListener = nativeADMediaListener;
         }
@@ -330,10 +343,12 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void setDownloadListener(AppDownloadListener appDownloadListener) {
+        Log.d(TAG, "setDownloadListener: " + appDownloadListener);
     }
 
     @Override
     public void destroy() {
+        Log.d(TAG, "destroy");
         if (nativeAdData != null) {
             nativeAdData.destroy();
         }
@@ -341,6 +356,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void startVideo() {
+        Log.d(TAG, "startVideo");
         super.startVideo();
         if (nativeAdData != null) {
             nativeAdData.startVideo();
@@ -349,6 +365,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void pauseVideo() {
+        Log.d(TAG, "pauseVideo");
         super.pauseVideo();
         if (nativeAdData != null) {
             nativeAdData.pauseVideo();
@@ -357,6 +374,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void resumeVideo() {
+        Log.d(TAG, "resumeVideo");
         super.resumeVideo();
         if (nativeAdData != null) {
             nativeAdData.resumeVideo();
@@ -365,6 +383,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     @Override
     public void stopVideo() {
+        Log.d(TAG, "stopVideo");
         super.stopVideo();
         if (nativeAdData != null) {
             nativeAdData.stopVideo();
