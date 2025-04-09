@@ -35,7 +35,10 @@ public class GtAdCustomerSplash extends WMCustomSplashAdapter implements SplashA
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
-            Map<String, Object> options = new HashMap<>(localExtra);
+            Map<String, Object> options = new HashMap<>(serverExtra);
+            if (localExtra != null) {
+                options.putAll(localExtra);
+            }
             Size size = getSizeParam(viewGroup);
             long loadTimeout = getLoadTimeParam(localExtra);
             AdRequest adRequest = new AdRequest.Builder()

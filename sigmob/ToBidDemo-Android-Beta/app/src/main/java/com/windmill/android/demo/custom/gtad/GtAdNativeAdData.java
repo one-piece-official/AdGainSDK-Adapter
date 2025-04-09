@@ -12,6 +12,7 @@ import com.gt.sdk.api.AdError;
 import com.gt.sdk.api.GtImage;
 import com.gt.sdk.api.NativeAdData;
 import com.gt.sdk.api.NativeAdEventListener;
+import com.gt.sdk.api.NativeAdInteractiveType;
 import com.gt.sdk.api.NativeAdPatternType;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
@@ -89,10 +90,10 @@ public class GtAdNativeAdData extends WMNativeAdData {
             // 1: 浏览器、2: deepLink、3: 下载
             int interactionType = nativeAdData.getAdInteractiveType();
             switch (interactionType) {
-                case 1:
-                case 2:
+                case NativeAdInteractiveType.NATIVE_BROWSER:
+                case NativeAdInteractiveType.NATIVE_DEEP_LINK:
                     return WMConstants.INTERACTION_TYPE_BROWSER;
-                case 3:
+                case NativeAdInteractiveType.NATIVE_DOWNLOAD:
                     return WMConstants.INTERACTION_TYPE_DOWNLOAD;
             }
         }

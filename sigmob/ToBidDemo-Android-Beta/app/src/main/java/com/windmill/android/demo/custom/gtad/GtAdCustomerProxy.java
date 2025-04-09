@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.gt.sdk.GTAdSdk;
+import com.gt.sdk.api.GtCustomController;
 import com.gt.sdk.api.GtInitCallback;
 import com.gt.sdk.api.GtSdkConfig;
 import com.windmill.sdk.WMConstants;
@@ -13,6 +14,7 @@ import com.windmill.sdk.custom.WMCustomAdapterProxy;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GtAdCustomerProxy extends WMCustomAdapterProxy {
@@ -26,10 +28,12 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
             String customInfo = (String)serverExtra.get(WMConstants.CUSTOM_INFO);
             JSONObject joCustom = new JSONObject(customInfo);
             String gtAdAppId = joCustom.getString(SERVER_EXTRA_CUSTOM_APP_ID);
+            HashMap<String, Object> customData = new HashMap<>(serverExtra);
             GtSdkConfig config = new GtSdkConfig.Builder()
                     .appId(gtAdAppId)
                     .debugEnv(true)
                     .showLog(true)
+                    .addCustomData(customData)
                     .setInitCallback(new GtInitCallback() {
                         @Override
                         public void onSuccess() {
@@ -41,6 +45,42 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
                         public void onFail(int code, String message) {
                             Log.d(TAG, "Gt init onFail " + code + " msg: " + message);
                             callInitFail(code, message);
+                        }
+                    })
+                    .customController(new GtCustomController() {
+                        @Override
+                        public boolean canReadLocation() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean canUsePhoneState() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean canUseAndroidId() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean canUseWifiState() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean canUseWriteExternal() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean canReadInstalledPackages() {
+                            return true;
+                        }
+
+                        @Override
+                        public String getOaid() {
+                            return "";
                         }
                     })
                     .build();

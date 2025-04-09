@@ -34,7 +34,10 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
             wmNativeAdDataList.clear();
             // 这个数值来自sigmob后台广告位ID的配置
             String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
-            Map<String, Object> options = new HashMap<>(localExtra);
+            Map<String, Object> options = new HashMap<>(serverExtra);
+            if (localExtra != null) {
+                options.putAll(localExtra);
+            }
             AdRequest adRequest = new AdRequest.Builder()
                     .setAdUnitID(unitId)
                     .setExtOption(options)
@@ -50,10 +53,6 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
 
     @Override
     public boolean isReady() {
-        Log.d(TAG, "isReady: " + nativeUnifiedAd);
-        if (nativeUnifiedAd != null) {
-            Log.d(TAG, "isReady: ready: " + nativeUnifiedAd.isReady());
-        }
         return nativeUnifiedAd != null && nativeUnifiedAd.isReady();
     }
 

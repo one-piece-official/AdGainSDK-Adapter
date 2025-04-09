@@ -29,7 +29,10 @@ public class GtAdCustomerReward extends WMCustomRewardAdapter implements RewardA
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
-            Map<String, Object> options = new HashMap<>(localExtra);
+            Map<String, Object> options = new HashMap<>(serverExtra);
+            if (localExtra != null) {
+                options.putAll(localExtra);
+            }
             AdRequest adRequest = new AdRequest.Builder()
                     .setAdUnitID(unitId)
                     .setExtOption(options)
