@@ -9,15 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.gt.sdk.api.AdError;
+import com.gt.sdk.api.ApkDownloadListener;
 import com.gt.sdk.api.GtImage;
 import com.gt.sdk.api.NativeAdData;
 import com.gt.sdk.api.NativeAdEventListener;
 import com.gt.sdk.api.NativeAdInteractiveType;
 import com.gt.sdk.api.NativeAdPatternType;
+import com.gt.sdk.api.NativeUnifiedAd;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
-import com.windmill.sdk.custom.WMCustomNativeAdapter;
 import com.windmill.sdk.models.AdInfo;
 import com.windmill.sdk.natives.WMImage;
 import com.windmill.sdk.natives.WMNativeAdContainer;
@@ -31,7 +32,7 @@ import java.util.List;
 public class GtAdNativeAdData extends WMNativeAdData {
     private static final String TAG = "GtAdNativeAdData";
     private final NativeAdData nativeAdData;
-    private final WMCustomNativeAdapter adAdapter;
+    private final GtAdCustomerNative adAdapter;
     private NativeADMediaListener nativeADMediaListener;
 
     private NativeAdInteractionListener nativeAdInteractionListener;
@@ -79,7 +80,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
         }
     };
 
-    public GtAdNativeAdData(NativeAdData nativeAdData, WMCustomNativeAdapter adAdapter) {
+    public GtAdNativeAdData(NativeAdData nativeAdData, GtAdCustomerNative adAdapter) {
         this.nativeAdData = nativeAdData;
         this.adAdapter = adAdapter;
     }
@@ -344,6 +345,60 @@ public class GtAdNativeAdData extends WMNativeAdData {
     @Override
     public void setDownloadListener(AppDownloadListener appDownloadListener) {
         Log.d(TAG, "setDownloadListener: " + appDownloadListener);
+        if (adAdapter != null) {
+            NativeUnifiedAd ad = adAdapter.getNativeAd();
+            if (ad != null) {
+                if (null == appDownloadListener) {
+                    ad.setApkDownloadListener(null);
+                } else {
+                    ad.setApkDownloadListener(new ApkDownloadListener() {
+                        @Override
+                        public void onDownloadStart(boolean success) {
+                            Log.d(TAG, "onDownloadStart: " + success);
+                            if (success) {
+                                appDownloadListener.onDownloadActive(100L, 1L, "", "");
+                            } else {
+                                appDownloadListener.onDownloadFailed(100L, 1L, "", "");
+                            }
+                        }
+
+                        @Override
+                        public void onDownloadEnd(boolean success) {
+                            Log.d(TAG, "onDownloadEnd: " + success);
+                            if (success) {
+                                appDownloadListener.onDownloadFinished(100L, "", "");
+                            } else {
+                                appDownloadListener.onDownloadFailed(100L, 1L, "", "");
+                            }
+                        }
+
+                        @Override
+                        public void onDownloadPaused(boolean success) {
+                            Log.d(TAG, "onDownloadPaused: " + success);
+                            if (success) {
+                                appDownloadListener.onDownloadPaused(100L, 50L, "", "");
+                            } else {
+                                appDownloadListener.onDownloadFailed(100L, 1L, "", "");
+                            }
+                        }
+
+                        @Override
+                        public void onInstallStart(boolean success) {
+                            Log.d(TAG, "onInstallStart: " + success);
+                        }
+
+                        @Override
+                        public void onInstallEnd(boolean success) {
+                            Log.d(TAG, "onInstallEnd: " + success);
+                            if (success) {
+                                appDownloadListener.onInstalled("", "");
+                            }
+                        }
+                    });
+                }
+
+            }
+        }
     }
 
     @Override

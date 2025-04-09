@@ -113,4 +113,8 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
         }
         callLoadSuccess(wmNativeAdDataList);
     }
+
+    public NativeUnifiedAd getNativeAd() {
+        return nativeUnifiedAd;
+    }
 }
