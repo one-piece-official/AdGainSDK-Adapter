@@ -11,7 +11,6 @@ import com.gt.sdk.api.InterstitialAd;
 import com.gt.sdk.api.NativeUnifiedAd;
 import com.gt.sdk.api.RewardAd;
 import com.gt.sdk.api.SplashAd;
-import com.gt.sdk.base.common.GtBaseAd;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,9 +19,9 @@ public class GTBiddingNotice implements ATBiddingNotice {
 
     private static final String TAG = GTInitManager.TAG;
 
-    GtBaseAd gtBaseAd;
+    IBidding gtBaseAd;
 
-    protected GTBiddingNotice(GtBaseAd adObject) {
+    protected GTBiddingNotice(IBidding adObject) {
         this.gtBaseAd = adObject;
     }
 
