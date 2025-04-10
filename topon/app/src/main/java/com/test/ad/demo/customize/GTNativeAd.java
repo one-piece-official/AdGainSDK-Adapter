@@ -17,6 +17,7 @@ import com.gt.sdk.api.AdError;
 import com.gt.sdk.api.GtImage;
 import com.gt.sdk.api.NativeAdData;
 import com.gt.sdk.api.NativeAdEventListener;
+import com.gt.sdk.api.NativeAdInteractiveType;
 import com.gt.sdk.api.NativeAdPatternType;
 import com.gt.sdk.base.natives.GtNativeAdMediaView;
 
@@ -64,9 +65,11 @@ public class GTNativeAd extends CustomNativeAd {
     }
 
     public String getCallToAction(NativeAdData ad) {
+
         if (!TextUtils.isEmpty(ad.getCTAText())) {
             return ad.getCTAText();
         }
+
         return "点击查看";
     }
 
@@ -75,7 +78,6 @@ public class GTNativeAd extends CustomNativeAd {
         setDescriptionText(unifiedADData.getDesc());
 
         setIconImageUrl(unifiedADData.getIconUrl());
-        setAppPrice(unifiedADData.getPrice());
 
         setCallToActionText(getCallToAction(unifiedADData));
 
@@ -90,12 +92,12 @@ public class GTNativeAd extends CustomNativeAd {
             setMainImageHeight(image.getHeight());
         }
 
-        // todo
-//        setStarRating((double) unifiedADData.getAppScore());
+        setStarRating(5.0);
 
         setNativeInteractionType(isAPPAD(unifiedADData) ? NativeAdInteractionType.APP_DOWNLOAD_TYPE : NativeAdInteractionType.UNKNOW);
 
         setAdAppInfo(new GTDownloadAppInfo(unifiedADData.getAdAppInfo(), "5000"));
+        setAppPrice(unifiedADData.getPrice());
 
         setImageUrlList(getImgUrls(unifiedADData));
 
@@ -111,16 +113,19 @@ public class GTNativeAd extends CustomNativeAd {
             mAdSourceType = NativeAdConst.IMAGE_TYPE;
         }
 
-//         setNetworkInfoMap(unifiedADData.getExtraInfo());
+         //setNetworkInfoMap(unifiedADData.getExtraInfo());
     }
 
     private boolean isAPPAD(NativeAdData data) {
+        boolean appDownloadType = data.getAdInteractiveType() == NativeAdInteractiveType.NATIVE_DOWNLOAD;
+
         AdAppInfo info = data.getAdAppInfo();
+
         if (info != null) {
-            Log.d(TAG, "isAPPAD: package_name  = " + info.getPackageName() + "    app_size = " + info.getAppSize());
+            Log.d(TAG, "isAPPAD: package_name  = " + info.getPackageName() + "    app_size = " + info.getAppSize() + "  downloadType = " + appDownloadType);
         }
 
-        return info != null && !TextUtils.isEmpty(info.getPackageName()) && info.getAppSize() > 0;
+        return appDownloadType && info != null && !TextUtils.isEmpty(info.getPackageName());
     }
 
     @Override
