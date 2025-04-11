@@ -106,7 +106,7 @@ public class GTNativeAdapter extends CustomNativeAdapter {
     private void loadSelfRenderingAd(final Context context) {
 
         Map<String, Object> options = new HashMap<>();
-        options.put("test_extra_key", "test_extra_value");
+        options.put("native_test_option_key", "native_test_option_value");
 
         AdRequest adRequest = new AdRequest
                 .Builder()

@@ -80,16 +80,15 @@ public class GTSplashAdapter extends CustomSplashAdapter {
     private void startLoadAd(final Context context, Map<String, Object> serverExtra) {
 
         Map<String, Object> options = new HashMap<>();
-        options.put("splash_self_key", "splash_self_value");
+        options.put("splash_test_option_key", "splash_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
                 .setAdUnitID(mUnitId)
                 .setWidth(PxUtils.getDeviceWidthInPixel(context))
                 .setHeight(PxUtils.getDeviceHeightInPixel(context) - PxUtils.dpToPx(context, 100))
+                .setSplashAdLoadTimeoutMs(getLoadTimeParam(serverExtra))
                 .setExtOption(options)
                 .build();
-
-//      splashAD = new SplashAD(context, mUnitId, GTSplashAdapter.this, mFetchAdTimeout);
 
         splashAD = new SplashAd(adRequest, new SplashAdListener() {
             @Override
@@ -237,6 +236,23 @@ public class GTSplashAdapter extends CustomSplashAdapter {
     @Override
     public ATInitMediation getMediationInitManager() {
         return GTInitManager.getInstance();
+    }
+
+    private static final String LOCAL_EXTRA_LOAD_TIMEOUT_MS = "load_timeout_ms";
+
+    private long getLoadTimeParam(Map<String, Object> extra) {
+        try {
+            if (extra != null && extra.containsKey(LOCAL_EXTRA_LOAD_TIMEOUT_MS)) {
+                Object obj = extra.get(LOCAL_EXTRA_LOAD_TIMEOUT_MS);
+                if (obj instanceof Number) {
+                    Number n = (Number) obj;
+                    return n.intValue();
+                }
+            }
+        } catch (Throwable tr) {
+            Log.e(TAG, "getLoadTimeParam exception", tr);
+        }
+        return 8 * 1000;
     }
 
     @Override

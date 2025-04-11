@@ -101,11 +101,10 @@ public class GTInitManager extends ATInitMediation {
         Log.d(TAG, "initSDK: real start  app_id = " + app_id);
 
         GTAdSdk.getInstance().init(context, new GtSdkConfig.Builder()
-                //.appId("1105")       //必填
-                .appId(app_id)       //必填
-                .userId("1122")
-                .debugEnv(true)
-                .showLog(true)
+                .appId(app_id)         //必填
+                .userId("")            // 非必须，有就填
+                .debugEnv(true)   // 线上环境务必传 false
+                .showLog(true)    // 是否展示 广推adsdk 日志
                 .addCustomData(customData) //自定义数据
 
                 .customController(new GtCustomController() {
@@ -171,7 +170,7 @@ public class GTInitManager extends ATInitMediation {
             GTAdSdk.getInstance().setPersonalizedAdvertisingOn(false);
 
         } else {
-            GTAdSdk.getInstance().setPersonalizedAdvertisingOn(true);
+            GTAdSdk.getInstance().setPersonalizedAdvertisingOn(true);  // 开启 个性化广告
         }
     }
 
