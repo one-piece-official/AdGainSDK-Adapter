@@ -95,7 +95,7 @@ public class GTInitManager extends ATInitMediation {
             mLocalInitAppId = null;
         }
 
-        Map<String, Object> customData = new HashMap<>();
+        Map<String, Object> customData = new HashMap<>(serviceExtras);
         customData.put("custom_key", "custom_value");
 
         Log.d(TAG, "initSDK: real start  app_id = " + app_id);

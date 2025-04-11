@@ -77,7 +77,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
     private void loadGTRewardVideo(Context context, Map<String, Object> serverExtra) {
 
-        Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>(serverExtra);
         options.put("reward_test_option_key", "reward_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()

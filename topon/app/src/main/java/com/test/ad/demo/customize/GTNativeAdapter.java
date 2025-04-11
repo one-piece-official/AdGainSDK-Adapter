@@ -90,7 +90,7 @@ public class GTNativeAdapter extends CustomNativeAdapter {
             switch (mUnitType) {
 
                 case 0:   // self rendering
-                    loadSelfRenderingAd(context.getApplicationContext());
+                    loadSelfRenderingAd(context.getApplicationContext(),serverExtra);
                     break;
 
                 case 1:   //Native Express
@@ -103,9 +103,9 @@ public class GTNativeAdapter extends CustomNativeAdapter {
         }
     }
 
-    private void loadSelfRenderingAd(final Context context) {
+    private void loadSelfRenderingAd(final Context context,Map<String, Object> serverExtra) {
 
-        Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>(serverExtra);
         options.put("native_test_option_key", "native_test_option_value");
 
         AdRequest adRequest = new AdRequest

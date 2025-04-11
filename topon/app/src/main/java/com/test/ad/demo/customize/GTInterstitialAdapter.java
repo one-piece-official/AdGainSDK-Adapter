@@ -77,7 +77,7 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
 
     private void loadInterstitial(Map<String, Object> serverExtra, Map<String, Object> localExtra) {
 
-        Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>(serverExtra);
         options.put("inter_test_option_key", "inter_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
