@@ -158,6 +158,10 @@ public class NativeAdUnifiedListActivity extends Activity {
             }
         }
         mData = null;
+        if (windNativeUnifiedAd != null) {
+            windNativeUnifiedAd.destroy();
+            windNativeUnifiedAd = null;
+        }
     }
 
     private static class MyAdapter extends BaseAdapter {

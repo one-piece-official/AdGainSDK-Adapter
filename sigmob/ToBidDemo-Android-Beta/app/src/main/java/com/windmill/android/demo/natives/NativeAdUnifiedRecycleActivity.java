@@ -167,6 +167,10 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
             }
         }
         mData = null;
+        if (windNativeUnifiedAd != null) {
+            windNativeUnifiedAd.destroy();
+            windNativeUnifiedAd = null;
+        }
     }
 
     private static class MyAdapter extends RecyclerView.Adapter {
