@@ -109,6 +109,7 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
     }
 
     private void updatePrivacySetting() {
+        Log.d(TAG, "updatePrivacySetting");
         GTAdSdk.getInstance().setPersonalizedAdvertisingOn(
                 WindMillAd.sharedAds().isPersonalizedAdvertisingOn());
     }

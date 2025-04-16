@@ -61,6 +61,7 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
 
     @Override
     public void destroyAd() {
+        Log.d(TAG, "destroyAd");
         if (nativeUnifiedAd != null) {
             nativeUnifiedAd.destroyAd();
             nativeUnifiedAd = null;
@@ -69,6 +70,7 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
 
     @Override
     public void notifyBiddingResult(boolean isWin, String price, Map<String, Object> referBidInfo) {
+        Log.d(TAG, "notifyBiddingResult: " + isWin + " " + price + " " + referBidInfo);
         super.notifyBiddingResult(isWin, price, referBidInfo);
         NativeUnifiedAd ad = nativeUnifiedAd;
         Log.d(TAG, "notifyBiddingResult: win: " + isWin + " price: " + price + " refer: " + referBidInfo + " ad: " + ad);
@@ -105,6 +107,7 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
                 // biding
                 if (adData != null) {
                     BidPrice bidPrice = new BidPrice(String.valueOf(adData.getPrice()));
+                    Log.d(TAG, "invoke callLoadBiddingSuccess: " + bidPrice);
                     callLoadBiddingSuccess(bidPrice);
                 }
             }
@@ -114,6 +117,7 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
                 wmNativeAdDataList.add(new GtAdNativeAdData(data, this));
             }
         }
+        Log.d(TAG, "invoke callLoadSuccess");
         callLoadSuccess(wmNativeAdDataList);
     }
 
