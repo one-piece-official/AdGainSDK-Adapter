@@ -93,6 +93,10 @@ public class NativeAdDrawActivity extends Activity {
         if (mLayoutManager != null) {
             mLayoutManager.setOnViewPagerListener(null);
         }
+        if (nativeUnifiedAd != null) {
+            nativeUnifiedAd.destroy();
+            nativeUnifiedAd = null;
+        }
     }
 
     private void initDefaultDate() {
