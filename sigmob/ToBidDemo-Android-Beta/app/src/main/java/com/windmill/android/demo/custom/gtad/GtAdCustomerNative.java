@@ -29,20 +29,23 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
     @Override
     public void loadAd(Context context, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
         Log.d(TAG, "loadAd: l: " + localExtra);
-        Log.d(TAG, "loadAd: s" + serverExtra);
+        Log.d(TAG, "loadAd: s:" + serverExtra);
+        Log.d(TAG, "loadAd: ad:" + nativeUnifiedAd);
         try {
             wmNativeAdDataList.clear();
             // 这个数值来自sigmob后台广告位ID的配置
-            String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
-            Map<String, Object> options = new HashMap<>(serverExtra);
-            if (localExtra != null) {
-                options.putAll(localExtra);
+            if (null == nativeUnifiedAd) {
+                String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
+                Map<String, Object> options = new HashMap<>(serverExtra);
+                if (localExtra != null) {
+                    options.putAll(localExtra);
+                }
+                AdRequest adRequest = new AdRequest.Builder()
+                        .setAdUnitID(unitId)
+                        .setExtOption(options)
+                        .build();
+                nativeUnifiedAd = new NativeUnifiedAd(adRequest, this);
             }
-            AdRequest adRequest = new AdRequest.Builder()
-                    .setAdUnitID(unitId)
-                    .setExtOption(options)
-                    .build();
-            nativeUnifiedAd = new NativeUnifiedAd(adRequest, this);
             nativeUnifiedAd.loadAd();
         } catch (Throwable tr) {
             Log.e(TAG, "loadAd exception: ", tr);
