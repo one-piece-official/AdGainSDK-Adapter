@@ -83,6 +83,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
         AdRequest adRequest = new AdRequest.Builder()
                 .setAdUnitID(mUnitId)  // 1197
                 .setExtOption(options)
+                .setPortrait(false)
                 .build();
 
         mRewardVideoAD = new RewardAd(adRequest, new RewardAdListener() {

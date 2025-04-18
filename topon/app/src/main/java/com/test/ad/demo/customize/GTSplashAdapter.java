@@ -18,7 +18,6 @@ import com.gt.sdk.api.AdRequest;
 import com.gt.sdk.api.GTAdInfo;
 import com.gt.sdk.api.SplashAd;
 import com.gt.sdk.api.SplashAdListener;
-import com.test.ad.demo.zoomout.PxUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,9 +83,10 @@ public class GTSplashAdapter extends CustomSplashAdapter {
 
         AdRequest adRequest = new AdRequest.Builder()
                 .setAdUnitID(mUnitId)
-                .setWidth(PxUtils.getDeviceWidthInPixel(context))
-                .setHeight(PxUtils.getDeviceHeightInPixel(context) - PxUtils.dpToPx(context, 100))
+//                .setWidth(PxUtils.getDeviceWidthInPixel(context))
+//                .setHeight(PxUtils.getDeviceHeightInPixel(context) - PxUtils.dpToPx(context, 100))
                 .setSplashAdLoadTimeoutMs(getLoadTimeParam(serverExtra))
+                .setPortrait(false)
                 .setExtOption(options)
                 .build();
 

@@ -84,6 +84,7 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
                 //.setAdUnitID("1195")
                 .setAdUnitID(mADUnitId)
                 .setExtOption(options)
+                .setPortrait(false)
                 .build();
 
         mGTInterstitialAd = new InterstitialAd(adRequest, new InterstitialAdListener() {
