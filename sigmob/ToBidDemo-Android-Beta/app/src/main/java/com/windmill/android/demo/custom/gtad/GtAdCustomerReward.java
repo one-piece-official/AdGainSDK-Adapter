@@ -36,6 +36,7 @@ public class GtAdCustomerReward extends WMCustomRewardAdapter implements RewardA
             AdRequest adRequest = new AdRequest.Builder()
                     .setAdUnitID(unitId)
                     .setExtOption(options)
+                    .setPortrait(false)
                     .build();
             rewardAd = new RewardAd(adRequest, this);
             rewardAd.loadAd();

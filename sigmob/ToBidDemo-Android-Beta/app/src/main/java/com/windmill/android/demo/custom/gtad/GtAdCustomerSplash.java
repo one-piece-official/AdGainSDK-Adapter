@@ -45,6 +45,7 @@ public class GtAdCustomerSplash extends WMCustomSplashAdapter implements SplashA
                     .setAdUnitID(unitId)
                     .setWidth(size.getWidth())
                     .setHeight(size.getHeight())
+                    .setPortrait(false)
                     .setExtOption(options)
                     .setSplashAdLoadTimeoutMs(loadTimeout)
                     .build();

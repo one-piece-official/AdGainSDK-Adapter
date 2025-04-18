@@ -35,6 +35,7 @@ public class GtAdCustomerInterstitial extends WMCustomInterstitialAdapter implem
             AdRequest adRequest = new AdRequest.Builder()
                     .setAdUnitID(unitId)
                     .setExtOption(options)
+                    .setPortrait(false)
                     .build();
             interstitialAd = new InterstitialAd(adRequest, this);
             interstitialAd.loadAd();
