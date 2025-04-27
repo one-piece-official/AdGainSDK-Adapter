@@ -62,14 +62,23 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+
+<!--
+        android:configChanges="orientation|screenSize"
+        一定要加，否则竖屏下,无法启动横屏Activity
+-->
         <activity
             android:name="com.test.ad.demo.RewardVideoAdActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false"
             android:label="RewardedVideo" />
+
         <activity
             android:name="com.test.ad.demo.InterstitialAdActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false"
             android:label="Interstitial" />
+
         <activity
             android:name="com.test.ad.demo.BannerAdActivity"
             android:exported="false"
