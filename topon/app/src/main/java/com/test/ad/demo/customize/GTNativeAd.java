@@ -177,7 +177,7 @@ public class GTNativeAd extends CustomNativeAd {
                 }
             }
 
-            mUnifiedAdData.bindViewForInteraction(view, clickViewList, downloadDirectlyClickViews, null, null, new NativeAdEventListener() {
+            mUnifiedAdData.bindViewForInteraction(view, clickViewList, new NativeAdEventListener() {
                 @Override
                 public void onAdExposed() {
                     notifyAdImpression();

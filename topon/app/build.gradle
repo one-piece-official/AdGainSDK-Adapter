@@ -15,23 +15,23 @@ android {
         multiDexEnabled = true
     }
     signingConfigs {
-        demo {
-            keyAlias 'anythink'
+        sign {
+            keyAlias 'key'
             keyPassword '123456'
-            storeFile file('anythink.jks')
+            storeFile file('../key/signAdKey')
             storePassword '123456'
         }
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.demo
+            signingConfig signingConfigs.sign
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            signingConfig signingConfigs.demo
+            signingConfig signingConfigs.sign
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
