@@ -1,4 +1,4 @@
-package com.windmill.android.demo.custom.gtad;
+package com.windmill.android.demo.custom.adgainad;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.ApkDownloadListener;
-import com.gt.sdk.api.GtImage;
-import com.gt.sdk.api.NativeAdData;
-import com.gt.sdk.api.NativeAdEventListener;
-import com.gt.sdk.api.NativeAdInteractiveType;
-import com.gt.sdk.api.NativeAdPatternType;
-import com.gt.sdk.api.NativeUnifiedAd;
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdGainImage;
+import com.adgain.sdk.api.ApkDownloadListener;
+import com.adgain.sdk.api.NativeAdData;
+import com.adgain.sdk.api.NativeAdEventListener;
+import com.adgain.sdk.api.NativeAdInteractiveType;
+import com.adgain.sdk.api.NativeAdPatternType;
+import com.adgain.sdk.api.NativeUnifiedAd;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
@@ -29,10 +29,10 @@ import com.windmill.sdk.natives.WMNativeAdRender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GtAdNativeAdData extends WMNativeAdData {
-    private static final String TAG = "GtAdNativeAdData";
+public class AdGainNativeAdData extends WMNativeAdData {
+    private static final String TAG = "AdGainNativeAdData";
     private final NativeAdData nativeAdData;
-    private final GtAdCustomerNative adAdapter;
+    private final AdGainCustomerNative adAdapter;
     private NativeADMediaListener nativeADMediaListener;
 
     private NativeAdInteractionListener nativeAdInteractionListener;
@@ -42,8 +42,8 @@ public class GtAdNativeAdData extends WMNativeAdData {
             Log.d(TAG, "onAdExposed nal: " + nativeAdInteractionListener);
             AdInfo adInfo = null;
             if (adAdapter != null) {
-                adInfo = adAdapter.getAdInFo(GtAdNativeAdData.this);
-                adAdapter.callNativeAdShow(GtAdNativeAdData.this);
+                adInfo = adAdapter.getAdInFo(AdGainNativeAdData.this);
+                adAdapter.callNativeAdShow(AdGainNativeAdData.this);
             }
             if (nativeAdInteractionListener != null) {
                 nativeAdInteractionListener.onADExposed(adInfo);
@@ -56,8 +56,8 @@ public class GtAdNativeAdData extends WMNativeAdData {
             Log.d(TAG, "onAdClicked nal: " + nativeAdInteractionListener);
             AdInfo adInfo = null;
             if (adAdapter != null) {
-                adInfo = adAdapter.getAdInFo(GtAdNativeAdData.this);
-                adAdapter.callNativeAdClick(GtAdNativeAdData.this);
+                adInfo = adAdapter.getAdInFo(AdGainNativeAdData.this);
+                adAdapter.callNativeAdClick(AdGainNativeAdData.this);
             }
             if (nativeAdInteractionListener != null) {
                 nativeAdInteractionListener.onADClicked(adInfo);
@@ -70,8 +70,8 @@ public class GtAdNativeAdData extends WMNativeAdData {
             Log.d(TAG, "onAdRenderFail nal: " + nativeAdInteractionListener);
             AdInfo adInfo = null;
             if (adAdapter != null) {
-                adInfo = adAdapter.getAdInFo(GtAdNativeAdData.this);
-                adAdapter.callNativeAdShowError(GtAdNativeAdData.this, new WMAdapterError(error.getErrorCode(), error.getMessage()));
+                adInfo = adAdapter.getAdInFo(AdGainNativeAdData.this);
+                adAdapter.callNativeAdShowError(AdGainNativeAdData.this, new WMAdapterError(error.getErrorCode(), error.getMessage()));
             }
             if (nativeAdInteractionListener != null) {
                 nativeAdInteractionListener.onADError(adInfo, WindMillError.ERROR_AD_ADAPTER_PLAY);
@@ -80,7 +80,7 @@ public class GtAdNativeAdData extends WMNativeAdData {
         }
     };
 
-    public GtAdNativeAdData(NativeAdData nativeAdData, GtAdCustomerNative adAdapter) {
+    public AdGainNativeAdData(NativeAdData nativeAdData, AdGainCustomerNative adAdapter) {
         this.nativeAdData = nativeAdData;
         this.adAdapter = adAdapter;
     }
@@ -215,9 +215,9 @@ public class GtAdNativeAdData extends WMNativeAdData {
         Log.d(TAG, "getImageUrlList");
         List<String> ret = new ArrayList<>();
         if (nativeAdData != null) {
-            List<GtImage> imgList = nativeAdData.getImageList();
+            List<AdGainImage> imgList = nativeAdData.getImageList();
             if (imgList != null) {
-                for (GtImage img : imgList) {
+                for (AdGainImage img : imgList) {
                     if (img != null && img.imageUrl != null) {
                         ret.add(img.imageUrl);
                     }
@@ -232,10 +232,10 @@ public class GtAdNativeAdData extends WMNativeAdData {
         Log.d(TAG, "getImageList");
         List<WMImage> ret = new ArrayList<>();
         if (nativeAdData != null) {
-            List<GtImage> imgList = nativeAdData.getImageList();
+            List<AdGainImage> imgList = nativeAdData.getImageList();
             if (imgList != null) {
-                for (GtImage gtImage: imgList) {
-                    ret.add(new GtAdNativeImage(gtImage));
+                for (AdGainImage AdGainImage: imgList) {
+                    ret.add(new GtAdNativeImage(AdGainImage));
                 }
             }
         }
@@ -447,9 +447,9 @@ public class GtAdNativeAdData extends WMNativeAdData {
 
     private static class GtAdNativeImage extends WMImage {
 
-        private final GtImage image;
+        private final AdGainImage image;
 
-        public GtAdNativeImage(GtImage image) {
+        public GtAdNativeImage(AdGainImage image) {
             this.image = image;
         }
 

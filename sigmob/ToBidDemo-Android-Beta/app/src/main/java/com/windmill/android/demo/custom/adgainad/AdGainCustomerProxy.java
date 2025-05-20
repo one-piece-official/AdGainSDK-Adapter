@@ -1,12 +1,13 @@
-package com.windmill.android.demo.custom.gtad;
+package com.windmill.android.demo.custom.adgainad;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
-import com.gt.sdk.GTAdSdk;
-import com.gt.sdk.api.GtCustomController;
-import com.gt.sdk.api.GtInitCallback;
-import com.gt.sdk.api.GtSdkConfig;
+import com.adgain.sdk.AdGainSdk;
+import com.adgain.sdk.api.AdGainSdkConfig;
+import com.adgain.sdk.api.CustomController;
+import com.adgain.sdk.api.InitCallback;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillAd;
 import com.windmill.sdk.WindMillError;
@@ -17,8 +18,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GtAdCustomerProxy extends WMCustomAdapterProxy {
-    private static final String TAG = "GtAdCustomerProxy";
+public class AdGainCustomerProxy extends WMCustomAdapterProxy {
+    private static final String TAG = "AdGainCustomerProxy";
     private static final String SERVER_EXTRA_CUSTOM_APP_ID = "appId";
 
     @Override
@@ -29,12 +30,11 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
             JSONObject joCustom = new JSONObject(customInfo);
             String gtAdAppId = joCustom.getString(SERVER_EXTRA_CUSTOM_APP_ID);
             HashMap<String, Object> customData = new HashMap<>(serverExtra);
-            GtSdkConfig config = new GtSdkConfig.Builder()
+            AdGainSdkConfig config = new AdGainSdkConfig.Builder()
                     .appId(gtAdAppId)
-                    .debugEnv(true)
                     .showLog(true)
                     .addCustomData(customData)
-                    .setInitCallback(new GtInitCallback() {
+                    .setInitCallback(new InitCallback() {
                         @Override
                         public void onSuccess() {
                             Log.d(TAG, "Gt init onSuccess");
@@ -47,7 +47,7 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
                             callInitFail(code, message);
                         }
                     })
-                    .customController(new GtCustomController() {
+                    .customController(new CustomController() {
                         @Override
                         public boolean canReadLocation() {
                             return true;
@@ -69,22 +69,32 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
                         }
 
                         @Override
-                        public boolean canUseWriteExternal() {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean canReadInstalledPackages() {
-                            return true;
-                        }
-
-                        @Override
                         public String getOaid() {
                             return "";
                         }
+
+                        @Override
+                        public Location getLocation() {
+                            return super.getLocation();
+                        }
+
+                        @Override
+                        public String getMacAddress() {
+                            return super.getMacAddress();
+                        }
+
+                        @Override
+                        public String getImei() {
+                            return super.getImei();
+                        }
+
+                        @Override
+                        public String getAndroidId() {
+                            return super.getAndroidId();
+                        }
                     })
                     .build();
-            GTAdSdk.getInstance().init(context, config);
+            AdGainSdk.getInstance().init(context, config);
             updatePrivacySetting();
         } catch (Throwable tr) {
             Log.e(TAG, "initializeADN exception: ", tr);
@@ -94,7 +104,7 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
 
     @Override
     public String getNetworkSdkVersion() {
-        return GTAdSdk.getVersionName();
+        return AdGainSdk.getVersionName();
     }
 
     @Override
@@ -110,7 +120,7 @@ public class GtAdCustomerProxy extends WMCustomAdapterProxy {
 
     private void updatePrivacySetting() {
         Log.d(TAG, "updatePrivacySetting");
-        GTAdSdk.getInstance().setPersonalizedAdvertisingOn(
+        AdGainSdk.getInstance().setPersonalizedAdvertisingOn(
                 WindMillAd.sharedAds().isPersonalizedAdvertisingOn());
     }
 }

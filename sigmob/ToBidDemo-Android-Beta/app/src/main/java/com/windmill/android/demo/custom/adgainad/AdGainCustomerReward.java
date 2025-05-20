@@ -1,13 +1,12 @@
-package com.windmill.android.demo.custom.gtad;
+package com.windmill.android.demo.custom.adgainad;
 
 import android.app.Activity;
 import android.util.Log;
 
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.GTAdInfo;
-import com.gt.sdk.api.RewardAd;
-import com.gt.sdk.api.RewardAdListener;
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.RewardAd;
+import com.adgain.sdk.api.RewardAdListener;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
@@ -17,7 +16,7 @@ import com.windmill.sdk.models.BidPrice;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GtAdCustomerReward extends WMCustomRewardAdapter implements RewardAdListener {
+public class AdGainCustomerReward extends WMCustomRewardAdapter implements RewardAdListener {
     private static final String TAG = "GtAdCustomerReward";
 
     private RewardAd rewardAd;
@@ -34,9 +33,8 @@ public class GtAdCustomerReward extends WMCustomRewardAdapter implements RewardA
                 options.putAll(localExtra);
             }
             AdRequest adRequest = new AdRequest.Builder()
-                    .setAdUnitID(unitId)
+                    .setCodeId(unitId)
                     .setExtOption(options)
-                    .setPortrait(false)
                     .build();
             rewardAd = new RewardAd(adRequest, this);
             rewardAd.loadAd();
@@ -83,72 +81,76 @@ public class GtAdCustomerReward extends WMCustomRewardAdapter implements RewardA
             return;
         }
         if (isWin) {
-            ad.sendWinNotification(GtAdAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
+            ad.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
         } else {
-            ad.sendLossNotification(GtAdAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+            ad.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
         }
     }
 
     @Override
-    public void onRewardAdLoadSuccess(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdLoadSuccess: " + unitId + "gtAdInfo: " + gtAdInfo);
-        if (gtAdInfo != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
-            BidPrice bidPrice = new BidPrice(String.valueOf(gtAdInfo.getPrice()));
+    public void onRewardAdLoadSuccess() {
+        Log.d(TAG, "onRewardAdLoadSuccess: ");
+        if (rewardAd != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
+            BidPrice bidPrice = new BidPrice(String.valueOf(rewardAd.getBidPrice()));
             callLoadBiddingSuccess(bidPrice);
         }
         callLoadSuccess();
     }
 
     @Override
-    public void onRewardAdLoadCached(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdLoadCached: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardAdLoadCached() {
+        Log.d(TAG, "onRewardAdLoadCached: ");
     }
 
     @Override
-    public void onRewardAdShow(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdShow: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardAdShow() {
+        Log.d(TAG, "onRewardAdShow: ");
         callVideoAdShow();
     }
 
     @Override
-    public void onRewardAdPlayStart(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdPlayStart: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardAdPlayStart() {
 
     }
 
     @Override
-    public void onRewardAdPLayEnd(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdPLayEnd: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardAdPlayEnd() {
+        Log.d(TAG, "onRewardAdPLayEnd: ");
         callVideoAdPlayComplete();
     }
 
     @Override
-    public void onRewardAdClick(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdClick: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardAdClick() {
+        Log.d(TAG, "onRewardAdClick: ");
         callVideoAdClick();
     }
 
     @Override
-    public void onRewardAdClosed(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onRewardAdClosed: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardAdClosed() {
+        Log.d(TAG, "onRewardAdClosed: ");
         callVideoAdClosed();
     }
 
     @Override
-    public void onRewardAdLoadError(String unitId, AdError adError) {
-        Log.d(TAG, "onRewardAdLoadError: " + unitId + "adError: " + adError);
+    public void onRewardAdLoadError(AdError adError) {
+        Log.d(TAG, "onRewardAdLoadError: " + "adError: " + adError);
         callLoadFail(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 
     @Override
-    public void onRewardAdShowError(String unitId, AdError adError) {
-        Log.d(TAG, "onRewardAdShowError: " + unitId + "error: " + adError);
+    public void onRewardAdShowError(AdError adError) {
+        Log.d(TAG, "onRewardAdShowError: " + "error: " + adError);
         callVideoAdPlayError(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 
     @Override
-    public void onReward(String unitId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onReward: " + unitId + "gtAdInfo: " + gtAdInfo);
+    public void onRewardVerify() {
+        Log.d(TAG, "onReward: ");
         callVideoAdReward(true);
+    }
+
+    @Override
+    public void onAdSkip() {
+
     }
 }

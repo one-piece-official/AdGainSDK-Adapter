@@ -1,13 +1,12 @@
-package com.windmill.android.demo.custom.gtad;
+package com.windmill.android.demo.custom.adgainad;
 
 import android.app.Activity;
 import android.util.Log;
 
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.GTAdInfo;
-import com.gt.sdk.api.InterstitialAd;
-import com.gt.sdk.api.InterstitialAdListener;
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.InterstitialAd;
+import com.adgain.sdk.api.InterstitialAdListener;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
@@ -17,10 +16,11 @@ import com.windmill.sdk.models.BidPrice;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GtAdCustomerInterstitial extends WMCustomInterstitialAdapter implements InterstitialAdListener {
-    private static final String TAG = "GtAdCustomerInter";
+public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter implements InterstitialAdListener {
+    private static final String TAG = "AdGainCustomerInter";
 
     private InterstitialAd interstitialAd;
+
     @Override
     public void loadAd(Activity activity, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
         Log.d(TAG, "loadAd: l: " + localExtra);
@@ -33,9 +33,8 @@ public class GtAdCustomerInterstitial extends WMCustomInterstitialAdapter implem
                 options.putAll(localExtra);
             }
             AdRequest adRequest = new AdRequest.Builder()
-                    .setAdUnitID(unitId)
+                    .setCodeId(unitId)
                     .setExtOption(options)
-                    .setPortrait(false)
                     .build();
             interstitialAd = new InterstitialAd(adRequest, this);
             interstitialAd.loadAd();
@@ -84,66 +83,61 @@ public class GtAdCustomerInterstitial extends WMCustomInterstitialAdapter implem
 
         if (isWin) {
             // 竞价成功
-            ad.sendWinNotification(GtAdAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
+            ad.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
         } else {
-            ad.sendLossNotification(GtAdAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+            ad.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
         }
     }
 
     @Override
-    public void onInterstitialAdLoadError(String adUnitID, AdError adError) {
-        Log.d(TAG, "onInterstitialAdLoadError: " + adUnitID + " err: " + adError);
+    public void onInterstitialAdLoadError(AdError adError) {
+        Log.d(TAG, "onInterstitialAdLoadError: " + " err: " + adError);
         callLoadFail(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 
     @Override
-    public void onInterstitialAdLoadSuccess(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdLoadSuccess: " + adUnitID + " gtAdInfo: " + gtAdInfo);
+    public void onInterstitialAdLoadSuccess() {
+        Log.d(TAG, "onInterstitialAdLoadSuccess: ");
         Log.d(TAG, "onInterstitialAdLoadSuccess: bidtype: " + getBiddingType());
-        if (gtAdInfo != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
-            BidPrice bidPrice = new BidPrice(String.valueOf(gtAdInfo.getPrice()));
+        if (interstitialAd != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
+            BidPrice bidPrice = new BidPrice(String.valueOf(interstitialAd.getBidPrice()));
             callLoadBiddingSuccess(bidPrice);
         }
         callLoadSuccess();
     }
 
     @Override
-    public void onInterstitialAdLoadCached(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdLoadCached: " + adUnitID + " adInfo: " + gtAdInfo);
+    public void onInterstitialAdLoadCached() {
+
     }
 
     @Override
-    public void onInterstitialAdShow(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdShow: " + adUnitID + " adInfo: " + gtAdInfo);
+    public void onInterstitialAdShow() {
+        Log.d(TAG, "onInterstitialAdShow: ");
         callVideoAdShow();
     }
 
     @Override
-    public void onInterstitialAdPlayStart(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdPlayStart: " + adUnitID + " adInfo: " + gtAdInfo);
-    }
-
-    @Override
-    public void onInterstitialAdPLayEnd(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdPLayEnd: " + adUnitID + " adInfo: " + gtAdInfo);
+    public void onInterstitialAdPlayEnd() {
+        Log.d(TAG, "onInterstitialAdPLayEnd: ");
         callVideoAdPlayComplete();
     }
 
     @Override
-    public void onInterstitialAdClick(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdClick: " + adUnitID + " adInfo: " + gtAdInfo);
+    public void onInterstitialAdClick() {
+        Log.d(TAG, "onInterstitialAdClick: ");
         callVideoAdClick();
     }
 
     @Override
-    public void onInterstitialAdClosed(String adUnitID, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onInterstitialAdClosed: " + adUnitID + " adInfo: " + gtAdInfo);
+    public void onInterstitialAdClosed() {
+        Log.d(TAG, "onInterstitialAdClosed: ");
         callVideoAdClosed();
     }
 
     @Override
-    public void onInterstitialAdShowError(String adUnitID, AdError adError) {
-        Log.d(TAG, "onInterstitialAdShowError: " + adUnitID + " err: " + adError);
+    public void onInterstitialAdShowError(AdError adError) {
+        Log.d(TAG, "onInterstitialAdShowError: " + " err: " + adError);
         callVideoAdPlayError(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 }

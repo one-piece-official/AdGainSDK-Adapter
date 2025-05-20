@@ -1,4 +1,4 @@
-package com.windmill.android.demo.custom.gtad;
+package com.windmill.android.demo.custom.adgainad;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,11 +6,10 @@ import android.util.Log;
 import android.util.Size;
 import android.view.ViewGroup;
 
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.GTAdInfo;
-import com.gt.sdk.api.SplashAd;
-import com.gt.sdk.api.SplashAdListener;
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.SplashAd;
+import com.adgain.sdk.api.SplashAdListener;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
@@ -20,9 +19,9 @@ import com.windmill.sdk.models.BidPrice;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GtAdCustomerSplash extends WMCustomSplashAdapter implements SplashAdListener {
+public class AdGainCustomerSplash extends WMCustomSplashAdapter implements SplashAdListener {
 
-    private static final String TAG = "GtAdCustomerSplash";
+    private static final String TAG = "AdGainCustomerSplash";
     private static final String LOCAL_EXTRA_LOAD_TIMEOUT_MS = "load_timeout_ms";
 
     private SplashAd splashAd;
@@ -42,12 +41,10 @@ public class GtAdCustomerSplash extends WMCustomSplashAdapter implements SplashA
             Size size = getSizeParam(viewGroup);
             long loadTimeout = getLoadTimeParam(localExtra);
             AdRequest adRequest = new AdRequest.Builder()
-                    .setAdUnitID(unitId)
+                    .setCodeId(unitId)
                     .setWidth(size.getWidth())
                     .setHeight(size.getHeight())
-                    .setPortrait(false)
                     .setExtOption(options)
-                    .setSplashAdLoadTimeoutMs(loadTimeout)
                     .build();
             splashAd = new SplashAd(adRequest, this);
             splashAd.loadAd();
@@ -95,51 +92,10 @@ public class GtAdCustomerSplash extends WMCustomSplashAdapter implements SplashA
 
         if (isWin) {
             // 竞价成功
-            ad.sendWinNotification(GtAdAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
+            ad.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
         } else {
-            ad.sendLossNotification(GtAdAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+            ad.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
         }
-    }
-
-    @Override
-    public void onSplashAdLoadSuccess(String codeId, GTAdInfo gtAdInfo) {
-        Log.d(TAG, "onSplashAdLoadSuccess: " + codeId + " gtadInfo: " + gtAdInfo);
-        Log.d(TAG, "onSplashAdLoadSuccess: bidtype: " + getBiddingType());
-        if (gtAdInfo != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
-            BidPrice bidPrice = new BidPrice(String.valueOf(gtAdInfo.getPrice()));
-            callLoadBiddingSuccess(bidPrice);
-        }
-        callLoadSuccess();
-    }
-
-    @Override
-    public void onSplashAdLoadFail(String codeId, AdError error) {
-        Log.d(TAG, "onSplashAdLoadFail: " + codeId + " err: " + error);
-        callLoadFail(new WMAdapterError(error.getErrorCode(), error.getMessage()));
-    }
-
-    @Override
-    public void onSplashAdShow(String codeId, GTAdInfo adInfo) {
-        Log.d(TAG, "onSplashAdShow: " + codeId + " gtadInfo: " + adInfo);
-        callSplashAdShow();
-    }
-
-    @Override
-    public void onSplashAdShowError(String codeId, AdError error) {
-        Log.d(TAG, "onSplashAdShowError: " + codeId + " err: " + error);
-        callSplashAdShowError(new WMAdapterError(error.getErrorCode(), error.getMessage()));
-    }
-
-    @Override
-    public void onSplashAdClick(String codeId, GTAdInfo adInfo) {
-        Log.d(TAG, "onSplashAdClick: " + codeId + " gtadInfo: " + adInfo);
-        callSplashAdClick();
-    }
-
-    @Override
-    public void onSplashAdClose(String codeId, GTAdInfo adInfo) {
-        Log.d(TAG, "onSplashAdClose: " + codeId + " gtadInfo: " + adInfo);
-        callSplashAdClosed();
     }
 
     private Size getSizeParam(ViewGroup viewGroup) {
@@ -173,5 +129,51 @@ public class GtAdCustomerSplash extends WMCustomSplashAdapter implements SplashA
             Log.e(TAG, "getLoadTimeParam exception", tr);
         }
         return 0;
+    }
+
+    @Override
+    public void onAdLoadSuccess() {
+        Log.d(TAG, "onSplashAdLoadSuccess: " );
+        Log.d(TAG, "onSplashAdLoadSuccess: bidtype: " + getBiddingType());
+        if (splashAd != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
+            BidPrice bidPrice = new BidPrice(String.valueOf(splashAd.getBidPrice()));
+            callLoadBiddingSuccess(bidPrice);
+        }
+        callLoadSuccess();
+    }
+
+    @Override
+    public void onAdCacheSuccess() {
+
+    }
+
+    @Override
+    public void onSplashAdLoadFail(AdError error) {
+        Log.d(TAG, "onSplashAdLoadFail: "  + " err: " + error);
+        callLoadFail(new WMAdapterError(error.getErrorCode(), error.getMessage()));
+    }
+
+    @Override
+    public void onSplashAdShow() {
+        Log.d(TAG, "onSplashAdShow: ");
+        callSplashAdShow();
+    }
+
+    @Override
+    public void onSplashAdShowError(AdError error) {
+        Log.d(TAG, "onSplashAdShowError: "  + " err: " + error);
+        callSplashAdShowError(new WMAdapterError(error.getErrorCode(), error.getMessage()));
+    }
+
+    @Override
+    public void onSplashAdClick() {
+        Log.d(TAG, "onSplashAdClick: ");
+        callSplashAdClick();
+    }
+
+    @Override
+    public void onSplashAdClose(boolean isSkip) {
+        Log.d(TAG, "onSplashAdClose: ");
+        callSplashAdClosed();
     }
 }

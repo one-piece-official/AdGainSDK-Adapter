@@ -1,13 +1,13 @@
-package com.windmill.android.demo.custom.gtad;
+package com.windmill.android.demo.custom.adgainad;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.NativeAdData;
-import com.gt.sdk.api.NativeAdLoadListener;
-import com.gt.sdk.api.NativeUnifiedAd;
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.NativeAdData;
+import com.adgain.sdk.api.NativeAdLoadListener;
+import com.adgain.sdk.api.NativeUnifiedAd;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeAdLoadListener {
-    private static final String TAG = "GtAdCustomerNative";
+public class AdGainCustomerNative extends WMCustomNativeAdapter implements NativeAdLoadListener {
+    private static final String TAG = "AdGainCustomerNative";
 
     private NativeUnifiedAd nativeUnifiedAd;
     private final List<WMNativeAdData> wmNativeAdDataList = new ArrayList<>();
@@ -41,7 +41,7 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
                     options.putAll(localExtra);
                 }
                 AdRequest adRequest = new AdRequest.Builder()
-                        .setAdUnitID(unitId)
+                        .setCodeId(unitId)
                         .setExtOption(options)
                         .build();
                 nativeUnifiedAd = new NativeUnifiedAd(adRequest, this);
@@ -80,9 +80,9 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
 
         if (isWin) {
             // 竞价成功
-            ad.sendWinNotification(GtAdAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
+            ad.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
         } else {
-            ad.sendLossNotification(GtAdAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+            ad.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
         }
     }
 
@@ -92,15 +92,20 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
         return wmNativeAdDataList;
     }
 
+
+    public NativeUnifiedAd getNativeAd() {
+        return nativeUnifiedAd;
+    }
+
     @Override
-    public void onAdError(String codeId, AdError error) {
-        Log.d(TAG, "onAdError: " + codeId + " error: " + error);
+    public void onAdError(AdError error) {
+        Log.d(TAG, "onAdError: "  + " error: " + error);
         callLoadFail(new WMAdapterError(error.getErrorCode(), error.getMessage()));
     }
 
     @Override
-    public void onAdLoad(String codeId, List<NativeAdData> adDataList) {
-        Log.d(TAG, "onAdLoad: " + codeId + " dataList: " + adDataList);
+    public void onAdLoad(List<NativeAdData> adDataList) {
+        Log.d(TAG, "onAdLoad: " + " dataList: " + adDataList);
         if (getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
             if (adDataList != null && !adDataList.isEmpty()) {
                 NativeAdData adData = adDataList.get(0);
@@ -114,14 +119,10 @@ public class GtAdCustomerNative extends WMCustomNativeAdapter implements NativeA
         }
         if (adDataList != null) {
             for (NativeAdData data: adDataList) {
-                wmNativeAdDataList.add(new GtAdNativeAdData(data, this));
+                wmNativeAdDataList.add(new AdGainNativeAdData(data, this));
             }
         }
         Log.d(TAG, "invoke callLoadSuccess");
         callLoadSuccess(wmNativeAdDataList);
-    }
-
-    public NativeUnifiedAd getNativeAd() {
-        return nativeUnifiedAd;
     }
 }
