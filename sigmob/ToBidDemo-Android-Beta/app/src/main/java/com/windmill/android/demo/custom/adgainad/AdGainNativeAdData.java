@@ -204,10 +204,6 @@ public class AdGainNativeAdData extends WMNativeAdData {
     @Override
     public void bindImageViews(Context context, List<ImageView> imageViews, int defaultImageRes) {
         Log.d(TAG, "bindImageViews ad: " + nativeAdData);
-        if (null == nativeAdData) {
-            return;
-        }
-        nativeAdData.bindImageViews(imageViews, defaultImageRes);
     }
 
     @Override
@@ -245,7 +241,7 @@ public class AdGainNativeAdData extends WMNativeAdData {
     @Override
     public void bindViewForInteraction(Context context, View view, List<View> clickableViews, List<View> creativeViewList, View disLikeView) {
         Log.d(TAG, "bindViewForInteraction");
-        nativeAdData.bindViewForInteraction(view, clickableViews, creativeViewList, disLikeView, null, eventListener);
+        nativeAdData.bindViewForInteraction(view, clickableViews, eventListener);
     }
 
     @Override
