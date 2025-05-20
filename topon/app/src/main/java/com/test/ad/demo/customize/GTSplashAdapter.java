@@ -6,6 +6,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.SplashAd;
+import com.adgain.sdk.api.SplashAdListener;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATBiddingListener;
 import com.anythink.core.api.ATBiddingResult;
@@ -13,18 +17,13 @@ import com.anythink.core.api.ATInitMediation;
 import com.anythink.core.api.ErrorCode;
 import com.anythink.core.api.MediationInitCallback;
 import com.anythink.splashad.unitgroup.api.CustomSplashAdapter;
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.GTAdInfo;
-import com.gt.sdk.api.SplashAd;
-import com.gt.sdk.api.SplashAdListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GTSplashAdapter extends CustomSplashAdapter {
 
-    final String TAG = GTInitManager.TAG;
+    final String TAG = AdGainInitManager.TAG;
 
     private String mAppId;
     private String mUnitId;
@@ -59,11 +58,11 @@ public class GTSplashAdapter extends CustomSplashAdapter {
         isReady = false;
 
         if (TextUtils.isEmpty(mAppId)) {
-            notifyATLoadFail("", "GT app_id is empty.");
+            notifyATLoadFail("", "AdGain app_id is empty.");
             return;
         }
 
-        GTInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
+        AdGainInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
             @Override
             public void onSuccess() {
                 startLoadAd(context, serverExtra);
@@ -82,18 +81,15 @@ public class GTSplashAdapter extends CustomSplashAdapter {
         options.put("splash_test_option_key", "splash_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setAdUnitID(mUnitId)
+                .setCodeId(mUnitId)
 //                .setWidth(PxUtils.getDeviceWidthInPixel(context))
 //                .setHeight(PxUtils.getDeviceHeightInPixel(context) - PxUtils.dpToPx(context, 100))
-                .setSplashAdLoadTimeoutMs(getLoadTimeParam(serverExtra))
-                .setPortrait(false)
                 .setExtOption(options)
                 .build();
 
         splashAD = new SplashAd(adRequest, new SplashAdListener() {
             @Override
-            public void onSplashAdLoadSuccess(String s, GTAdInfo gtAdInfo) {
-
+            public void onAdLoadSuccess() {
                 isReady = true;
 
                 if (isC2SBidding) {
@@ -107,7 +103,7 @@ public class GTSplashAdapter extends CustomSplashAdapter {
                             mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(splashAD.getBidPrice(), System.currentTimeMillis() + "", biddingNotice, ATAdConst.CURRENCY.RMB_CENT), null);
 
                         } else {
-                            notifyATLoadFail("", "GT SplashAD had been destroy.");
+                            notifyATLoadFail("", "AdGain SplashAD had been destroy.");
                         }
                     }
                 } else {
@@ -115,12 +111,15 @@ public class GTSplashAdapter extends CustomSplashAdapter {
                         mLoadListener.onAdCacheLoaded();
                     }
                 }
+            }
+
+            @Override
+            public void onAdCacheSuccess() {
 
             }
 
             @Override
-            public void onSplashAdLoadFail(String s, AdError adError) {
-
+            public void onSplashAdLoadFail(AdError adError) {
                 if (adError != null) {
                     notifyATLoadFail(adError.getErrorCode() + "", adError.getMessage());
 
@@ -140,36 +139,33 @@ public class GTSplashAdapter extends CustomSplashAdapter {
                         mImpressionListener.onSplashAdDismiss();
                     }
                 }
-
             }
 
             @Override
-            public void onSplashAdShow(String s, GTAdInfo gtAdInfo) {
+            public void onSplashAdShow() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onSplashAdShow();
                 }
             }
 
             @Override
-            public void onSplashAdShowError(String s, AdError adError) {
+            public void onSplashAdShowError(AdError error) {
 
             }
 
             @Override
-            public void onSplashAdClick(String s, GTAdInfo gtAdInfo) {
+            public void onSplashAdClick() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onSplashAdClicked();
                 }
             }
 
             @Override
-            public void onSplashAdClose(String s, GTAdInfo gtAdInfo) {
-
+            public void onSplashAdClose(boolean isSkip) {
                 if (mImpressionListener != null) {
                     mImpressionListener.onSplashAdDismiss();
                 }
             }
-
         });
 
         splashAD.loadAd();
@@ -177,7 +173,7 @@ public class GTSplashAdapter extends CustomSplashAdapter {
 
     @Override
     public String getNetworkName() {
-        return GTInitManager.getInstance().getNetworkName();
+        return AdGainInitManager.getInstance().getNetworkName();
     }
 
     @Override
@@ -215,7 +211,7 @@ public class GTSplashAdapter extends CustomSplashAdapter {
 
                     if (mImpressionListener != null) {
                         mDismissType = ATAdConst.DISMISS_TYPE.SHOWFAILED;
-                        mImpressionListener.onSplashAdShowFail(ErrorCode.getErrorCode(ErrorCode.adShowError, "", "GT Splash show with exception"));
+                        mImpressionListener.onSplashAdShowFail(ErrorCode.getErrorCode(ErrorCode.adShowError, "", "AdGain Splash show with exception"));
                         mImpressionListener.onSplashAdDismiss();
                     }
                 }
@@ -230,12 +226,12 @@ public class GTSplashAdapter extends CustomSplashAdapter {
 
     @Override
     public String getNetworkSDKVersion() {
-        return GTInitManager.getInstance().getNetworkVersion();
+        return AdGainInitManager.getInstance().getNetworkVersion();
     }
 
     @Override
     public ATInitMediation getMediationInitManager() {
-        return GTInitManager.getInstance();
+        return AdGainInitManager.getInstance();
     }
 
     private static final String LOCAL_EXTRA_LOAD_TIMEOUT_MS = "load_timeout_ms";
@@ -258,7 +254,6 @@ public class GTSplashAdapter extends CustomSplashAdapter {
     @Override
     public void destory() {
         if (splashAD != null) {
-            splashAD.setSplashAdListener(null);
             splashAD.destroyAd();
             splashAD = null;
         }

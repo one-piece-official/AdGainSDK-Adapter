@@ -8,24 +8,23 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.InterstitialAd;
+import com.adgain.sdk.api.InterstitialAdListener;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATBiddingListener;
 import com.anythink.core.api.ATBiddingResult;
 import com.anythink.core.api.ATInitMediation;
 import com.anythink.core.api.MediationInitCallback;
 import com.anythink.interstitial.unitgroup.api.CustomInterstitialAdapter;
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.GTAdInfo;
-import com.gt.sdk.api.InterstitialAd;
-import com.gt.sdk.api.InterstitialAdListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class GTInterstitialAdapter extends CustomInterstitialAdapter {
-    public static String TAG = GTInitManager.TAG;
+    public static String TAG = AdGainInitManager.TAG;
 
     InterstitialAd mGTInterstitialAd;
 
@@ -62,7 +61,7 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
             return;
         }
 
-        GTInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
+        AdGainInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
             @Override
             public void onSuccess() {
                 loadInterstitial(serverExtra, localExtra);
@@ -82,16 +81,19 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
 
         AdRequest adRequest = new AdRequest.Builder()
                 //.setAdUnitID("1195")
-                .setAdUnitID(mADUnitId)
+                .setCodeId(mADUnitId)
                 .setExtOption(options)
-                .setPortrait(false)
                 .build();
 
         mGTInterstitialAd = new InterstitialAd(adRequest, new InterstitialAdListener() {
 
             @Override
-            public void onInterstitialAdLoadSuccess(String s, GTAdInfo gtAdUnit) {
+            public void onInterstitialAdLoadError(AdError adError) {
+                notifyATLoadFail(String.valueOf(adError.getErrorCode()), adError.getMessage());
+            }
 
+            @Override
+            public void onInterstitialAdLoadSuccess() {
                 if (isC2SBidding) {
 
                     if (mBiddingListener != null) {
@@ -108,64 +110,51 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
             }
 
             @Override
-            public void onInterstitialAdLoadCached(String s, GTAdInfo gtAdInfo) {
+            public void onInterstitialAdLoadCached() {
                 if (mLoadListener != null) {
                     mLoadListener.onAdCacheLoaded();
                 }
             }
 
             @Override
-            public void onInterstitialAdLoadError(String s, AdError adError) {
-                notifyATLoadFail(String.valueOf(adError.getErrorCode()), adError.getMessage());
-
-            }
-
-
-            @Override
-            public void onInterstitialAdShow(String s, GTAdInfo gtAdUnit) {
+            public void onInterstitialAdShow() {
                 if (mImpressListener != null) {
                     mImpressListener.onInterstitialAdShow();
                 }
-            }
-
-            @Override
-            public void onInterstitialAdPlayStart(String s, GTAdInfo gtAdUnit) {
 
                 if (mImpressListener != null) {
                     mImpressListener.onInterstitialAdVideoStart();
                 }
-
             }
 
             @Override
-            public void onInterstitialAdPLayEnd(String s, GTAdInfo gtAdUnit) {
+            public void onInterstitialAdPlayEnd() {
                 if (mImpressListener != null) {
                     mImpressListener.onInterstitialAdVideoEnd();
                 }
             }
 
             @Override
-            public void onInterstitialAdClick(String s, GTAdInfo gtAdUnit) {
+            public void onInterstitialAdClick() {
                 if (mImpressListener != null) {
                     mImpressListener.onInterstitialAdClicked();
                 }
             }
 
             @Override
-            public void onInterstitialAdClosed(String s, GTAdInfo gtAdUnit) {
+            public void onInterstitialAdClosed() {
                 if (mImpressListener != null) {
                     mImpressListener.onInterstitialAdClose();
                 }
             }
 
             @Override
-            public void onInterstitialAdShowError(String s, AdError adError) {
-
+            public void onInterstitialAdShowError(AdError adError) {
                 if (mImpressListener != null) {
                     mImpressListener.onInterstitialAdVideoError(adError.getErrorCode() + "", adError.getMessage());
                 }
-
             }
+
         });
 
         mGTInterstitialAd.loadAd();
@@ -196,7 +185,7 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
 
     @Override
     public String getNetworkName() {
-        return GTInitManager.getInstance().getNetworkName();
+        return AdGainInitManager.getInstance().getNetworkName();
     }
 
     @Override
@@ -206,12 +195,12 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
 
     @Override
     public String getNetworkSDKVersion() {
-        return GTInitManager.getInstance().getNetworkVersion();
+        return AdGainInitManager.getInstance().getNetworkVersion();
     }
 
     @Override
     public ATInitMediation getMediationInitManager() {
-        return GTInitManager.getInstance();
+        return AdGainInitManager.getInstance();
     }
 
     @Override

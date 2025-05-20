@@ -4,6 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.NativeAdData;
+import com.adgain.sdk.api.NativeAdLoadListener;
+import com.adgain.sdk.api.NativeUnifiedAd;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATBiddingListener;
 import com.anythink.core.api.ATBiddingResult;
@@ -11,11 +16,6 @@ import com.anythink.core.api.ATInitMediation;
 import com.anythink.core.api.MediationInitCallback;
 import com.anythink.nativead.unitgroup.api.CustomNativeAd;
 import com.anythink.nativead.unitgroup.api.CustomNativeAdapter;
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.NativeAdData;
-import com.gt.sdk.api.NativeAdLoadListener;
-import com.gt.sdk.api.NativeUnifiedAd;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class GTNativeAdapter extends CustomNativeAdapter {
 
-    private static final String TAG = GTInitManager.TAG;
+    private static final String TAG = AdGainInitManager.TAG;
 
     NativeUnifiedAd nativeAd;
 
@@ -72,7 +72,7 @@ public class GTNativeAdapter extends CustomNativeAdapter {
             return;
         }
 
-        GTInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
+        AdGainInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
             @Override
             public void onSuccess() {
                 startLoadAd(context, serverExtra);
@@ -95,7 +95,6 @@ public class GTNativeAdapter extends CustomNativeAdapter {
 
                 case 1:   //Native Express
                 default:
-                    defaultLoad(context);
                     break;
             }
         } catch (Throwable e) {
@@ -110,15 +109,19 @@ public class GTNativeAdapter extends CustomNativeAdapter {
 
         AdRequest adRequest = new AdRequest
                 .Builder()
-                .setAdUnitID(mUnitId)
+                .setCodeId(mUnitId)
                 .setExtOption(options)
                 .build();
 
         nativeAd = new NativeUnifiedAd(adRequest, new NativeAdLoadListener() {
 
             @Override
-            public void onAdLoad(String codeId, List<NativeAdData> list) {
+            public void onAdError(AdError error) {
+                notifyATLoadFail(error.getErrorCode() + "", error.getMessage());
+            }
 
+            @Override
+            public void onAdLoad(List<NativeAdData> list) {
                 if (list != null && !list.isEmpty()) {
 
                     if (isC2SBidding) {
@@ -159,57 +162,14 @@ public class GTNativeAdapter extends CustomNativeAdapter {
                 }
             }
 
-            @Override
-            public void onAdError(String codeId, AdError error) {
-                notifyATLoadFail(error.getErrorCode() + "", error.getMessage());
-            }
-
         });
 
         nativeAd.loadAd();
     }
 
-    private void defaultLoad(Context context) {
-       /* GDTATNativeLoadListener loadListener = new GDTATNativeLoadListener() {
-
-            @Override
-            public void notifyLoaded(CustomNativeAd... customNativeAds) {
-                if (isC2SBidding && customNativeAds[0] instanceof GDTATNativeExpressAd) {
-                    GDTATNativeExpressAd gdtatNativeExpressAd = (GDTATNativeExpressAd) customNativeAds[0];
-                    if (mBiddingListener != null) {
-                        int ecpm = gdtatNativeExpressAd.mNativeExpressADView.getECPM();
-                        double price = ecpm;
-                        GDTATBiddingNotice gdtatBiddingNotice = new GDTATBiddingNotice(gdtatNativeExpressAd);
-                        mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(price, System.currentTimeMillis() + "", gdtatBiddingNotice, ATAdConst.CURRENCY.RMB_CENT), gdtatNativeExpressAd);
-                    }
-                    return;
-                }
-
-                if (mLoadListener != null) {
-                    mLoadListener.onAdCacheLoaded(customNativeAds);
-                }
-            }
-
-            @Override
-            public void notifyError(String errorCode, String errorMsg) {
-                notifyATLoadFail(errorCode, errorMsg);
-            }
-        };
-
-        if (mUnitType == 3) {//Patch, template
-            GDTATNativeExpressPatchAd gdtatNativeExpressPatchAd = new GDTATNativeExpressPatchAd(context, mUnitId, mAdWidth, mAdHeight, mVideoMuted, mVideoAutoPlay, mVideoDuration, mPayload);
-            gdtatNativeExpressPatchAd.loadAD(loadListener, GDTATInitManager.getInstance().getLoadAdParams());
-        } else {
-            //Picture + video template
-            GDTATNativeExpressAd gdtatNativeExpressAd = new GDTATNativeExpressAd(context, mUnitId, mAdWidth, mAdHeight, mVideoMuted, mVideoAutoPlay, mVideoDuration, mPayload);
-            gdtatNativeExpressAd.loadAD(loadListener, GDTATInitManager.getInstance().getLoadAdParams());
-        }*/
-    }
-
-
     @Override
     public String getNetworkName() {
-        return GTInitManager.getInstance().getNetworkName();
+        return AdGainInitManager.getInstance().getNetworkName();
     }
 
     @Override
@@ -219,12 +179,12 @@ public class GTNativeAdapter extends CustomNativeAdapter {
 
     @Override
     public String getNetworkSDKVersion() {
-        return GTInitManager.getInstance().getNetworkVersion();
+        return AdGainInitManager.getInstance().getNetworkVersion();
     }
 
     @Override
     public ATInitMediation getMediationInitManager() {
-        return GTInitManager.getInstance();
+        return AdGainInitManager.getInstance();
     }
 
     @Override

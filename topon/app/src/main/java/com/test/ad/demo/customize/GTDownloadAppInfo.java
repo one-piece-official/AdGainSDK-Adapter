@@ -1,8 +1,8 @@
 
 package com.test.ad.demo.customize;
 
+import com.adgain.sdk.api.AdAppInfo;
 import com.anythink.core.api.ATAdAppInfo;
-import com.gt.sdk.api.AdAppInfo;
 
 public class GTDownloadAppInfo extends ATAdAppInfo {
     public String publisher;

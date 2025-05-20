@@ -3,21 +3,21 @@ package com.test.ad.demo.customize;
 
 import android.util.Log;
 
+import com.adgain.sdk.api.IBidding;
+import com.adgain.sdk.api.InterstitialAd;
+import com.adgain.sdk.api.NativeUnifiedAd;
+import com.adgain.sdk.api.RewardAd;
+import com.adgain.sdk.api.SplashAd;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATBiddingNotice;
 import com.anythink.core.api.ATInitMediation;
-import com.gt.sdk.api.IBidding;
-import com.gt.sdk.api.InterstitialAd;
-import com.gt.sdk.api.NativeUnifiedAd;
-import com.gt.sdk.api.RewardAd;
-import com.gt.sdk.api.SplashAd;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GTBiddingNotice implements ATBiddingNotice {
 
-    private static final String TAG = GTInitManager.TAG;
+    private static final String TAG = AdGainInitManager.TAG;
 
     IBidding gtBaseAd;
 

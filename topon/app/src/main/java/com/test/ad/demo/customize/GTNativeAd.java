@@ -8,18 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.adgain.sdk.api.AdAppInfo;
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdGainImage;
+import com.adgain.sdk.api.NativeAdData;
+import com.adgain.sdk.api.NativeAdEventListener;
+import com.adgain.sdk.api.NativeAdInteractiveType;
+import com.adgain.sdk.api.NativeAdPatternType;
+import com.adgain.sdk.base.natives.GtNativeAdMediaView;
 import com.anythink.nativead.api.ATNativePrepareExInfo;
 import com.anythink.nativead.api.ATNativePrepareInfo;
 import com.anythink.nativead.api.NativeAdInteractionType;
 import com.anythink.nativead.unitgroup.api.CustomNativeAd;
-import com.gt.sdk.api.AdAppInfo;
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.GtImage;
-import com.gt.sdk.api.NativeAdData;
-import com.gt.sdk.api.NativeAdEventListener;
-import com.gt.sdk.api.NativeAdInteractiveType;
-import com.gt.sdk.api.NativeAdPatternType;
-import com.gt.sdk.base.natives.GtNativeAdMediaView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 //Self-rendering 2.0
 public class GTNativeAd extends CustomNativeAd {
 
-    private static final String TAG = GTInitManager.TAG;
+    private static final String TAG = AdGainInitManager.TAG;
 
     WeakReference<Context> mContext;
 
@@ -81,9 +81,9 @@ public class GTNativeAd extends CustomNativeAd {
 
         setCallToActionText(getCallToAction(unifiedADData));
 
-        List<GtImage> list = unifiedADData.getImageList();
+        List<AdGainImage> list = unifiedADData.getImageList();
         if (list != null && !list.isEmpty()) {
-            GtImage image = list.get(0);
+            AdGainImage image = list.get(0);
 
             Log.d(TAG, "setAdData main image =  " + image.toString());
 
@@ -348,11 +348,11 @@ public class GTNativeAd extends CustomNativeAd {
             return imageUrlList;
         }
 
-        List<GtImage> imageList = adData.getImageList();
+        List<AdGainImage> imageList = adData.getImageList();
 
         if (imageList != null && !imageList.isEmpty()) {
             for (int i = 0; i < imageList.size(); i++) {
-                GtImage image = imageList.get(i);
+                AdGainImage image = imageList.get(i);
                 if (image != null) {
                     String url = image.getImageUrl();
                     if (!TextUtils.isEmpty(url)) {

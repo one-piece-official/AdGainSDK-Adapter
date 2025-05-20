@@ -7,24 +7,23 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.adgain.sdk.api.AdError;
+import com.adgain.sdk.api.AdRequest;
+import com.adgain.sdk.api.RewardAd;
+import com.adgain.sdk.api.RewardAdListener;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATBiddingListener;
 import com.anythink.core.api.ATBiddingResult;
 import com.anythink.core.api.ATInitMediation;
 import com.anythink.core.api.MediationInitCallback;
 import com.anythink.rewardvideo.unitgroup.api.CustomRewardVideoAdapter;
-import com.gt.sdk.api.AdError;
-import com.gt.sdk.api.AdRequest;
-import com.gt.sdk.api.GTAdInfo;
-import com.gt.sdk.api.RewardAd;
-import com.gt.sdk.api.RewardAdListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
-    private static final String TAG = GTInitManager.TAG;
+    private static final String TAG = AdGainInitManager.TAG;
 
     RewardAd mRewardVideoAD;
 
@@ -62,7 +61,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
             return;
         }
 
-        GTInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
+        AdGainInitManager.getInstance().initSDK(context, serverExtra, new MediationInitCallback() {
             @Override
             public void onSuccess() {
                 loadGTRewardVideo(context, serverExtra);
@@ -81,14 +80,13 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
         options.put("reward_test_option_key", "reward_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setAdUnitID(mUnitId)  // 1197
+                .setCodeId(mUnitId)  // 1197
                 .setExtOption(options)
-                .setPortrait(false)
                 .build();
 
         mRewardVideoAD = new RewardAd(adRequest, new RewardAdListener() {
             @Override
-            public void onRewardAdLoadSuccess(String s, GTAdInfo gtAdUnit) {
+            public void onRewardAdLoadSuccess() {
                 if (isC2SBidding) {
 
                     if (mBiddingListener != null) {
@@ -105,62 +103,67 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
             }
 
             @Override
-            public void onRewardAdLoadCached(String s, GTAdInfo gtAdInfo) {
+            public void onRewardAdLoadCached() {
                 if (mLoadListener != null) {
                     mLoadListener.onAdCacheLoaded();
                 }
             }
 
             @Override
-            public void onRewardAdShow(String s, GTAdInfo gtAdUnit) {
+            public void onRewardAdShow() {
+            }
+
+            @Override
+            public void onRewardAdPlayStart() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onRewardedVideoAdPlayStart();
                 }
             }
 
             @Override
-            public void onRewardAdPlayStart(String s, GTAdInfo gtAdUnit) {
-
-            }
-
-            @Override
-            public void onRewardAdPLayEnd(String s, GTAdInfo gtAdUnit) {
+            public void onRewardAdPlayEnd() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onRewardedVideoAdPlayEnd();
                 }
             }
 
             @Override
-            public void onRewardAdClick(String s, GTAdInfo gtAdUnit) {
+            public void onRewardAdClick() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onRewardedVideoAdPlayClicked();
                 }
             }
 
             @Override
-            public void onRewardAdClosed(String s, GTAdInfo gtAdUnit) {
+            public void onRewardAdClosed() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onRewardedVideoAdClosed();
                 }
             }
 
             @Override
-            public void onRewardAdLoadError(String s, AdError adError) {
+            public void onRewardAdLoadError(AdError adError) {
                 notifyATLoadFail(adError.getErrorCode() + "", adError.getMessage());
-            }
-
-            @Override
-            public void onRewardAdShowError(String s, AdError adError) {
 
             }
 
             @Override
-            public void onReward(String s, GTAdInfo gtAdUnit) {
+            public void onRewardAdShowError(AdError error) {
+
+            }
+
+            @Override
+            public void onRewardVerify() {
                 if (mImpressionListener != null) {
                     mImpressionListener.onReward();
                 }
+            }
+
+            @Override
+            public void onAdSkip() {
 
             }
+
         });
 
         mRewardVideoAD.loadAd();
@@ -168,7 +171,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
     @Override
     public String getNetworkName() {
-        return GTInitManager.getInstance().getNetworkName();
+        return AdGainInitManager.getInstance().getNetworkName();
     }
 
     @Override
@@ -178,7 +181,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
     @Override
     public String getNetworkSDKVersion() {
-        return GTInitManager.getInstance().getNetworkVersion();
+        return AdGainInitManager.getInstance().getNetworkVersion();
     }
 
     @Override
@@ -212,7 +215,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
     @Override
     public ATInitMediation getMediationInitManager() {
-        return GTInitManager.getInstance();
+        return AdGainInitManager.getInstance();
     }
 
     @Override

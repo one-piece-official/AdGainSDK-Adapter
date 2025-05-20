@@ -3,17 +3,18 @@
 package com.test.ad.demo.customize;
 
 import android.content.Context;
+import android.location.Location;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.adgain.sdk.AdGainSdk;
+import com.adgain.sdk.api.AdGainSdkConfig;
+import com.adgain.sdk.api.CustomController;
+import com.adgain.sdk.api.InitCallback;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATInitMediation;
 import com.anythink.core.api.ATSDK;
 import com.anythink.core.api.MediationInitCallback;
-import com.gt.sdk.GTAdSdk;
-import com.gt.sdk.api.GtCustomController;
-import com.gt.sdk.api.GtInitCallback;
-import com.gt.sdk.api.GtSdkConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,11 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class GTInitManager extends ATInitMediation {
+public class AdGainInitManager extends ATInitMediation {
 
-    public static final String TAG = "GTAdapter";
+    public static final String TAG = "AdGainAdapter";
 
-    private volatile static GTInitManager sInstance;
+    private volatile static AdGainInitManager sInstance;
 
     int personAdStatus = 0;
 
@@ -37,14 +38,14 @@ public class GTInitManager extends ATInitMediation {
 
     private List<MediationInitCallback> mListeners;
 
-    private GTInitManager() {
+    private AdGainInitManager() {
         mIsIniting = new AtomicBoolean(false);
     }
 
-    public static GTInitManager getInstance() {
+    public static AdGainInitManager getInstance() {
         if (sInstance == null) {
-            synchronized (GTInitManager.class) {
-                if (sInstance == null) sInstance = new GTInitManager();
+            synchronized (AdGainInitManager.class) {
+                if (sInstance == null) sInstance = new AdGainInitManager();
             }
         }
         return sInstance;
@@ -100,14 +101,13 @@ public class GTInitManager extends ATInitMediation {
 
         Log.d(TAG, "initSDK: real start  app_id = " + app_id);
 
-        GTAdSdk.getInstance().init(context, new GtSdkConfig.Builder()
+        AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
                 .appId(app_id)         //必填
                 .userId("")            // 非必须，有就填
-                .debugEnv(true)   // 线上环境务必传 false
                 .showLog(true)    // 是否展示 广推adsdk 日志
                 .addCustomData(customData) //自定义数据
 
-                .customController(new GtCustomController() {
+                .customController(new CustomController() {
 
                     @Override
                     public boolean canReadLocation() {
@@ -126,17 +126,6 @@ public class GTInitManager extends ATInitMediation {
                     }
 
                     @Override
-                    public boolean canUseWriteExternal() {
-                        return true;
-                    }
-
-                    @Override
-                    public boolean canReadInstalledPackages() {
-
-                        return true;
-                    }
-
-                    @Override
                     public boolean canUseWifiState() {
 
                         return true;
@@ -147,8 +136,28 @@ public class GTInitManager extends ATInitMediation {
 
                         return "";
                     }
+
+                    @Override
+                    public Location getLocation() {
+                        return super.getLocation();
+                    }
+
+                    @Override
+                    public String getMacAddress() {
+                        return super.getMacAddress();
+                    }
+
+                    @Override
+                    public String getImei() {
+                        return super.getImei();
+                    }
+
+                    @Override
+                    public String getAndroidId() {
+                        return super.getAndroidId();
+                    }
                 })
-                .setInitCallback(new GtInitCallback() {
+                .setInitCallback(new InitCallback() {
                     @Override
                     public void onSuccess() {
                         // 初始化成功 后 再加载广告
@@ -167,10 +176,10 @@ public class GTInitManager extends ATInitMediation {
                 }).build());
 
         if (personAdStatus == ATAdConst.PRIVACY.PERSIONALIZED_LIMIT_STATUS) {
-            GTAdSdk.getInstance().setPersonalizedAdvertisingOn(false);
+            AdGainSdk.getInstance().setPersonalizedAdvertisingOn(false);
 
         } else {
-            GTAdSdk.getInstance().setPersonalizedAdvertisingOn(true);  // 开启 个性化广告
+            AdGainSdk.getInstance().setPersonalizedAdvertisingOn(true);  // 开启 个性化广告
         }
     }
 
@@ -196,27 +205,25 @@ public class GTInitManager extends ATInitMediation {
 
     @Override
     public String getNetworkName() {
-        return GTAdSdk.getNetworkName();
+        return "AdGain";
     }
 
     @Override
     public String getNetworkVersion() {
-        return GTAdSdk.getVersionName();
+        return AdGainSdk.getVersionName();
     }
 
     @Override
     public String getNetworkSDKClass() {
-        return "com.gt.sdk.base.activity.AdActivity";
+        return "com.adgain.sdk.base.activity.AdActivity";
     }
 
     @Override
     public List getActivityStatus() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("com.gt.sdk.base.activity.LandAdActivity");
-        list.add("com.gt.sdk.base.activity.LandTransparentAdActivity");
-        list.add("com.gt.sdk.base.activity.PortraitAdActivity");
-        list.add("com.gt.sdk.base.activity.PortraitTransparentAdActivity");
-        list.add("com.gt.sdk.base.activity.TransparentAdActivity");
+        list.add("com.adgain.sdk.base.activity.AdActivity");
+        list.add("com.adgain.sdk.base.activity.PortraitTransparentAdActivity");
+        list.add("com.adgain.sdk.base.activity.LandTransparentAdActivity");
 
         return list;
     }
