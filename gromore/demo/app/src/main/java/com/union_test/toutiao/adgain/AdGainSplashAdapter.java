@@ -1,4 +1,4 @@
-package com.union_test.toutiao.gt;
+package com.union_test.toutiao.adgain;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,11 +16,14 @@ import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig
 import java.util.HashMap;
 import java.util.Map;
 
-public class GTSplashAdapter extends MediationCustomSplashLoader {
+public class AdGainSplashAdapter extends MediationCustomSplashLoader {
 
-    private static final String TAG = "GTSplashAdapter";
+    private static final String TAG = AdGainCustomerInit.TAG;
 
     private SplashAd splashAd;
+
+    public AdGainSplashAdapter() {
+    }
 
     @Override
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
@@ -78,13 +81,15 @@ public class GTSplashAdapter extends MediationCustomSplashLoader {
         options.put("splash_self_key", "splash_self_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setCodeId("1194")
+                .setCodeId(serviceConfig.getADNNetworkSlotId())
                 .setExtOption(options)
                 .build();
 
         splashAd = new SplashAd(adRequest, mSplashAdListener);
 
         splashAd.loadAd();
+
+        Log.i(TAG, "splash load");
     }
 
     @Override
@@ -97,13 +102,13 @@ public class GTSplashAdapter extends MediationCustomSplashLoader {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "onPause");
+        Log.i(TAG, "splash onPause");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume");
+        Log.i(TAG, "splash onResume");
     }
 
     @Override
@@ -134,7 +139,7 @@ public class GTSplashAdapter extends MediationCustomSplashLoader {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
+        Log.i(TAG, "splash onDestroy");
         if (splashAd != null) {
             splashAd.destroyAd();
             splashAd = null;

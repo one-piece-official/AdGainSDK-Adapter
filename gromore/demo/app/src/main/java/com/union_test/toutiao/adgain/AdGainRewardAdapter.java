@@ -1,4 +1,4 @@
-package com.union_test.toutiao.gt;
+package com.union_test.toutiao.adgain;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,14 +23,23 @@ import java.util.Map;
  * https://www.csjplatform.com/union/media/union/download/detail?id=195&docId=28430&locale=zh-CN&osType=android
  * MediationConstant.AD_TYPE_CLIENT_BIDING
  */
-class GTRewardAdapter extends MediationCustomRewardVideoLoader {
+public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
 
-    private static final String TAG = "GTRewardAdapter";
+    private static final String TAG = AdGainCustomerInit.TAG;
 
     private RewardAd mRewardAd;
 
+    public AdGainRewardAdapter() {
+        Log.d(TAG, "AdGainRewardAdapter: constructor");
+    }
+
     @Override
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
+
+        Log.d(TAG, "load: " + serviceConfig.getADNNetworkSlotId());
+        Log.d(TAG, "load: " + serviceConfig.getADNNetworkName());
+        Log.d(TAG, "load: " + serviceConfig.getCustomAdapterJson());
+        Log.d(TAG, "load: " + serviceConfig.getExtraData());
 
         RewardAdListener rewardAdListener = new RewardAdListener() {
             @Override
@@ -41,7 +50,7 @@ class GTRewardAdapter extends MediationCustomRewardVideoLoader {
 
             @Override
             public void onRewardAdLoadCached() {
-                Log.d(TAG, "onRewardAdLoadCached: ");
+                Log.d(TAG, "onRewardAdLoadCached: " + getBiddingType());
                 callAdVideoCache();
             }
 
@@ -127,13 +136,15 @@ class GTRewardAdapter extends MediationCustomRewardVideoLoader {
         Map<String, Object> options = new HashMap<>();
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setCodeId("1197")     // 广推广告位 从商务获取
+                .setCodeId(serviceConfig.getADNNetworkSlotId())     // 广推广告位 从商务获取
                 .setExtOption(options)
                 .build();
 
         mRewardAd = new RewardAd(adRequest, rewardAdListener);
 
         mRewardAd.loadAd();
+
+        Log.i(TAG, "reward load");
 
     }
 
@@ -185,7 +196,7 @@ class GTRewardAdapter extends MediationCustomRewardVideoLoader {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
+        Log.i(TAG, "reward onDestroy");
         if (mRewardAd != null) {
             mRewardAd.destroyAd();
             mRewardAd = null;

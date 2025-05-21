@@ -38,3 +38,7 @@
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 #保护内部类
+
+-keep class com.union_test.toutiao.adgain.AdGainRewardAdapter { *; }
+-keep class com.union_test.toutiao.adgain.AdGainInterAdapter { *; }
+-keep class com.union_test.toutiao.adgain.AdGainSplashAdapter { *; }

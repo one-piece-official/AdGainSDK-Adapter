@@ -1,4 +1,4 @@
-package com.union_test.toutiao.gt;
+package com.union_test.toutiao.adgain;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,11 +20,14 @@ import java.util.Map;
  * Date   :   2025/5/15
  * Time   :   14:24
  */
-public class GTInterAdapter extends MediationCustomInterstitialLoader {
+public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
 
-    private static final String TAG = "GTInterAdapter";
+    private static final String TAG = AdGainCustomerInit.TAG;
 
     InterstitialAd mInterstitialAd;
+
+    public AdGainInterAdapter() {
+    }
 
     @Override
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
@@ -86,7 +89,7 @@ public class GTInterAdapter extends MediationCustomInterstitialLoader {
         options.put("inter_extra_test_key", "inter_extra_test_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setCodeId("1195")  // 广推广告位 从商务获取
+                .setCodeId(serviceConfig.getADNNetworkSlotId())  // 广推广告位 从商务获取
                 .setExtOption(options)
                 .setOrientation(0)  //0 竖屏  1、横屏  2 随屏幕方向改变
                 .build();
@@ -94,6 +97,8 @@ public class GTInterAdapter extends MediationCustomInterstitialLoader {
         mInterstitialAd = new InterstitialAd(adRequest, listener);
 
         mInterstitialAd.loadAd();
+
+        Log.i(TAG, "inter load");
     }
 
     @Override
@@ -115,19 +120,19 @@ public class GTInterAdapter extends MediationCustomInterstitialLoader {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "onPause");
+        Log.i(TAG, "inter onPause");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume");
+        Log.i(TAG, "inter onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
+        Log.i(TAG, "inter onDestroy");
         if (mInterstitialAd != null) {
             mInterstitialAd.destroyAd();
             mInterstitialAd = null;

@@ -6,11 +6,11 @@ android {
     buildToolsVersion "30.0.2"
 
     signingConfigs {
-        demo {
-            keyAlias 'csjdemmo'
-            keyPassword 'bytedancecsjdemo'
-            storeFile file('open_ad_sdk.keystore')
-            storePassword 'bytedancecsjdemo'
+        sign {
+            keyAlias 'key'
+            keyPassword '123456'
+            storeFile file('../key/signAdKey')
+            storePassword '123456'
         }
     }
 
@@ -36,12 +36,12 @@ android {
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.demo
+            signingConfig signingConfigs.sign
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.demo
+            signingConfig signingConfigs.sign
         }
     }
 

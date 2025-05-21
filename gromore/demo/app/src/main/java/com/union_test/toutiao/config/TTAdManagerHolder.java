@@ -99,7 +99,8 @@ public class TTAdManagerHolder {
                 /**
                  * 注：需要替换成在媒体平台申请的appID ，切勿直接复制
                  */
-                .appId("5001121")
+//                .appId("5001121")
+                .appId("5698249")
                 .appName("APP测试媒体")
                 /**
                  * 上线前需要关闭debug开关，否则会影响性能

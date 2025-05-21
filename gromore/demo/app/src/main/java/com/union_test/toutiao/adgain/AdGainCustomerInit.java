@@ -1,4 +1,4 @@
-package com.union_test.toutiao.gt;
+package com.union_test.toutiao.adgain;
 
 import android.content.Context;
 import android.location.Location;
@@ -14,9 +14,9 @@ import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomInitConfig;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GTCustomerInit extends MediationCustomInitLoader {
+public class AdGainCustomerInit extends MediationCustomInitLoader {
 
-    private static final String TAG = "GTCustomerInit";
+    public static final String TAG = "AdGainCustomer";
 
     @Override
     public String getNetworkSdkVersion() {
@@ -30,7 +30,7 @@ public class GTCustomerInit extends MediationCustomInitLoader {
         customData.put("custom_key", "custom_value");
 
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
-                .appId("1105")       //必填，向广推商务获取
+                .appId("1470_1264")       //必填，向广推商务获取
                 .userId("")  // 用户ID，有就填
                 .showLog(true)
                 .addCustomData(customData)  //自定义数据

@@ -108,9 +108,23 @@
     <string name="draw_native_media_id" translatable="false">102144891</string>
     <string name="banner_media_id" translatable="false">945493677</string>
     <string name="banner_bidding_media_id" translatable="false">102070106</string>
-    <string name="splash_media_id" translatable="false">102117864</string>
+
+    <!--<string name="splash_media_id" translatable="false">102117864</string>-->
+
+    <string name="splash_media_id" translatable="false">103495634</string>
+
+<!--
     <string name="reward_media_id" translatable="false">945700410</string>
+-->
+    <string name="reward_media_id" translatable="false">103483586</string>
+
     <string name="interstitial_full_interstitial_media_id" translatable="false">102176665</string>
     <string name="interstitial_full_full_media_id" translatable="false">102175539</string>
+
+<!--
     <string name="full_media_id" translatable="false">945493675</string>
+-->
+
+    <string name="full_media_id" translatable="false">103495631</string>
+
 </resources>
