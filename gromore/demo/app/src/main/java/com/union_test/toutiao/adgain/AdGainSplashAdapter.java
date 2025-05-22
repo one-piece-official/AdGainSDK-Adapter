@@ -1,6 +1,7 @@
 package com.union_test.toutiao.adgain;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -134,6 +135,14 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
      */
     public boolean isServerBidding() {
         return getBiddingType() == MediationConstant.AD_TYPE_SERVER_BIDING;
+    }
+
+    @Override
+    public void receiveBidResult(boolean b, double v, int i, @Nullable Map<String, Object> map) {
+        super.receiveBidResult(b, v, i, map);
+        Log.d(TAG, "receiveBidResult: win = " + b + " winnerPrice = " + v + " loseReason = " + i + " extra = " + map);
+
+        AdGainBiddingNotice.notifyADN(splashAd, b, v, i, map);
     }
 
     @Override

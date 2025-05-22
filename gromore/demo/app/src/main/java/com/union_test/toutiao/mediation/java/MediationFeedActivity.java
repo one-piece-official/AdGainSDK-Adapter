@@ -12,6 +12,9 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationAdSlot;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationNativeToBannerListener;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationSplashRequestInfo;
 import com.bytedance.sdk.openadsdk.mediation.ad.MediationExpressRenderListener;
 import com.bytedance.sdk.openadsdk.mediation.manager.MediationNativeManager;
 import com.union_test.toutiao.R;
@@ -20,7 +23,9 @@ import com.union_test.toutiao.mediation.java.utils.Const;
 import com.union_test.toutiao.mediation.java.utils.FeedAdUtils;
 import com.union_test.toutiao.utils.UIUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 融合demo，Feed流广告使用示例（模板和自渲染）。更多功能参考接入文档。
@@ -85,6 +90,93 @@ public class MediationFeedActivity extends Activity {
                 .setCodeId(this.mMediaId)
                 .setImageAcceptedSize(UIUtils.getScreenWidthInPx(this), UIUtils.dp2px(this, 340)) // 单位px
                 .setAdCount(1) // 请求广告数量为1到3条 （优先采用平台配置的数量）
+                .setMediationAdSlot(new IMediationAdSlot() {
+                    @Override
+                    public boolean isSplashShakeButton() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isSplashPreLoad() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isMuted() {
+                        return false;
+                    }
+
+                    @Override
+                    public float getVolume() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isUseSurfaceView() {
+                        return false;
+                    }
+
+                    @Nullable
+                    @Override
+                    public Map<String, Object> getExtraObject() {
+                        return Collections.emptyMap();
+                    }
+
+                    @Override
+                    public boolean isBidNotify() {
+                        return true;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getScenarioId() {
+                        return "";
+                    }
+
+                    @Override
+                    public boolean isAllowShowCloseBtn() {
+                        return false;
+                    }
+
+                    @Nullable
+                    @Override
+                    public IMediationNativeToBannerListener getMediationNativeToBannerListener() {
+                        return null;
+                    }
+
+                    @Override
+                    public float getShakeViewWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public float getShakeViewHeight() {
+                        return 0;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getWxAppId() {
+                        return "";
+                    }
+
+                    @Nullable
+                    @Override
+                    public IMediationSplashRequestInfo getMediationSplashRequestInfo() {
+                        return null;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getRewardName() {
+                        return "";
+                    }
+
+                    @Override
+                    public int getRewardAmount() {
+                        return 0;
+                    }
+                })
                 .build();
 
         /** 2、创建TTAdNative对象 */

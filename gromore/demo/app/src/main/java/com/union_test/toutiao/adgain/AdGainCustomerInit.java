@@ -30,7 +30,7 @@ public class AdGainCustomerInit extends MediationCustomInitLoader {
         customData.put("custom_key", "custom_value");
 
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
-                .appId("1470_1264")       //必填，向广推商务获取
+                .appId(mediationCustomInitConfig.getAppId())       //必填，向广推商务获取,配置到 gromore 后台
                 .userId("")  // 用户ID，有就填
                 .showLog(true)
                 .addCustomData(customData)  //自定义数据

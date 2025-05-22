@@ -2,6 +2,7 @@ package com.union_test.toutiao.adgain;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.adgain.sdk.api.AdError;
@@ -155,5 +156,13 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
      */
     public boolean isServerBidding() {
         return getBiddingType() == MediationConstant.AD_TYPE_SERVER_BIDING;
+    }
+
+    @Override
+    public void receiveBidResult(boolean b, double v, int i, @Nullable Map<String, Object> map) {
+        super.receiveBidResult(b, v, i, map);
+        Log.d(TAG, "receiveBidResult: win = " + b + " winnerPrice = " + v + " loseReason = " + i + " extra = " + map);
+
+        AdGainBiddingNotice.notifyADN(mInterstitialAd, b, v, i, map);
     }
 }

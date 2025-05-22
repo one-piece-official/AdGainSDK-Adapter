@@ -189,9 +189,13 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
     @Override
     public void receiveBidResult(boolean win, double winnerPrice, int loseReason, Map<String, Object> extra) {
         super.receiveBidResult(win, winnerPrice, loseReason, extra);
-        Log.i(TAG, "receiveBidResult " + win + " " + winnerPrice + " " + loseReason + " " + extra);
+
+        Log.d(TAG, "receiveBidResult: win = " + win + " winnerPrice = " + winnerPrice + " loseReason = " + loseReason + " extra = " + extra);
+
+        AdGainBiddingNotice.notifyADN(mRewardAd, win, winnerPrice, loseReason, extra);
 
     }
+
 
     @Override
     public void onDestroy() {

@@ -103,7 +103,12 @@
 
     <string name="ad_mediation_id" translatable="false">当前广告位id位：%1$s</string>
     <string name="feed_express_media_id" translatable="false">945493687</string>
+
+<!--
     <string name="feed_native_media_id" translatable="false">945493689</string>
+-->
+    <string name="feed_native_media_id" translatable="false">103496599</string>
+
     <string name="draw_express_media_id" translatable="false">102528069</string>
     <string name="draw_native_media_id" translatable="false">102144891</string>
     <string name="banner_media_id" translatable="false">945493677</string>

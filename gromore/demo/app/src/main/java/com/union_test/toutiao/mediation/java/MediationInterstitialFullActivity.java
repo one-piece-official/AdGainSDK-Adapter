@@ -2,6 +2,7 @@ package com.union_test.toutiao.mediation.java;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,9 +13,15 @@ import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdNative.FullScreenVideoAdListener;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationAdSlot;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationNativeToBannerListener;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationSplashRequestInfo;
 import com.union_test.toutiao.R;
 import com.union_test.toutiao.config.TTAdManagerHolder;
 import com.union_test.toutiao.mediation.java.utils.Const;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * 融合demo，插全屏广告使用示例。更多功能参考接入文档。
@@ -68,7 +75,93 @@ public final class MediationInterstitialFullActivity extends Activity {
 
         AdSlot adslot = new AdSlot.Builder()
                 .setCodeId(this.mMediaId)
+                .setMediationAdSlot(new IMediationAdSlot() {
+                    @Override
+                    public boolean isSplashShakeButton() {
+                        return false;
+                    }
 
+                    @Override
+                    public boolean isSplashPreLoad() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isMuted() {
+                        return false;
+                    }
+
+                    @Override
+                    public float getVolume() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isUseSurfaceView() {
+                        return false;
+                    }
+
+                    @Nullable
+                    @Override
+                    public Map<String, Object> getExtraObject() {
+                        return Collections.emptyMap();
+                    }
+
+                    @Override
+                    public boolean isBidNotify() {
+                        return true;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getScenarioId() {
+                        return "";
+                    }
+
+                    @Override
+                    public boolean isAllowShowCloseBtn() {
+                        return false;
+                    }
+
+                    @Nullable
+                    @Override
+                    public IMediationNativeToBannerListener getMediationNativeToBannerListener() {
+                        return null;
+                    }
+
+                    @Override
+                    public float getShakeViewWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public float getShakeViewHeight() {
+                        return 0;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getWxAppId() {
+                        return "";
+                    }
+
+                    @Nullable
+                    @Override
+                    public IMediationSplashRequestInfo getMediationSplashRequestInfo() {
+                        return null;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getRewardName() {
+                        return "";
+                    }
+
+                    @Override
+                    public int getRewardAmount() {
+                        return 0;
+                    }
+                })
                 .setOrientation(TTAdConstant.ORIENTATION_VERTICAL)
                 .build();
 
