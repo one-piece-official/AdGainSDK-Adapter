@@ -68,7 +68,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
-    implementation(name: "adgain-sdk-4.0.3-release", ext: 'aar')
+    implementation(name: "adgain-sdk-4.0.4-release", ext: 'aar')
 
     implementation(name: "Baidu_MobAds_SDK_v9.37", ext: 'aar')
     implementation(name: "GDTSDK.unionNormal.4.630.1500", ext: 'aar')
