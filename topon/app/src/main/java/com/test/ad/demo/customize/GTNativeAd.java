@@ -15,7 +15,7 @@ import com.adgain.sdk.api.NativeAdData;
 import com.adgain.sdk.api.NativeAdEventListener;
 import com.adgain.sdk.api.NativeAdInteractiveType;
 import com.adgain.sdk.api.NativeAdPatternType;
-import com.adgain.sdk.base.natives.GtNativeAdMediaView;
+import com.adgain.sdk.base.natives.AdgainNativeAdMediaView;
 import com.anythink.nativead.api.ATNativePrepareExInfo;
 import com.anythink.nativead.api.ATNativePrepareInfo;
 import com.anythink.nativead.api.NativeAdInteractionType;
@@ -45,7 +45,7 @@ public class GTNativeAd extends CustomNativeAd {
     //0:not set,    1:set mute,   2:not mute
     int mMuteApiSet = 0;
 
-    GtNativeAdMediaView mMediaView;
+    AdgainNativeAdMediaView mMediaView;
 
     //Self-rendering 2.0 must be used
     ViewGroup mContainer;
@@ -137,7 +137,7 @@ public class GTNativeAd extends CustomNativeAd {
             }
 
             if (mMediaView == null) {
-                mMediaView = new GtNativeAdMediaView(mApplicationContext);
+                mMediaView = new AdgainNativeAdMediaView(mApplicationContext);
 //                mMediaView.setBackgroundColor(0xff000000);
                 ViewGroup.LayoutParams _params = mMediaView.getLayoutParams();
                 if (_params == null) {
@@ -335,9 +335,6 @@ public class GTNativeAd extends CustomNativeAd {
 
     @Override
     public double getVideoProgress() {
-        if (mUnifiedAdData != null) {
-            return mUnifiedAdData.getVideoProgress();
-        }
         return super.getVideoProgress();
     }
 
