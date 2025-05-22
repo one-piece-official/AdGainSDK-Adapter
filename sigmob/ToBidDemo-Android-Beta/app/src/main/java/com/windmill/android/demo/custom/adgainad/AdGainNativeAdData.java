@@ -318,24 +318,6 @@ public class AdGainNativeAdData extends WMNativeAdData {
 
     @Override
     public void setDislikeInteractionCallback(Activity activity, DislikeInteractionCallback dislikeInteractionCallback) {
-        if (nativeAdData != null && dislikeInteractionCallback != null) {
-            nativeAdData.setDislikeInteractionCallback(activity, new NativeAdData.DislikeInteractionCallback() {
-                @Override
-                public void onShow() {
-                    dislikeInteractionCallback.onShow();
-                }
-
-                @Override
-                public void onSelected(int position, String value, boolean enforce) {
-                    dislikeInteractionCallback.onSelected(position, value, enforce);
-                }
-
-                @Override
-                public void onCancel() {
-                    dislikeInteractionCallback.onCancel();
-                }
-            });
-        }
     }
 
     @Override
