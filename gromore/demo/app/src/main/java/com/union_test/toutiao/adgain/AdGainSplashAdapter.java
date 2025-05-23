@@ -33,11 +33,13 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
 
             @Override
             public void onAdLoadSuccess() {
+                Log.d(TAG, "splash ----------onAdLoadSuccess---------- " +splashAd.getBidPrice() );
                 callLoadSuccess(splashAd.getBidPrice());  // 单位分
             }
 
             @Override
             public void onAdCacheSuccess() {
+                Log.d(TAG, "splash ----------onAdCacheSuccess----------" );
 
             }
 
