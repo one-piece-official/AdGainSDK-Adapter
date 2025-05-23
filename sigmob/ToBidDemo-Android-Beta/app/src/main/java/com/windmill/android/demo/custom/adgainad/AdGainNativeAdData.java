@@ -16,6 +16,7 @@ import com.adgain.sdk.api.NativeAdEventListener;
 import com.adgain.sdk.api.NativeAdInteractiveType;
 import com.adgain.sdk.api.NativeAdPatternType;
 import com.adgain.sdk.api.NativeUnifiedAd;
+import com.bumptech.glide.Glide;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
@@ -204,6 +205,13 @@ public class AdGainNativeAdData extends WMNativeAdData {
     @Override
     public void bindImageViews(Context context, List<ImageView> imageViews, int defaultImageRes) {
         Log.d(TAG, "bindImageViews ad: " + nativeAdData);
+
+        try {
+            if (imageViews != null && !imageViews.isEmpty()) {
+                Glide.with(context.getApplicationContext()).load(nativeAdData.getImageList().get(0).imageUrl).into(imageViews.get(0));
+            }
+        } catch (Exception e) {
+        }
     }
 
     @Override
