@@ -1,1 +1,1 @@
-三方聚合 接入 广推ADSDK 适配Adapter
+三方聚合 接入 AdGain ADSDK 适配Adapter
