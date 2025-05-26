@@ -54,10 +54,8 @@ public class AdGainBiddingNotice {
 
         Map<String, Object> map = new HashMap<>(4);
 
-        String gdtLossReason = "";
-
         map.put(IBidding.WIN_PRICE, winPrice);
-        map.put(IBidding.LOSS_REASON, gdtLossReason);
+        map.put(IBidding.LOSS_REASON, lossCode);
         map.put(IBidding.ADN_ID, "");
 
         if (gtBaseAd != null) {
