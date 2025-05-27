@@ -18,13 +18,19 @@ public class AdGainBiddingNotice {
 
     IBidding gtBaseAd;
 
-    public static void notifyADN(IBidding ad,boolean win, double winnerPrice, int loseReason, Map<String, Object> extra){
-        AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(ad);
-        if (win) {
-            biddingNotice.notifyBidWin(winnerPrice, 1, extra);
-        } else {
-            biddingNotice.notifyBidLoss(loseReason + "", winnerPrice, extra);
+    public static void notifyADN(IBidding ad, boolean win, double winnerPrice, int loseReason, Map<String, Object> extra) {
+
+        try {
+            AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(ad);
+            if (win) {
+                biddingNotice.notifyBidWin(winnerPrice, 1, extra);
+            } else {
+                biddingNotice.notifyBidLoss(loseReason + "", winnerPrice, extra);
+            }
+        } catch (Throwable e) {
+            Log.e(TAG, "notifyADN: ", e);
         }
+
     }
 
     protected AdGainBiddingNotice(IBidding adObject) {

@@ -21,7 +21,6 @@ import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.ad.MediationNativeAdAppInfo;
 import com.bytedance.sdk.openadsdk.mediation.ad.MediationViewBinder;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.native_ad.MediationCustomNativeAd;
-import com.union_test.toutiao.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,58 +36,63 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
     private Context mContext;
 
     public AdGainNativeAdRender(Context context, NativeAdData feedAd, NativeUnifiedAd nativeAd) {
-        mContext = context;
-        mNativeAD = nativeAd;
-        mNativeUnifiedADData = feedAd;
+        try {
 
-        AdAppInfo info = mNativeUnifiedADData.getAdAppInfo();
+            mContext = context;
+            mNativeAD = nativeAd;
+            mNativeUnifiedADData = feedAd;
 
-        MediationNativeAdAppInfo nativeAdAppInfo = new MediationNativeAdAppInfo();
-        if (info != null) {
-            nativeAdAppInfo.setAppName(info.getAppName());
-            nativeAdAppInfo.setAuthorName(info.getAuthorName());
-            nativeAdAppInfo.setPackageSizeBytes(info.getAppSize());
-            nativeAdAppInfo.setPermissionsUrl(info.getPermissionsUrl());
-            nativeAdAppInfo.setPrivacyAgreement(info.getPrivacyUrl());
-            nativeAdAppInfo.setVersionName(info.getVersionName());
-        }
+            AdAppInfo info = mNativeUnifiedADData.getAdAppInfo();
 
-        setNativeAdAppInfo(nativeAdAppInfo);
+            MediationNativeAdAppInfo nativeAdAppInfo = new MediationNativeAdAppInfo();
+            if (info != null) {
+                nativeAdAppInfo.setAppName(info.getAppName());
+                nativeAdAppInfo.setAuthorName(info.getAuthorName());
+                nativeAdAppInfo.setPackageSizeBytes(info.getAppSize());
+                nativeAdAppInfo.setPermissionsUrl(info.getPermissionsUrl());
+                nativeAdAppInfo.setPrivacyAgreement(info.getPrivacyUrl());
+                nativeAdAppInfo.setVersionName(info.getVersionName());
+            }
 
-        setTitle(mNativeUnifiedADData.getTitle());
-        setDescription(mNativeUnifiedADData.getDesc());
-        setActionText(mNativeUnifiedADData.getCTAText());
-        setIconUrl(mNativeUnifiedADData.getIconUrl());
+            setNativeAdAppInfo(nativeAdAppInfo);
 
-        List<AdGainImage> list = mNativeUnifiedADData.getImageList();
-        if (list != null && !list.isEmpty()) {
-            AdGainImage image = list.get(0);
-            Log.d(TAG, "setAdData main image =  " + image.toString());
-            setImageUrl(image.getImageUrl());
-            setImageWidth(image.getWidth());
-            setImageHeight(image.getHeight());
-        }
+            setTitle(mNativeUnifiedADData.getTitle());
+            setDescription(mNativeUnifiedADData.getDesc());
+            setActionText(mNativeUnifiedADData.getCTAText());
+            setIconUrl(mNativeUnifiedADData.getIconUrl());
 
-        setImageList(getImgUrls(mNativeUnifiedADData));
+            List<AdGainImage> list = mNativeUnifiedADData.getImageList();
+            if (list != null && !list.isEmpty()) {
+                AdGainImage image = list.get(0);
+                Log.d(TAG, "setAdData main image =  " + image.toString());
+                setImageUrl(image.getImageUrl());
+                setImageWidth(image.getWidth());
+                setImageHeight(image.getHeight());
+            }
 
-        setStarRating(5.0);
+            setImageList(getImgUrls(mNativeUnifiedADData));
 
-        setSource(mNativeUnifiedADData.getTitle());
+            setStarRating(5.0);
 
-        if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_VIDEO_AD) {
-            setAdImageMode(TTAdConstant.IMAGE_MODE_VIDEO);
+            setSource(mNativeUnifiedADData.getTitle());
 
-        } else if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_BIG_IMAGE_AD) {
-            setAdImageMode(TTAdConstant.IMAGE_MODE_LARGE_IMG);
+            if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_VIDEO_AD) {
+                setAdImageMode(TTAdConstant.IMAGE_MODE_VIDEO);
 
-        } else if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_GROUP_IMAGE_AD) {
-            setAdImageMode(TTAdConstant.IMAGE_MODE_GROUP_IMG);
-        }
+            } else if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_BIG_IMAGE_AD) {
+                setAdImageMode(TTAdConstant.IMAGE_MODE_LARGE_IMG);
 
-        if (isAPPAD(mNativeUnifiedADData)) {
-            setInteractionType(TTAdConstant.INTERACTION_TYPE_DOWNLOAD);
-        } else {
-            setInteractionType(TTAdConstant.INTERACTION_TYPE_LANDING_PAGE);
+            } else if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_GROUP_IMAGE_AD) {
+                setAdImageMode(TTAdConstant.IMAGE_MODE_GROUP_IMG);
+            }
+
+            if (isAPPAD(mNativeUnifiedADData)) {
+                setInteractionType(TTAdConstant.INTERACTION_TYPE_DOWNLOAD);
+            } else {
+                setInteractionType(TTAdConstant.INTERACTION_TYPE_LANDING_PAGE);
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -172,7 +176,8 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
 
                 if (clickViews != null) {
                     for (View view : clickViews) {
-                        if (view != null && view.getId() == R.id.iv_listitem_video) {
+                        // Look for FrameLayout that can be used as video container
+                        if (view instanceof FrameLayout) {
                             targetView = view;
                             break;
                         }

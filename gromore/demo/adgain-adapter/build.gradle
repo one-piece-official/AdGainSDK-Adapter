@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    flatDir {
+//        dirs '../app/libs', '../app/libs/adn', '../app/libs/adn/mtg', '../app/libs/adn/sigmob', '../app/libs/adapter'
+        dirs '../app/libs','../app/libs/adn'
+    }
+}
+
+dependencies {
+    compileOnly(name: "adgain-sdk-4.0.4-release", ext: 'aar')
+
+    // ByteDance Mediation SDK
+    compileOnly(name: 'open_ad_sdk', ext: 'aar')
+}
