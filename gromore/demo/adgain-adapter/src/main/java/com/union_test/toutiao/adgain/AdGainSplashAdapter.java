@@ -29,6 +29,11 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
 
         try {
+            if (serviceConfig == null) {
+                Log.d(TAG, "splash load: serviceConfig is null");
+                return;
+            }
+
             SplashAdListener mSplashAdListener = new SplashAdListener() {
 
                 @Override
@@ -94,7 +99,7 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
 
             Log.i(TAG, "splash load");
         } catch (Exception e) {
-
+            Log.d(TAG, "splash load: error = " + Log.getStackTraceString(e));
         }
     }
 
@@ -105,7 +110,7 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
                 splashAd.showAd(container);
             }
         } catch (Exception e) {
-
+            Log.d(TAG, "splash showAd: error = " + Log.getStackTraceString(e));
         }
     }
 

@@ -33,6 +33,11 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
 
         try {
+            if (serviceConfig == null) {
+                Log.d(TAG, "inter load: serviceConfig is null");
+                return;
+            }
+
             InterstitialAdListener listener = new InterstitialAdListener() {
 
                 @Override
@@ -101,7 +106,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
 
             Log.i(TAG, "inter load");
         } catch (Exception e) {
-
+            Log.d(TAG, "inter load: error = " + Log.getStackTraceString(e));
         }
     }
 
@@ -114,7 +119,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
                 mInterstitialAd.showAd(activity);
             }
         } catch (Exception e) {
-
+            Log.d(TAG, "inter showAd: error = " + Log.getStackTraceString(e));
         }
     }
 

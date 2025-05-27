@@ -37,10 +37,16 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
 
         try {
-            Log.d(TAG, "load: " + serviceConfig.getADNNetworkSlotId());
-            Log.d(TAG, "load: " + serviceConfig.getADNNetworkName());
-            Log.d(TAG, "load: " + serviceConfig.getCustomAdapterJson());
-            Log.d(TAG, "load: " + serviceConfig.getExtraData());
+
+            if (serviceConfig == null) {
+                Log.d(TAG, "reward load: serviceConfig is null");
+                return;
+            }
+
+            Log.d(TAG, "reward load: " + serviceConfig.getADNNetworkSlotId());
+            Log.d(TAG, "reward  load: " + serviceConfig.getADNNetworkName());
+            Log.d(TAG, "reward  load: " + serviceConfig.getCustomAdapterJson());
+            Log.d(TAG, "reward load: " + serviceConfig.getExtraData());
 
             RewardAdListener rewardAdListener = new RewardAdListener() {
                 @Override
@@ -147,7 +153,7 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
 
             Log.i(TAG, "reward load");
         } catch (Exception e) {
-
+            Log.d(TAG, "reward load: error = " + Log.getStackTraceString(e));
         }
     }
 
@@ -160,6 +166,7 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
                 mRewardAd.showAd(activity);
             }
         } catch (Exception e) {
+            Log.d(TAG, "reward showAd: error = " + Log.getStackTraceString(e));
 
         }
     }
