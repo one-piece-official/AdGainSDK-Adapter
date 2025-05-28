@@ -43,7 +43,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
                 @Override
                 public void onInterstitialAdLoadSuccess() {
                     Log.d(TAG, "onInterstitialAdLoadSuccess: ");
-                    callLoadSuccess(mInterstitialAd.getBidPrice());  // 单位 分
+                    callLoadSuccess(mInterstitialAd.getBidPrice()*1000);  // 单位 分
                 }
 
                 @Override
