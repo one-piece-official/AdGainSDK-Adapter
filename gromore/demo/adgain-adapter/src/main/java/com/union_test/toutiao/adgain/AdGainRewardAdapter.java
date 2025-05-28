@@ -46,7 +46,6 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
             Log.d(TAG, "reward load: " + serviceConfig.getADNNetworkSlotId());
             Log.d(TAG, "reward  load: " + serviceConfig.getADNNetworkName());
             Log.d(TAG, "reward  load: " + serviceConfig.getCustomAdapterJson());
-            Log.d(TAG, "reward load: " + serviceConfig.getExtraData());
 
             RewardAdListener rewardAdListener = new RewardAdListener() {
                 @Override
