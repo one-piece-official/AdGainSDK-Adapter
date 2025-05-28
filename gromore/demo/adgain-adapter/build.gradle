@@ -41,5 +41,5 @@ dependencies {
     compileOnly(name: "adgain-sdk-4.0.4-release", ext: 'aar')
 
     // ByteDance Mediation SDK
-    compileOnly(name: 'open_ad_sdk', ext: 'aar')
+    compileOnly(name: 'open_ad_sdk_6.8.1.7', ext: 'aar')
 }
