@@ -17,14 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter implements InterstitialAdListener {
-    private static final String TAG = "AdGainCustomerInter";
 
     private InterstitialAd interstitialAd;
+    private String TAG = "AdGainCustomerInterstitial";
 
     @Override
     public void loadAd(Activity activity, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
-        Log.d(TAG, "loadAd: l: " + localExtra);
-        Log.d(TAG, "loadAd: s: " + serverExtra);
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
@@ -47,8 +45,6 @@ public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter impl
 
     @Override
     public void showAd(Activity activity, HashMap<String, String> localExtra, Map<String, Object> serverExtra) {
-        Log.d(TAG, "showAd: l: " + localExtra);
-        Log.d(TAG, "showAd: s: " + serverExtra);
         try {
             interstitialAd.showAd(activity);
         } catch (Throwable tr) {
@@ -74,30 +70,23 @@ public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter impl
 
     @Override
     public void notifyBiddingResult(boolean isWin, String price, Map<String, Object> referBidInfo) {
-        super.notifyBiddingResult(isWin, price, referBidInfo);
-        InterstitialAd ad = interstitialAd;
-        Log.d(TAG, "notifyBiddingResult: win: " + isWin + " price: " + price + " refer: " + referBidInfo + " ad: " + ad);
-        if (null == ad) {
-            return;
-        }
-
-        if (isWin) {
-            // 竞价成功
-            ad.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
-        } else {
-            ad.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+        if (interstitialAd != null) {
+            if (isWin) {
+                // 竞价成功
+                interstitialAd.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
+            } else {
+                interstitialAd.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+            }
         }
     }
 
     @Override
     public void onInterstitialAdLoadError(AdError adError) {
-        Log.d(TAG, "onInterstitialAdLoadError: " + " err: " + adError);
         callLoadFail(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 
     @Override
     public void onInterstitialAdLoadSuccess() {
-        Log.d(TAG, "onInterstitialAdLoadSuccess: ");
         Log.d(TAG, "onInterstitialAdLoadSuccess: bidtype: " + getBiddingType());
         if (interstitialAd != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
             BidPrice bidPrice = new BidPrice(String.valueOf(interstitialAd.getBidPrice()));
@@ -113,31 +102,26 @@ public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter impl
 
     @Override
     public void onInterstitialAdShow() {
-        Log.d(TAG, "onInterstitialAdShow: ");
         callVideoAdShow();
     }
 
     @Override
     public void onInterstitialAdPlayEnd() {
-        Log.d(TAG, "onInterstitialAdPLayEnd: ");
         callVideoAdPlayComplete();
     }
 
     @Override
     public void onInterstitialAdClick() {
-        Log.d(TAG, "onInterstitialAdClick: ");
         callVideoAdClick();
     }
 
     @Override
     public void onInterstitialAdClosed() {
-        Log.d(TAG, "onInterstitialAdClosed: ");
         callVideoAdClosed();
     }
 
     @Override
     public void onInterstitialAdShowError(AdError adError) {
-        Log.d(TAG, "onInterstitialAdShowError: " + " err: " + adError);
         callVideoAdPlayError(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 }
