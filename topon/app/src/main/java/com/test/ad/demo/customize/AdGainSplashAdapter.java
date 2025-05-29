@@ -21,7 +21,7 @@ import com.anythink.splashad.unitgroup.api.CustomSplashAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GTSplashAdapter extends CustomSplashAdapter {
+public class AdGainSplashAdapter extends CustomSplashAdapter {
 
     final String TAG = AdGainInitManager.TAG;
 
@@ -98,7 +98,7 @@ public class GTSplashAdapter extends CustomSplashAdapter {
 
                         if (splashAD != null) {
 
-                            GTBiddingNotice biddingNotice = new GTBiddingNotice(splashAD);
+                            AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(splashAD);
 
                             mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(splashAD.getBidPrice(), System.currentTimeMillis() + "", biddingNotice, ATAdConst.CURRENCY.RMB_CENT), null);
 

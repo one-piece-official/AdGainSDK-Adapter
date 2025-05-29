@@ -104,7 +104,7 @@ public class AdGainInitManager extends ATInitMediation {
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
                 .appId(app_id)         //必填
                 .userId("")            // 非必须，有就填
-                .showLog(true)    // 是否展示 广推adsdk 日志
+                .showLog(false)    // 是否展示 adsdk 日志
                 .addCustomData(customData) //自定义数据
 
                 .customController(new CustomController() {

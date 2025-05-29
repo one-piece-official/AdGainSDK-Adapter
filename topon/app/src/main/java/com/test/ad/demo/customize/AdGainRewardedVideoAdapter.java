@@ -21,7 +21,7 @@ import com.anythink.rewardvideo.unitgroup.api.CustomRewardVideoAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
+public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
     private static final String TAG = AdGainInitManager.TAG;
 
@@ -92,7 +92,7 @@ public class GTRewardedVideoAdapter extends CustomRewardVideoAdapter {
                     if (mBiddingListener != null) {
                         int ecpm = mRewardVideoAD.getBidPrice();
 
-                        GTBiddingNotice biddingNotice = new GTBiddingNotice(mRewardVideoAD);
+                        AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(mRewardVideoAD);
 
                         mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(ecpm, System.currentTimeMillis() + "", biddingNotice, ATAdConst.CURRENCY.RMB_CENT), null);
                     }

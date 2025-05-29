@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GTNativeAdapter extends CustomNativeAdapter {
+public class AdGainNativeAdapter extends CustomNativeAdapter {
 
     private static final String TAG = AdGainInitManager.TAG;
 
@@ -131,9 +131,9 @@ public class GTNativeAdapter extends CustomNativeAdapter {
                         if (unifiedADData != null && mBiddingListener != null) {
                             double price = unifiedADData.getPrice();
 
-                            GTNativeAd gdtNativeAd = new GTNativeAd(context, unifiedADData, mVideoMuted, mVideoAutoPlay, mVideoDuration);
+                            AdGainNativeAd gdtNativeAd = new AdGainNativeAd(context, unifiedADData, mVideoMuted, mVideoAutoPlay, mVideoDuration);
 
-                            GTBiddingNotice notice = new GTBiddingNotice(nativeAd);
+                            AdGainBiddingNotice notice = new AdGainBiddingNotice(nativeAd);
 
                             Log.d(TAG, "onAdLoad: onC2SBiddingResultWithCache price = " + price);
 
@@ -146,7 +146,7 @@ public class GTNativeAdapter extends CustomNativeAdapter {
                     List<CustomNativeAd> resultList = new ArrayList<>();
 
                     for (NativeAdData unifiedADData : list) {
-                        GTNativeAd gdtNativeAd = new GTNativeAd(context, unifiedADData, mVideoMuted, mVideoAutoPlay, mVideoDuration);
+                        AdGainNativeAd gdtNativeAd = new AdGainNativeAd(context, unifiedADData, mVideoMuted, mVideoAutoPlay, mVideoDuration);
                         resultList.add(gdtNativeAd);
                     }
 

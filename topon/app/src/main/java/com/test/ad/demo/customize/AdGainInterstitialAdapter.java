@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class GTInterstitialAdapter extends CustomInterstitialAdapter {
+public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
     public static String TAG = AdGainInitManager.TAG;
 
     InterstitialAd mGTInterstitialAd;
@@ -99,7 +99,7 @@ public class GTInterstitialAdapter extends CustomInterstitialAdapter {
                     if (mBiddingListener != null) {
                         int ecpm = mGTInterstitialAd.getBidPrice();
 
-                        GTBiddingNotice biddingNotice = new GTBiddingNotice(mGTInterstitialAd);
+                        AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(mGTInterstitialAd);
 
                         mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(ecpm, System.currentTimeMillis() + "", biddingNotice, ATAdConst.CURRENCY.RMB_CENT), null);
                     }

@@ -4,7 +4,7 @@ package com.test.ad.demo.customize;
 import com.adgain.sdk.api.AdAppInfo;
 import com.anythink.core.api.ATAdAppInfo;
 
-public class GTDownloadAppInfo extends ATAdAppInfo {
+public class AdGainDownloadAppInfo extends ATAdAppInfo {
     public String publisher;
     public String appVersion;
     public String appPrivacyLink;
@@ -14,7 +14,7 @@ public class GTDownloadAppInfo extends ATAdAppInfo {
     public long appSize;
     public String appDownloadCount;
 
-    public GTDownloadAppInfo(AdAppInfo info, String downloadCount) {
+    public AdGainDownloadAppInfo(AdAppInfo info, String downloadCount) {
         publisher = info.getAuthorName();
         appVersion = info.getVersionName();
         appPrivacyLink = info.getPrivacyUrl();

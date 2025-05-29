@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Self-rendering 2.0
-public class GTNativeAd extends CustomNativeAd {
+public class AdGainNativeAd extends CustomNativeAd {
 
     private static final String TAG = AdGainInitManager.TAG;
 
@@ -50,7 +50,7 @@ public class GTNativeAd extends CustomNativeAd {
     //Self-rendering 2.0 must be used
     ViewGroup mContainer;
 
-    protected GTNativeAd(Context context, NativeAdData gdtAd, boolean videoMuted, int videoAutoPlay, int videoDuration) {
+    protected AdGainNativeAd(Context context, NativeAdData gdtAd, boolean videoMuted, int videoAutoPlay, int videoDuration) {
 
         mApplicationContext = context.getApplicationContext();
         mContext = new WeakReference<>(context);
@@ -96,7 +96,7 @@ public class GTNativeAd extends CustomNativeAd {
 
         setNativeInteractionType(isAPPAD(unifiedADData) ? NativeAdInteractionType.APP_DOWNLOAD_TYPE : NativeAdInteractionType.UNKNOW);
 
-        setAdAppInfo(new GTDownloadAppInfo(unifiedADData.getAdAppInfo(), "5000"));
+        setAdAppInfo(new AdGainDownloadAppInfo(unifiedADData.getAdAppInfo(), "5000"));
         setAppPrice(unifiedADData.getPrice());
 
         setImageUrlList(getImgUrls(unifiedADData));

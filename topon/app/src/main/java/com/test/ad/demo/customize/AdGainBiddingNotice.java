@@ -15,13 +15,13 @@ import com.anythink.core.api.ATInitMediation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GTBiddingNotice implements ATBiddingNotice {
+public class AdGainBiddingNotice implements ATBiddingNotice {
 
     private static final String TAG = AdGainInitManager.TAG;
 
     IBidding gtBaseAd;
 
-    protected GTBiddingNotice(IBidding adObject) {
+    protected AdGainBiddingNotice(IBidding adObject) {
         this.gtBaseAd = adObject;
     }
 

@@ -62,22 +62,22 @@
 
 
 # 改为开发者自己的Adapter类名
--keep class  com.test.ad.demo.customize.GTInterstitialAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.GTInterstitialAdapter{
+-keep class  com.test.ad.demo.customize.AdGainInterstitialAdapter{ *;}
+-keepclassmembers public class  com.test.ad.demo.customize.AdGainInterstitialAdapter{
     public *;
 }
 
--keep class  com.test.ad.demo.customize.GTRewardedVideoAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.GTRewardedVideoAdapter{
+-keep class  com.test.ad.demo.customize.AdGainRewardedVideoAdapter{ *;}
+-keepclassmembers public class  com.test.ad.demo.customize.AdGainRewardedVideoAdapter{
     public *;
 }
 
--keep class  com.test.ad.demo.customize.GTSplashAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.GTSplashAdapter{
+-keep class  com.test.ad.demo.customize.AdGainSplashAdapter{ *;}
+-keepclassmembers public class  com.test.ad.demo.customize.AdGainSplashAdapter{
     public *;
 }
 
--keep class  com.test.ad.demo.customize.GTNativeAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.GTNativeAdapter{
+-keep class  com.test.ad.demo.customize.AdGainNativeAdapter{ *;}
+-keepclassmembers public class  com.test.ad.demo.customize.AdGainNativeAdapter{
     public *;
 }
