@@ -32,7 +32,12 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
 
         Log.d(TAG, "\n\n notifyBidWin   adType = " + getAdType() + "    costPrice = " + costPrice + "   secondPrice = " + secondPrice + "  extra = " + extra);
 
-        Map<String, Object> map = new HashMap<>(4);
+        Map<String, Object> map = new HashMap<>();
+
+        if (extra != null && !extra.isEmpty()) {
+            map.putAll(extra);
+        }
+
         map.put(IBidding.EXPECT_COST_PRICE, costPrice);
         map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
 
@@ -90,6 +95,10 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
             }
 
         } catch (Throwable ignored) {
+        }
+
+        if (extra != null && !extra.isEmpty()) {
+            map.putAll(extra);
         }
 
         map.put(IBidding.WIN_PRICE, winPrice);
