@@ -23,7 +23,7 @@ public class AdGainBiddingNotice {
         try {
             AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(ad);
             if (win) {
-                biddingNotice.notifyBidWin(winnerPrice, 1, extra);
+                biddingNotice.notifyBidWin(winnerPrice, 0, extra);
             } else {
                 biddingNotice.notifyBidLoss(loseReason + "", winnerPrice, extra);
             }
@@ -43,9 +43,12 @@ public class AdGainBiddingNotice {
 
         Log.d(TAG, "\n\n notifyBidWin   adType = " + getAdType() + "    costPrice = " + costPrice + "   secondPrice = " + secondPrice + "  extra = " + extra);
 
-        Map<String, Object> map = new HashMap<>(4);
+        Map<String, Object> map = new HashMap<>();
         map.put(IBidding.EXPECT_COST_PRICE, costPrice);
         map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
+        if (extra != null && !extra.isEmpty()) {
+            map.putAll(extra);
+        }
 
         if (gtBaseAd != null) {
             gtBaseAd.sendWinNotification(map);
@@ -58,11 +61,14 @@ public class AdGainBiddingNotice {
 
         Log.d(TAG, "\n\n  notifyBidLoss adType = " + getAdType() + "     lossCode = " + lossCode + "   winPrice = " + winPrice + "  extra = " + extra);
 
-        Map<String, Object> map = new HashMap<>(4);
+        Map<String, Object> map = new HashMap<>();
 
         map.put(IBidding.WIN_PRICE, winPrice);
         map.put(IBidding.LOSS_REASON, lossCode);
         map.put(IBidding.ADN_ID, "");
+        if (extra != null && !extra.isEmpty()) {
+            map.putAll(extra);
+        }
 
         if (gtBaseAd != null) {
             gtBaseAd.sendLossNotification(map);
