@@ -55,7 +55,19 @@ repositories {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+
+//    implementation project(':adgain-adapter')
+    implementation(name: 'adgain-adapter-release', ext: 'aar')
+
+    implementation(name: 'adgain-sdk-4.0.4-release', ext: 'aar')
+
+    implementation(name: 'anythink_core', ext: 'aar')
+    implementation(name: 'anythink_native', ext: 'aar')
+    implementation(name: 'anythink_interstitial', ext: 'aar')
+    implementation(name: 'anythink_rewardvideo', ext: 'aar')
+    implementation(name: 'anythink_splash', ext: 'aar')
+    implementation(name: 'anythink_banner', ext: 'aar')
+    implementation(name: 'anythink_china_core', ext: 'aar')
 
     compileOnly 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'

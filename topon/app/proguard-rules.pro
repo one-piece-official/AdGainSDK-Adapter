@@ -59,25 +59,5 @@
 #-libraryjars //Users//mengfei//developer//adt-bundle-mac-x86_64-20131030//sdk//platforms//android-22//android.jar
 
 
-
-
-# 改为开发者自己的Adapter类名
--keep class  com.test.ad.demo.customize.AdGainInterstitialAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.AdGainInterstitialAdapter{
-    public *;
-}
-
--keep class  com.test.ad.demo.customize.AdGainRewardedVideoAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.AdGainRewardedVideoAdapter{
-    public *;
-}
-
--keep class  com.test.ad.demo.customize.AdGainSplashAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.AdGainSplashAdapter{
-    public *;
-}
-
--keep class  com.test.ad.demo.customize.AdGainNativeAdapter{ *;}
--keepclassmembers public class  com.test.ad.demo.customize.AdGainNativeAdapter{
-    public *;
-}
+# Note: AdGain adapter classes have been moved to the adgain-adapter library module
+# ProGuard rules for these classes are now in adgain-adapter/proguard-rules.pro
