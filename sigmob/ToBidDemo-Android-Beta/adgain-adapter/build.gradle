@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 33
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    flatDir {
+        dirs '../app/libs', '../app/libs/AdNetworks/adgainad'
+    }
+}
+
+dependencies {
+
+    compileOnly(name: "adgain-sdk-4.0.4-release", ext: 'aar')
+
+    // WindMill SDK dependencies
+    compileOnly(name: 'windmill-sdk-4.3.11', ext: 'aar')
+    compileOnly(name: 'wind-common-1.7.6', ext: 'aar')
+    compileOnly(name: 'wind-sdk-4.19.8', ext: 'aar')
+
+    compileOnly "com.github.bumptech.glide:glide:4.9.0"
+}

@@ -1,4 +1,4 @@
-package com.windmill.android.demo.custom.adgainad;
+package com.tobid.adapter.adgain;
 
 import android.app.Activity;
 import android.content.Context;

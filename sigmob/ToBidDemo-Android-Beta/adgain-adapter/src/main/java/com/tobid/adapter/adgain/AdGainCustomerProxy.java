@@ -1,4 +1,4 @@
-package com.adgain.demo;
+package com.tobid.adapter.adgain;
 
 import android.content.Context;
 import android.location.Location;

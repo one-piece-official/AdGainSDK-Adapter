@@ -1,30 +1,28 @@
-package com.windmill.android.demo.custom.adgainad;
+package com.tobid.adapter.adgain;
 
 import android.app.Activity;
 import android.util.Log;
 
 import com.adgain.sdk.api.AdError;
 import com.adgain.sdk.api.AdRequest;
-import com.adgain.sdk.api.RewardAd;
-import com.adgain.sdk.api.RewardAdListener;
+import com.adgain.sdk.api.InterstitialAd;
+import com.adgain.sdk.api.InterstitialAdListener;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
-import com.windmill.sdk.custom.WMCustomRewardAdapter;
+import com.windmill.sdk.custom.WMCustomInterstitialAdapter;
 import com.windmill.sdk.models.BidPrice;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdGainCustomerReward extends WMCustomRewardAdapter implements RewardAdListener {
-    private static final String TAG = "GtAdCustomerReward";
+public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter implements InterstitialAdListener {
 
-    private RewardAd rewardAd;
+    private InterstitialAd interstitialAd;
+    private String TAG = "AdGainCustomerInterstitial";
 
     @Override
     public void loadAd(Activity activity, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
-        Log.d(TAG, "loadAd: l: " + localExtra);
-        Log.d(TAG, "loadAd: s" + serverExtra);
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
@@ -36,10 +34,10 @@ public class AdGainCustomerReward extends WMCustomRewardAdapter implements Rewar
                     .setCodeId(unitId)
                     .setExtOption(options)
                     .build();
-            rewardAd = new RewardAd(adRequest, this);
-            rewardAd.loadAd();
+            interstitialAd = new InterstitialAd(adRequest, this);
+            interstitialAd.loadAd();
         } catch (Throwable tr) {
-            Log.e(TAG, "loadAd exception ", tr);
+            Log.e(TAG, "loadAd exception: ", tr);
             callLoadFail(new WMAdapterError(WindMillError.ERROR_AD_ADAPTER_LOAD.getErrorCode(),
                     "catch GtAd loadAd error " + Log.getStackTraceString(tr)));
         }
@@ -47,10 +45,8 @@ public class AdGainCustomerReward extends WMCustomRewardAdapter implements Rewar
 
     @Override
     public void showAd(Activity activity, HashMap<String, String> localExtra, Map<String, Object> serverExtra) {
-        Log.d(TAG, "showAd: l" + localExtra);
-        Log.d(TAG, "showAd: s" + serverExtra);
         try {
-            rewardAd.showAd(activity);
+            interstitialAd.showAd(activity);
         } catch (Throwable tr) {
             Log.e(TAG, "showAd exception: ", tr);
             callVideoAdPlayError(new WMAdapterError(WindMillError.ERROR_AD_ADAPTER_PLAY.getErrorCode(),
@@ -60,86 +56,72 @@ public class AdGainCustomerReward extends WMCustomRewardAdapter implements Rewar
 
     @Override
     public boolean isReady() {
-        Log.d(TAG, "isReady: ad=" + rewardAd);
-        if (rewardAd != null) Log.d(TAG, "isReady: ad ready = " + rewardAd.isReady());
-        return rewardAd != null && rewardAd.isReady();
+        return interstitialAd != null && interstitialAd.isReady();
     }
 
     @Override
     public void destroyAd() {
-        if (rewardAd != null) {
-            rewardAd.destroyAd();
-            rewardAd = null;
+        Log.d(TAG, "destroyAd");
+        if (interstitialAd != null) {
+            interstitialAd.destroyAd();
+            interstitialAd = null;
         }
     }
 
     @Override
     public void notifyBiddingResult(boolean isWin, String price, Map<String, Object> referBidInfo) {
-        if (rewardAd != null) {
-            Log.d(TAG, "notifyBiddingResult: win: " + isWin + " price: " + price + " refer: " + referBidInfo);
+        if (interstitialAd != null) {
             if (isWin) {
-                rewardAd.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
+                // 竞价成功
+                interstitialAd.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
             } else {
-                rewardAd.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
+                interstitialAd.sendLossNotification(AdGainAdapterUtil.getBidingLossNoticeParam(price, referBidInfo));
             }
         }
     }
 
     @Override
-    public void onRewardAdLoadSuccess() {
-        if (rewardAd != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
-            BidPrice bidPrice = new BidPrice(String.valueOf(rewardAd.getBidPrice()));
-            callLoadBiddingSuccess(bidPrice);
-        }
-    }
-
-    @Override
-    public void onRewardAdLoadCached() {
-        callLoadSuccess();
-    }
-
-    @Override
-    public void onRewardAdShow() {
-        callVideoAdShow();
-    }
-
-    @Override
-    public void onRewardAdPlayStart() {
-
-    }
-
-    @Override
-    public void onRewardAdPlayEnd() {
-        callVideoAdPlayComplete();
-    }
-
-    @Override
-    public void onRewardAdClick() {
-        callVideoAdClick();
-    }
-
-    @Override
-    public void onRewardAdClosed() {
-        callVideoAdClosed();
-    }
-
-    @Override
-    public void onRewardAdLoadError(AdError adError) {
+    public void onInterstitialAdLoadError(AdError adError) {
         callLoadFail(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
     }
 
     @Override
-    public void onRewardAdShowError(AdError adError) {
+    public void onInterstitialAdLoadSuccess() {
+        Log.d(TAG, "onInterstitialAdLoadSuccess: bidtype: " + getBiddingType());
+        if (interstitialAd != null && getBiddingType() == WMConstants.AD_TYPE_CLIENT_BIDING) {
+            BidPrice bidPrice = new BidPrice(String.valueOf(interstitialAd.getBidPrice()));
+            callLoadBiddingSuccess(bidPrice);
+        }
+        callLoadSuccess();
+    }
+
+    @Override
+    public void onInterstitialAdLoadCached() {
+
+    }
+
+    @Override
+    public void onInterstitialAdShow() {
+        callVideoAdShow();
+    }
+
+    @Override
+    public void onInterstitialAdPlayEnd() {
+        callVideoAdPlayComplete();
+    }
+
+    @Override
+    public void onInterstitialAdClick() {
+        callVideoAdClick();
+    }
+
+    @Override
+    public void onInterstitialAdClosed() {
+        callVideoAdClosed();
+    }
+
+    @Override
+    public void onInterstitialAdShowError(AdError adError) {
         callVideoAdPlayError(new WMAdapterError(adError.getErrorCode(), adError.getMessage()));
-    }
-
-    @Override
-    public void onRewardVerify() {
-        callVideoAdReward(true);
-    }
-
-    @Override
-    public void onAdSkip() {
-
     }
 }
