@@ -1,4 +1,4 @@
-package com.union_test.toutiao.adgain;
+package com.gromore.adapter.adgain;
 
 import android.content.Context;
 import android.util.Log;
@@ -39,7 +39,7 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
                 @Override
                 public void onAdLoadSuccess() {
                     Log.d(TAG, "splash ----------onAdLoadSuccess---------- " + splashAd.getBidPrice());
-                    callLoadSuccess(splashAd.getBidPrice()*1000);  // 单位分
+                    callLoadSuccess(splashAd.getBidPrice() * 1000);  // 单位分
                 }
 
                 @Override

@@ -65,8 +65,8 @@ repositories {
 
 dependencies {
 
-    implementation project(':adgain-adapter')
-//    implementation(name: "mediation_adgain_adapter_4.0.4", ext: 'aar')
+//    implementation project(':adgain-adapter')
+    implementation(name: "gromore-adgain-adapter-4.0.4", ext: 'aar')
 
 
     implementation("com.google.android.gms:play-services-ads:17.2.0") {

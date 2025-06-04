@@ -32,7 +32,6 @@ android {
 
 repositories {
     flatDir {
-//        dirs '../app/libs', '../app/libs/adn', '../app/libs/adn/mtg', '../app/libs/adn/sigmob', '../app/libs/adapter'
         dirs '../app/libs','../app/libs/adn'
     }
 }
@@ -40,7 +39,6 @@ repositories {
 dependencies {
     compileOnly(name: "adgain-sdk-4.0.4-release", ext: 'aar')
 
-    // ByteDance Mediation SDK
 //    compileOnly(name: 'open_ad_sdk_6.8.1.7', ext: 'aar')
     compileOnly(name: 'open_ad_sdk_6.6.0.7', ext: 'aar')
 }

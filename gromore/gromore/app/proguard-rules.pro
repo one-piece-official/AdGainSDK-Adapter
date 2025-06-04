@@ -39,7 +39,7 @@
 
 #保护内部类
 
--keep class com.union_test.toutiao.adgain.AdGainRewardAdapter { *; }
--keep class com.union_test.toutiao.adgain.AdGainInterAdapter { *; }
--keep class com.union_test.toutiao.adgain.AdGainSplashAdapter { *; }
--keep class com.union_test.toutiao.adgain.AdGainNativeAdapter { *; }
+-keep class com.gromore.adapter.adgain.AdGainRewardAdapter { *; }
+-keep class com.gromore.adapter.adgain.AdGainInterAdapter { *; }
+-keep class com.gromore.adapter.adgain.AdGainSplashAdapter { *; }
+-keep class com.gromore.adapter.adgain.AdGainNativeAdapter { *; }

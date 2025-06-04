@@ -1,4 +1,4 @@
-package com.union_test.toutiao.adgain;
+package com.gromore.adapter.adgain;
 
 import android.os.Handler;
 import android.os.Looper;

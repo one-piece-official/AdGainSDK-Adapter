@@ -1,4 +1,4 @@
-package com.union_test.toutiao.adgain;
+package com.gromore.adapter.adgain;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,7 +50,7 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
             RewardAdListener rewardAdListener = new RewardAdListener() {
                 @Override
                 public void onRewardAdLoadSuccess() {
-                    callLoadSuccess(mRewardAd.getBidPrice()*1000);  // 单位 分
+                    callLoadSuccess(mRewardAd.getBidPrice() * 1000);  // 单位 分
 
                 }
 

@@ -1,4 +1,4 @@
-package com.union_test.toutiao.adgain;
+package com.gromore.adapter.adgain;
 
 import android.app.Activity;
 import android.content.Context;
@@ -43,7 +43,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
                 @Override
                 public void onInterstitialAdLoadSuccess() {
                     Log.d(TAG, "onInterstitialAdLoadSuccess: ");
-                    callLoadSuccess(mInterstitialAd.getBidPrice()*1000);  // 单位 分
+                    callLoadSuccess(mInterstitialAd.getBidPrice() * 1000);  // 单位 分
                 }
 
                 @Override
