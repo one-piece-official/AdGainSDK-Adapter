@@ -57,7 +57,7 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
 
                             double ecpm = feedAd.getPrice();
                             Log.e(TAG, "ecpm:" + ecpm);
-                            gdtNativeAd.setBiddingPrice(ecpm * 1000); //回传竞价广告价格
+                            gdtNativeAd.setBiddingPrice(ecpm); //回传竞价广告价格
 
                             tempList.add(gdtNativeAd);
                         }

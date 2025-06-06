@@ -50,7 +50,7 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
             RewardAdListener rewardAdListener = new RewardAdListener() {
                 @Override
                 public void onRewardAdLoadSuccess() {
-                    callLoadSuccess(mRewardAd.getBidPrice() * 1000);  // 单位 分
+                    callLoadSuccess(mRewardAd.getBidPrice());  // 单位 分
 
                 }
 
