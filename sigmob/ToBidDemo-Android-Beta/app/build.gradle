@@ -60,13 +60,19 @@ android {
 
 }
 
+repositories {
+    flatDir {
+        dirs 'libs','libs/AdNetworks/adgainad'
+    }
+}
 
 dependencies {
 
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
-    //    implementation project(':adgain-adapter')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/adgainad')
+//    implementation project(':adgain-adapter')
+    implementation(name: 'tobid-adgain-adapter-release-4.0.4', ext: 'aar')
+    implementation(name: 'adgain-sdk-4.0.4-release', ext: 'aar')
 
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.appcompat:appcompat:1.2.0'

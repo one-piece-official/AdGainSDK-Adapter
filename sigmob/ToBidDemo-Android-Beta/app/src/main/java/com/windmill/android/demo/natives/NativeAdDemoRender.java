@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.windmill.android.demo.R;
+import com.windmill.android.demo.utils.ViewUtils;
 import com.windmill.sdk.natives.WMNativeAdData;
 import com.windmill.sdk.natives.WMNativeAdDataType;
 import com.windmill.sdk.natives.WMNativeAdRender;
@@ -180,6 +181,13 @@ public class NativeAdDemoRender implements WMNativeAdRender<WMNativeAdData> {
         //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
         //作为creativeViewList传入，点击不进入详情页，直接下载或进入落地页，视频和图文广告均生效
         adData.bindViewForInteraction(context, view, clickableViews, creativeViewList, img_dislike);
+
+        // AdGain 添加摇一摇
+        View shakeView = adData.getInteractionWidgetView(80, 80, 0, null);
+        if (shakeView != null) {
+            ViewUtils.removeFromParent(shakeView);
+            ((ViewGroup) view).addView(shakeView);
+        }
 
         //需要等到bindViewForInteraction后再去添加media
         if (!imageViews.isEmpty()) {

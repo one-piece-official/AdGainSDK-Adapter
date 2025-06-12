@@ -423,6 +423,14 @@ public class AdGainNativeAdData extends WMNativeAdData {
     }
 
     @Override
+    public View getInteractionWidgetView(int width, int height, int actionType, AdShakeViewListener listener) {
+        if (nativeAdData!= null) {
+            return nativeAdData.getWidgetView(width, height);
+        }
+        return super.getInteractionWidgetView(width, height, actionType, listener);
+    }
+
+    @Override
     public void stopVideo() {
         Log.d(TAG, "stopVideo");
         super.stopVideo();
