@@ -142,6 +142,5 @@ public class AdGainCustomerReward extends WMCustomRewardAdapter implements Rewar
 
     @Override
     public void onAdSkip() {
-
     }
 }

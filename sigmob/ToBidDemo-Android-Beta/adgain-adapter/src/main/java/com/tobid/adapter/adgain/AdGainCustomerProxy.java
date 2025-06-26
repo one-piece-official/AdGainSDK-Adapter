@@ -44,13 +44,13 @@ public class AdGainCustomerProxy extends WMCustomAdapterProxy {
                     .setInitCallback(new InitCallback() {
                         @Override
                         public void onSuccess() {
-                            Log.d(TAG, "Gt init onSuccess");
+                            Log.d(TAG, "Adgain init onSuccess");
                             callInitSuccess();
                         }
 
                         @Override
                         public void onFail(int code, String message) {
-                            Log.d(TAG, "Gt init onFail " + code + " msg: " + message);
+                            Log.d(TAG, "Adgain init onFail " + code + " msg: " + message);
                             callInitFail(code, message);
                         }
                     })
