@@ -60,8 +60,8 @@ public class DrawNativeVideoActivity extends AppCompatActivity {
     private RelativeLayout mTopLayout;
     private MyAdapter mAdapter;
     private ViewPagerLayoutManager mLayoutManager;
-    private int[] imgs = {R.mipmap.video11, R.mipmap.video12, R.mipmap.video13, R.mipmap.video14, R.mipmap.img_video_2};
-    private int[] videos = {R.raw.video11, R.raw.video12, R.raw.video13, R.raw.video14, R.raw.video_2};
+    private int[] imgs = {};
+    private int[] videos = {};
 
     private TTAdNative mTTAdNative;
     private Context mContext;

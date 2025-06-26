@@ -38,7 +38,7 @@ public class NativeDrawVideoActivity extends Activity {
     private String TAG = this.getClass().getSimpleName();
 
     private int[] imgs = {R.mipmap.testvideo1_thumb, R.mipmap.testvideo2_thumb, R.mipmap.testvideo2_thumb};
-    private int[] videos = {R.raw.testvideo1, R.raw.testvideo2, R.raw.testvideo2};
+    private int[] videos = {};//R.raw.testvideo1, R.raw.testvideo2, R.raw.testvideo2
 
     private RecyclerView mRecyclerView;
     private ViewPagerLayoutManager mLayoutManager;

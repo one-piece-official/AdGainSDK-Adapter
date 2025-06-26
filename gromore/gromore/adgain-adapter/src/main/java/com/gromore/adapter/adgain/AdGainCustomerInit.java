@@ -2,6 +2,8 @@ package com.gromore.adapter.adgain;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.Log;
 
 import com.adgain.sdk.AdGainSdk;
@@ -10,6 +12,9 @@ import com.adgain.sdk.api.CustomController;
 import com.adgain.sdk.api.InitCallback;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.MediationCustomInitLoader;
 import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomInitConfig;
+
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,51 +41,6 @@ public class AdGainCustomerInit extends MediationCustomInitLoader {
                     .showLog(false)
                     .addCustomData(customData)  //自定义数据
                     .customController(new CustomController() {
-                        // 是否允许SDK获取位置信息
-                        @Override
-                        public boolean canReadLocation() {
-                            return true;
-                        }
-
-                        // 是否允许SDK获取手机状态地信息，如：imei deviceid
-                        @Override
-                        public boolean canUsePhoneState() {
-                            return true;
-                        }
-
-                        // 是否允许SDK使用AndoridId
-                        @Override
-                        public boolean canUseAndroidId() {
-                            return true;
-
-                        }
-
-                        // 是否允许SDK获取Wifi状态
-                        @Override
-                        public boolean canUseWifiState() {
-                            return true;
-                        }
-
-                        @Override
-                        public Location getLocation() {
-                            return super.getLocation();
-                        }
-
-                        @Override
-                        public String getMacAddress() {
-                            return super.getMacAddress();
-                        }
-
-                        @Override
-                        public String getImei() {
-                            return super.getImei();
-                        }
-
-                        @Override
-                        public String getAndroidId() {
-                            return super.getAndroidId();
-                        }
-
                         // 为SDK提供oaid
                         @Override
                         public String getOaid() {
@@ -119,6 +79,17 @@ public class AdGainCustomerInit extends MediationCustomInitLoader {
     @Override
     public String getSdkInfo(Context context, Map<String, Object> extra) {
         return "";
+    }
+
+    public static int getBidFloor(String json) {
+        int bidFloor = 0;
+        try {
+            JSONTokener token = new JSONTokener(json);
+            JSONObject object = new JSONObject(token);
+            bidFloor = object.getInt("bid_floor");
+        } catch (Exception e) {
+        }
+        return bidFloor;
     }
 
 }

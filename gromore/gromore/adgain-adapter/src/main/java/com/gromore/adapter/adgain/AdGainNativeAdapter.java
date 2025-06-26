@@ -27,15 +27,17 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
 
         try {
+            if (serviceConfig == null) {
+                callLoadFail(40000, "serviceConfig 为 null");
+                return;
+            }
             Log.e(TAG, "load custom native ad----- " + serviceConfig.getADNNetworkSlotId() + "  " + getBiddingType());
-
-            Log.i(TAG, "自渲染");
 
             Map<String, Object> options = new HashMap<>();
 
-            AdRequest adRequest = new AdRequest
-                    .Builder()
+            AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(serviceConfig.getADNNetworkSlotId())
+                    .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .setExtOption(options)
                     .build();
 
@@ -81,7 +83,7 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
 
             nativeUnifiedAd.loadAd();
         } catch (Exception e) {
-
+            callLoadFail(40000, "Exception " + e.getMessage());
         }
     }
 
@@ -90,9 +92,6 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
     }
 
 
-    public boolean isServerBidding() {
-        return getBiddingType() == MediationConstant.AD_TYPE_SERVER_BIDING;
-    }
 
     @Override
     public void receiveBidResult(boolean win, double winnerPrice, int loseReason, Map<String, Object> extra) {

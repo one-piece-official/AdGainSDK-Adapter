@@ -35,6 +35,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
         try {
             if (serviceConfig == null) {
                 Log.d(TAG, "inter load: serviceConfig is null");
+                callLoadFail(40000, "serviceConfig 为 null");
                 return;
             }
 
@@ -43,7 +44,10 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
                 @Override
                 public void onInterstitialAdLoadSuccess() {
                     Log.d(TAG, "onInterstitialAdLoadSuccess: ");
-                    callLoadSuccess(mInterstitialAd.getBidPrice());  // 单位 分 ecpm
+                    if (isClientBidding())
+                        callLoadSuccess(mInterstitialAd.getBidPrice());  // 单位 分 ecpm
+                    else
+                        callLoadSuccess();
                 }
 
                 @Override
@@ -97,15 +101,15 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
             AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(serviceConfig.getADNNetworkSlotId())  // 广推广告位 从商务获取
                     .setExtOption(options)
-                    .setOrientation(0)  //0 竖屏  1、横屏  2 随屏幕方向改变
+                    .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .build();
 
             mInterstitialAd = new InterstitialAd(adRequest, listener);
 
             mInterstitialAd.loadAd();
 
-            Log.i(TAG, "inter load");
         } catch (Exception e) {
+            callLoadFail(40000, "Exception " + e.getMessage());
             Log.d(TAG, "inter load: error = " + Log.getStackTraceString(e));
         }
     }

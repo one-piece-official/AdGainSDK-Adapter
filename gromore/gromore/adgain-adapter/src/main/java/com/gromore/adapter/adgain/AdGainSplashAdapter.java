@@ -31,6 +31,7 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
         try {
             if (serviceConfig == null) {
                 Log.d(TAG, "splash load: serviceConfig is null");
+                callLoadFail(40000, "serviceConfig 为 null");
                 return;
             }
 
@@ -39,13 +40,16 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
                 @Override
                 public void onAdLoadSuccess() {
                     Log.d(TAG, "splash ----------onAdLoadSuccess---------- " + splashAd.getBidPrice());
-                    callLoadSuccess(splashAd.getBidPrice());  // 单位分
+                    if (isClientBidding()) {
+                        callLoadSuccess(splashAd.getBidPrice());  // 单位分
+                    }else {
+                        callLoadSuccess();
+                    }
                 }
 
                 @Override
                 public void onAdCacheSuccess() {
                     Log.d(TAG, "splash ----------onAdCacheSuccess----------");
-
                 }
 
                 @Override
@@ -90,15 +94,15 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
 
             AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(serviceConfig.getADNNetworkSlotId())
-                    .setExtOption(options)
+                    .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .build();
 
             splashAd = new SplashAd(adRequest, mSplashAdListener);
 
             splashAd.loadAd();
 
-            Log.i(TAG, "splash load");
         } catch (Exception e) {
+            callLoadFail(40000, "Exception " + e.getMessage());
             Log.d(TAG, "splash load: error = " + Log.getStackTraceString(e));
         }
     }
@@ -142,14 +146,6 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
         return getBiddingType() == MediationConstant.AD_TYPE_CLIENT_BIDING;
     }
 
-    /**
-     * 是否serverBidding广告
-     *
-     * @return
-     */
-    public boolean isServerBidding() {
-        return getBiddingType() == MediationConstant.AD_TYPE_SERVER_BIDING;
-    }
 
     @Override
     public void receiveBidResult(boolean b, double v, int i, Map<String, Object> map) {
@@ -168,4 +164,5 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
             splashAd = null;
         }
     }
+
 }

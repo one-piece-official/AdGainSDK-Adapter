@@ -66,16 +66,11 @@ public class InitSDkActivity extends Activity {
         mRlInitSDK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //弹出隐私协议弹窗，用户同意后再进行SDK初始化
-                if (!mHasInitSdk) {
-                    //隐私协议url
-                    if (TextUtils.isEmpty(mPrivacyWebView.getUrl())) {
-                        mPrivacyWebView.loadUrl("https://www.takuad.com/zh-cn/privacy-policy");
-                    }
-                    mRlPrivacyContainer.setVisibility(View.VISIBLE);
-                } else {
-                    showToast("SDK已初始化");
-                }
+                //初始化SDK
+                SDKUtil.initSDK(InitSDkActivity.this);
+                mHasInitSdk = true;
+                mRlPrivacyContainer.setVisibility(View.GONE);
+                showToast("初始化成功");
             }
         });
 
@@ -190,7 +185,6 @@ public class InitSDkActivity extends Activity {
         }
 
     }
-
 
 
     private ATNetworkConfig getAtNetworkConfig() {

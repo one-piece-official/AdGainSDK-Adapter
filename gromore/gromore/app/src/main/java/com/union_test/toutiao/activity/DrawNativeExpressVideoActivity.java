@@ -53,8 +53,8 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
     private RelativeLayout mTopLayout;
     private MyAdapter mAdapter;
     private ViewPagerLayoutManager mLayoutManager;
-    private int[] imgs = {R.mipmap.video11, R.mipmap.video12, R.mipmap.video13, R.mipmap.video14, R.mipmap.img_video_2};
-    private int[] videos = {R.raw.video11, R.raw.video12, R.raw.video13, R.raw.video14, R.raw.video_2};
+    private int[] imgs = {};
+    private int[] videos = {};
 
     private TTAdNative mTTAdNative;
     private Context mContext;
@@ -97,9 +97,7 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
         float expressViewWidth = UIUtils.getScreenWidthDp(this);
         float expressViewHeight = UIUtils.getHeight(this);
 
-        AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId("901121041")
-                .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
+        AdSlot adSlot = new AdSlot.Builder().setCodeId("901121041").setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
                 .setAdCount(2) //请求广告数量为1到3条
                 .build();
         if (mTTAdNative == null) return;
@@ -199,7 +197,7 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
                             TToast.show(DrawNativeExpressVideoActivity.this, "渲染成功");
                             int random = (int) (Math.random() * 100);
                             int index = random % videos.length;
-                            if (index == 0){
+                            if (index == 0) {
                                 index++;
                             }
                             datas.add(index, new Item(TYPE_AD_ITEM, ad, -1, -1));
@@ -249,8 +247,7 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
                 } else {
                     index = 1;
                 }
-                if (datas.get(position).type == TYPE_COMMON_ITEM)
-                    releaseVideo(index);
+                if (datas.get(position).type == TYPE_COMMON_ITEM) releaseVideo(index);
             }
 
             @Override
@@ -292,7 +289,7 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
         }
         final FrameLayout videoLayout = itemView.findViewById(R.id.video_layout);
         final View view = videoLayout.getChildAt(0);
-        if(view == null || !(view instanceof VideoView)){
+        if (view == null || !(view instanceof VideoView)) {
             return;
         }
         final VideoView videoView = (VideoView) view;
@@ -329,7 +326,7 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                if(mp!=null&&!mp.isPlaying()){
+                if (mp != null && !mp.isPlaying()) {
                     mp.start();
                 }
                 Log.e(TAG, "onPrepared");
@@ -427,8 +424,8 @@ public class DrawNativeExpressVideoActivity extends AppCompatActivity {
                 }
             }
             holder.videoLayout.removeAllViews();
-            if(view.getParent()!=null){
-                ((ViewGroup)view.getParent()).removeView(view);
+            if (view.getParent() != null) {
+                ((ViewGroup) view.getParent()).removeView(view);
             }
             holder.videoLayout.addView(view);
             if (item != null) {

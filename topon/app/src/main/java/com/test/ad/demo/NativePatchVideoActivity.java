@@ -82,7 +82,7 @@ public class NativePatchVideoActivity extends Activity {
         placementId = PlacementIdUtil.getPatchPlacementId(this);
 
         videoView = findViewById(R.id.video_view);
-        videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_1));
+        videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/R.raw.video_1"));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {

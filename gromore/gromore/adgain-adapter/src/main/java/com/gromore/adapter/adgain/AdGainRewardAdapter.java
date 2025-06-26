@@ -40,18 +40,21 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
 
             if (serviceConfig == null) {
                 Log.d(TAG, "reward load: serviceConfig is null");
+                callLoadFail(40000, "serviceConfig 为 null");
                 return;
             }
 
-            Log.d(TAG, "reward load: " + serviceConfig.getADNNetworkSlotId());
-            Log.d(TAG, "reward  load: " + serviceConfig.getADNNetworkName());
-            Log.d(TAG, "reward  load: " + serviceConfig.getCustomAdapterJson());
-
+            Log.d(TAG, "reward getADNNetworkSlotId: " + serviceConfig.getADNNetworkSlotId());
+//            Log.d(TAG, "reward  getADNNetworkName: " + serviceConfig.getADNNetworkName());
+//            Log.d(TAG, "reward  getCustomAdapterJson: " + AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()));
             RewardAdListener rewardAdListener = new RewardAdListener() {
                 @Override
                 public void onRewardAdLoadSuccess() {
-                    callLoadSuccess(mRewardAd.getBidPrice());  // 单位 分
-
+                    Log.d(TAG, "reward AdLoadSuccess: " + isClientBidding());
+                    if (isClientBidding())
+                        callLoadSuccess(mRewardAd.getBidPrice());  // 单位 分
+                    else
+                        callLoadSuccess();
                 }
 
                 @Override
@@ -91,6 +94,8 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
 
                 @Override
                 public void onRewardAdLoadError(AdError error) {
+                    Log.d(TAG, "reward AdLoadError: " + error.getMessage());
+
                     if (error != null) {
                         Log.i(TAG, "onRewardAdLoadError errorCode = " + error.getErrorCode() + " errorMessage = " + error.getMessage());
                         callLoadFail(error.getErrorCode(), error.getMessage());
@@ -142,16 +147,17 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
             Map<String, Object> options = new HashMap<>();
 
             AdRequest adRequest = new AdRequest.Builder()
-                    .setCodeId(serviceConfig.getADNNetworkSlotId())     // 广推广告位 从商务获取
+                    .setCodeId("11001807")     // 广推广告位 从商务获取
                     .setExtOption(options)
+                    .setBidFloor(1)
                     .build();
 
             mRewardAd = new RewardAd(adRequest, rewardAdListener);
 
             mRewardAd.loadAd();
 
-            Log.i(TAG, "reward load");
         } catch (Exception e) {
+            callLoadFail(40000, "Exception " + e.getMessage());
             Log.d(TAG, "reward load: error = " + Log.getStackTraceString(e));
         }
     }
@@ -194,10 +200,6 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
         return getBiddingType() == MediationConstant.AD_TYPE_CLIENT_BIDING;
     }
 
-
-    public boolean isServerBidding() {
-        return getBiddingType() == MediationConstant.AD_TYPE_SERVER_BIDING;
-    }
 
     @Override
     public void receiveBidResult(boolean win, double winnerPrice, int loseReason, Map<String, Object> extra) {
