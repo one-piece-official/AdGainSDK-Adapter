@@ -78,23 +78,7 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
                 break;
         }
 
-
         int adnId = ATInitMediation.getIntFromMap(extra, ATBiddingNotice.ADN_ID, -1);
-
-        try {
-            switch (adnId) {
-                case ATAdConst.BIDDING_ADN_ID.LOSE_TO_NORMAL_IN_SAME_ADN:
-                    break;
-                case ATAdConst.BIDDING_ADN_ID.LOSE_TO_HB_IN_SAME_ADN:
-                    break;
-                case ATAdConst.BIDDING_ADN_ID.LOSE_TO_OWN_ADN:
-                    break;
-                case ATAdConst.BIDDING_ADN_ID.LOSE_TO_OTHER_ADN:
-                    break;
-            }
-
-        } catch (Throwable ignored) {
-        }
 
         if (extra != null && !extra.isEmpty()) {
             map.putAll(extra);

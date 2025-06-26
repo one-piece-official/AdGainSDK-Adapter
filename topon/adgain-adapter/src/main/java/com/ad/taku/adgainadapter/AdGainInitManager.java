@@ -97,63 +97,16 @@ public class AdGainInitManager extends ATInitMediation {
 
         Map<String, Object> customData = new HashMap<>(serviceExtras);
         customData.put("custom_key", "custom_value");
-
         Log.d(TAG, "initSDK: real start  app_id = " + app_id);
-
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
                 .appId(app_id)         //必填
-                .userId("")            // 非必须，有就填
                 .showLog(false)    // 是否展示 adsdk 日志
                 .addCustomData(customData) //自定义数据
 
                 .customController(new CustomController() {
-
-                    @Override
-                    public boolean canReadLocation() {
-                        return true;
-                    }
-
-                    // imei deviceid
-                    @Override
-                    public boolean canUsePhoneState() {
-                        return true;
-                    }
-
-                    @Override
-                    public boolean canUseAndroidId() {
-                        return true;
-                    }
-
-                    @Override
-                    public boolean canUseWifiState() {
-
-                        return true;
-                    }
-
                     @Override
                     public String getOaid() {
-
                         return "";
-                    }
-
-                    @Override
-                    public Location getLocation() {
-                        return super.getLocation();
-                    }
-
-                    @Override
-                    public String getMacAddress() {
-                        return super.getMacAddress();
-                    }
-
-                    @Override
-                    public String getImei() {
-                        return super.getImei();
-                    }
-
-                    @Override
-                    public String getAndroidId() {
-                        return super.getAndroidId();
                     }
                 })
                 .setInitCallback(new InitCallback() {
@@ -214,23 +167,12 @@ public class AdGainInitManager extends ATInitMediation {
 
     @Override
     public String getNetworkSDKClass() {
-        return "com.adgain.sdk.base.activity.AdActivity";
+        return "com.adgain.sdk";
     }
 
-    @Override
-    public List getActivityStatus() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("com.adgain.sdk.base.activity.AdActivity");
-        list.add("com.adgain.sdk.base.activity.PortraitTransparentAdActivity");
-        list.add("com.adgain.sdk.base.activity.LandTransparentAdActivity");
-
-        return list;
+    public static int getBidFloor(Map<String, Object> serverExtra) {
+        return ATInitMediation.getIntFromMap(serverExtra, "bid_floor", 0);
     }
 
-    @Override
-    public List getServiceStatus() {
-        ArrayList<String> list = new ArrayList<>();
-//        list.add("com.qq.e.comm.DownloadService");
-        return list;
-    }
+
 }

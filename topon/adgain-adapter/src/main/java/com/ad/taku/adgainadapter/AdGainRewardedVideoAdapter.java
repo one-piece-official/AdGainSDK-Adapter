@@ -27,7 +27,7 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
     RewardAd mRewardVideoAD;
 
     String mAppId;
-    String mUnitId;
+    String codeId;
 
     private int mVideoMuted = 0;
 
@@ -49,8 +49,8 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
     public void loadCustomNetworkAd(final Context context, final Map<String, Object> serverExtra, Map<String, Object> localExtra) {
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
-        mUnitId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
-
+        codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
+        Log.d("------loadAd", "map " + serverExtra);
         mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0);
 
         if (TextUtils.isEmpty(mAppId)) {
@@ -77,8 +77,8 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
         options.put("reward_test_option_key", "reward_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setCodeId(mUnitId)
-                .setExtOption(options)
+                .setCodeId(codeId)
+                .setBidFloor(AdGainInitManager.getBidFloor(serverExtra))
                 .build();
 
         mRewardVideoAD = new RewardAd(adRequest, new RewardAdListener() {
@@ -173,7 +173,7 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
     @Override
     public String getNetworkPlacementId() {
-        return mUnitId;
+        return codeId;
     }
 
     @Override

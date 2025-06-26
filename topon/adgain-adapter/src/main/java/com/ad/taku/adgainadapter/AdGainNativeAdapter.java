@@ -29,7 +29,7 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
     NativeUnifiedAd nativeAd;
 
     String mAppId;
-    String mUnitId;
+    String codeId;
 
     int mUnitType;
 
@@ -53,7 +53,7 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
     void initRequestParams(Map<String, Object> serverExtra, Map<String, Object> localExtra) {
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
-        mUnitId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
+        codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
         mUnitType = ATInitMediation.getIntFromMap(serverExtra, "unit_type");
 
         mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0) == 1;
@@ -108,8 +108,8 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
 
         AdRequest adRequest = new AdRequest
                 .Builder()
-                .setCodeId(mUnitId)
-                .setExtOption(options)
+                .setCodeId(codeId)
+                .setBidFloor(AdGainInitManager.getBidFloor(serverExtra))
                 .build();
 
         nativeAd = new NativeUnifiedAd(adRequest, new NativeAdLoadListener() {
@@ -173,7 +173,7 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
 
     @Override
     public String getNetworkPlacementId() {
-        return mUnitId;
+        return codeId;
     }
 
     @Override

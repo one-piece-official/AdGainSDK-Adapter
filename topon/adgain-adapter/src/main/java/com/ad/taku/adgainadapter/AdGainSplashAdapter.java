@@ -25,7 +25,7 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
     final String TAG = AdGainInitManager.TAG;
 
     private String mAppId;
-    private String mUnitId;
+    private String codeId;
 
     private boolean isReady;
 
@@ -52,7 +52,7 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
 
         // 或者取  slot_id 对应topon后台广告位id
         // "networkUnit": "{\"app_id\":\"1105\",\"slot_id\":\"1194\",\"unit_id\":\"1194\"}",
-        mUnitId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
+        codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
 
         isReady = false;
 
@@ -80,10 +80,10 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
         options.put("splash_test_option_key", "splash_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                .setCodeId(mUnitId)
+                .setCodeId(codeId)
+                .setBidFloor(AdGainInitManager.getBidFloor(serverExtra))
 //                .setWidth(PxUtils.getDeviceWidthInPixel(context))
 //                .setHeight(PxUtils.getDeviceHeightInPixel(context) - PxUtils.dpToPx(context, 100))
-                .setExtOption(options)
                 .build();
 
         splashAD = new SplashAd(adRequest, new SplashAdListener() {
@@ -107,14 +107,16 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
                     }
                 } else {
                     if (mLoadListener != null) {
-                        mLoadListener.onAdCacheLoaded();
+                        mLoadListener.onAdDataLoaded();
                     }
                 }
             }
 
             @Override
             public void onAdCacheSuccess() {
-
+                if (mLoadListener != null) {
+                    mLoadListener.onAdCacheLoaded();
+                }
             }
 
             @Override
@@ -220,7 +222,7 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
 
     @Override
     public String getNetworkPlacementId() {
-        return mUnitId;
+        return codeId;
     }
 
     @Override

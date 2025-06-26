@@ -28,7 +28,7 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
     InterstitialAd mGTInterstitialAd;
 
     String mAppId;
-    String mADUnitId;
+    String codeId;
 
     boolean isC2SBidding;
 
@@ -49,11 +49,10 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
     //loadCustomNetworkAd: serverExtra = {ad_format=3, ad_type=-1, gdpr_consent=true, app_coppa_switch=false, gm_currency=RMB, forbid_gm_refresh=true, anythink_stk_info=com.anythink.core.common.f.a(Unknown Source:321),com.anythink.core.common.f.b(Unknown Source:1428),com.anythink.interstitial.a.a.a(Unknown Source:233),com.anythink.interstitial.api.ATInterstitial.load(Unknown Source:250),com.anythink.interstitial.api.ATInterstitial.load(Unknown Source:245),com.anythink.interstitial.api.ATInterstitial.load(Unknown Source:237),com.anythink.interstitial.api.ATInterstitial.load(Unknown Source:233),com.test.ad.demo.InterstitialAdActivity.loadAd(InterstitialAdActivity.java:266),com.test.ad.demo.InterstitialAdActivity.onClick(InterstitialAdActivity.java:317),android.view.View.performClick(View.java:7642),android.view.View.performClickInternal(View.java:7619),android.view.View.-$$Nest$mperformClickInternal(Unknown Source:0),android.view.View$PerformClick.run(View.java:29908),android.os.Handler.handleCallback(Handler.java:942),android.os.Handler.dispatchMessage(Handler.java:99),android.os.Looper.loopOnce(Looper.java:223),android.os.Looper.loop(Looper.java:324),android.app.ActivityThread.main(ActivityThread.java:8599),java.lang.reflect.Method.invoke(Native Method),com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:582),com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1061), sys_sp=2, app_ccpa_switch=false, anythink_mediation_wf_id=b67eb584dc7d2e_662720_0_e7ba7e002dda68cb9d6a7b2f9974714a, test_key=test_value, ad_s_reqf_mode=1, app_id=1105}   localExtra = {}
     @Override
     public void loadCustomNetworkAd(final Context context, final Map<String, Object> serverExtra, final Map<String, Object> localExtra) {
-        Log.d(TAG, "loadCustomNetworkAd: serverExtra = " + serverExtra + "   localExtra = " + localExtra);
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
-        mADUnitId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
-        Log.d(TAG, "loadCustomNetworkAd: mAppId = " + mAppId + "  mADUnitId = " + mADUnitId + "   isC2SBidding =  " + isC2SBidding);
+        codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
+        Log.d(TAG, "loadCustomNetworkAd: mAppId = " + mAppId + "  mADUnitId = " + codeId + "   isC2SBidding =  " + isC2SBidding);
 
         if (TextUtils.isEmpty(mAppId)) {
             notifyATLoadFail("", "GT app_id is empty.");
@@ -79,9 +78,8 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
         options.put("inter_test_option_key", "inter_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
-                //.setAdUnitID("1195")
-                .setCodeId(mADUnitId)
-                .setExtOption(options)
+                .setCodeId(codeId)
+                .setBidFloor(AdGainInitManager.getBidFloor(serverExtra))
                 .build();
 
         mGTInterstitialAd = new InterstitialAd(adRequest, new InterstitialAdListener() {
@@ -189,7 +187,7 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
 
     @Override
     public String getNetworkPlacementId() {
-        return mADUnitId;
+        return codeId;
     }
 
     @Override

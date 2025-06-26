@@ -57,7 +57,7 @@ repositories {
 dependencies {
 
 //    implementation project(':adgain-adapter')
-    implementation(name: 'adgain-adapter-release-4.1.0', ext: 'aar')
+    implementation(name: 'adgain-adapter-release', ext: 'aar')
 
     implementation(name: 'adgain-sdk-4.1.0-release', ext: 'aar')
 
