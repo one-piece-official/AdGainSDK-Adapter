@@ -9,18 +9,11 @@ import android.location.LocationManager;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.czhj.sdk.logger.SigmobLog;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.windmill.sdk.WMAdConfig;
-import com.windmill.sdk.WMAdnInitConfig;
 import com.windmill.sdk.WMCustomController;
-import com.windmill.sdk.WMNetworkConfig;
 import com.windmill.sdk.WindMillAd;
 import com.windmill.sdk.WindMillConsentStatus;
 import com.windmill.sdk.WindMillUserAgeStatus;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * created by lance on   2021/12/7 : 1:26 下午
@@ -31,7 +24,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        CrashReport.initCrashReport(getApplicationContext(), "4c41e5eed0", true);//4c41e5eed0//4ee13aff7b
+//        CrashReport.initCrashReport(getApplicationContext(), "4c41e5eed0", true);//4c41e5eed0//4ee13aff7b
 
         initSDK();
     }

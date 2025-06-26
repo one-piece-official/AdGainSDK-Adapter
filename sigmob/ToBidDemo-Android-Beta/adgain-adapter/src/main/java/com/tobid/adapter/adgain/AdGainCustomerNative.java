@@ -1,5 +1,7 @@
 package com.tobid.adapter.adgain;
 
+import static com.tobid.adapter.adgain.AdGainAdapterUtil.getBidFloor;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -28,20 +30,19 @@ public class AdGainCustomerNative extends WMCustomNativeAdapter implements Nativ
 
     @Override
     public void loadAd(Context context, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
-        Log.d(TAG, "loadAd: l: " + localExtra);
-        Log.d(TAG, "loadAd: s:" + serverExtra);
-        Log.d(TAG, "loadAd: ad:" + nativeUnifiedAd);
+        Log.d(TAG, "loadAd: l: " + localExtra + "  s: " + serverExtra);
         try {
             wmNativeAdDataList.clear();
             // 这个数值来自sigmob后台广告位ID的配置
             if (null == nativeUnifiedAd) {
-                String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
+                String codeId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
                 Map<String, Object> options = new HashMap<>(serverExtra);
                 if (localExtra != null) {
                     options.putAll(localExtra);
                 }
                 AdRequest adRequest = new AdRequest.Builder()
-                        .setCodeId(unitId)
+                        .setCodeId(codeId)
+                        .setBidFloor(getBidFloor(serverExtra))
                         .setExtOption(options)
                         .build();
                 nativeUnifiedAd = new NativeUnifiedAd(adRequest, this);
@@ -99,7 +100,7 @@ public class AdGainCustomerNative extends WMCustomNativeAdapter implements Nativ
 
     @Override
     public void onAdError(AdError error) {
-        Log.d(TAG, "onAdError: "  + " error: " + error);
+        Log.d(TAG, "onAdError: " + " error: " + error);
         callLoadFail(new WMAdapterError(error.getErrorCode(), error.getMessage()));
     }
 
@@ -118,7 +119,7 @@ public class AdGainCustomerNative extends WMCustomNativeAdapter implements Nativ
             }
         }
         if (adDataList != null) {
-            for (NativeAdData data: adDataList) {
+            for (NativeAdData data : adDataList) {
                 wmNativeAdDataList.add(new AdGainNativeAdData(data, this));
             }
         }

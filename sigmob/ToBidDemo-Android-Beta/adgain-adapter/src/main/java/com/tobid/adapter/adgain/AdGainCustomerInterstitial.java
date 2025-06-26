@@ -1,5 +1,7 @@
 package com.tobid.adapter.adgain;
 
+import static com.tobid.adapter.adgain.AdGainAdapterUtil.getBidFloor;
+
 import android.app.Activity;
 import android.util.Log;
 
@@ -25,14 +27,15 @@ public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter impl
     public void loadAd(Activity activity, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
         try {
             // 这个数值来自sigmob后台广告位ID的配置
-            String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
+            String codeId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
             Map<String, Object> options = new HashMap<>(serverExtra);
             if (localExtra != null) {
                 options.putAll(localExtra);
             }
             AdRequest adRequest = new AdRequest.Builder()
-                    .setCodeId(unitId)
+                    .setCodeId(codeId)
                     .setExtOption(options)
+                    .setBidFloor(getBidFloor(serverExtra))
                     .build();
             interstitialAd = new InterstitialAd(adRequest, this);
             interstitialAd.loadAd();

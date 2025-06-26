@@ -1,6 +1,7 @@
 package com.tobid.adapter.adgain;
 
 import com.adgain.sdk.api.IBidding;
+import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.base.WMBidUtil;
 
 import java.util.HashMap;
@@ -45,5 +46,18 @@ public class AdGainAdapterUtil {
             map.put(IBidding.WIN_PRICE, price);
         }
         return map;
+    }
+
+    public static int getBidFloor(Map<String, Object> serverExtra) {
+        int floor = 0;
+        try {
+            Object bidFloor = serverExtra.get(WMConstants.BID_FLOOR);
+            if (bidFloor != null) {
+                floor = (Integer) bidFloor;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return floor;
     }
 }
