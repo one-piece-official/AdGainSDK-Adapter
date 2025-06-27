@@ -147,9 +147,9 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
             Map<String, Object> options = new HashMap<>();
 
             AdRequest adRequest = new AdRequest.Builder()
-                    .setCodeId("11001807")     // 广推广告位 从商务获取
+                    .setCodeId(serviceConfig.getADNNetworkSlotId())     // 广推广告位 从商务获取
                     .setExtOption(options)
-                    .setBidFloor(1)
+                    .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .build();
 
             mRewardAd = new RewardAd(adRequest, rewardAdListener);

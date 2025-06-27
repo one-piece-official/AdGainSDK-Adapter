@@ -39,5 +39,7 @@ repositories {
 dependencies {
     compileOnly(name: "adgain-sdk-4.1.0-release", ext: 'aar')
 
-    compileOnly(name: 'open_ad_sdk_6.8.1.7', ext: 'aar')
+//    compileOnly(name: 'open_ad_sdk_6.8.1.7', ext: 'aar')
+    compileOnly(name: 'open_ad_sdk_6.6.0.7', ext: 'aar')
+
 }
