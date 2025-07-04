@@ -32,7 +32,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    compileOnly(name: 'adgain-sdk-4.1.0-release', ext: 'aar')
+    compileOnly(name: 'adgain-sdk-4.1.5-release', ext: 'aar')
 
     compileOnly(name: 'anythink_core', ext: 'aar')
     compileOnly(name: 'anythink_native', ext: 'aar')

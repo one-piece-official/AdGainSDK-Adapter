@@ -50,6 +50,9 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
         codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
+        if (TextUtils.isEmpty(codeId)) {
+            codeId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
+        }
         Log.d("------loadAd", "map " + serverExtra);
         mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0);
 

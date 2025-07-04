@@ -2,6 +2,8 @@
 <resources>
 
     <array name="splash_adapter">
+        <item>AdGain</item>
+
         <item>SigMob</item>
         <item>穿山甲</item>
         <item>快手</item>
@@ -14,10 +16,11 @@
         <item>趣盟</item>
         <item>TapTap</item>
         <item>自定义穿山甲</item>
-        <item>GTAD</item>
     </array>
 
     <string-array name="splash_id_value">
+        <item>2231731257649187</item> <!-- AdGain 开屏广告位ID -->
+
         <item>2009470615832232</item>
         <item>9313386614358887</item>
         <item>5179213617529365</item>
@@ -30,11 +33,11 @@
         <item>4195993224896991</item>
         <item>8391836162295408</item>
         <item>8592766355131657</item>
-        <item>2231731257649187</item> <!-- GTAD 开屏广告位ID -->
 
     </string-array>
 
     <array name="reward_adapter">
+        <item>AdGain</item>
         <item>SigMob</item>
         <item>穿山甲</item>
         <item>快手</item>
@@ -47,10 +50,10 @@
         <item>TapTap</item>
         <item>AdMob</item>
         <item>自定义穿山甲</item>
-        <item>GTAD</item>
     </array>
 
     <string-array name="reward_id_value">
+        <item>4951363636973134</item> <!-- AdGain 激励广告位ID -->
         <item>9387595158051935</item>
         <item>4742225414998032</item>
         <item>7233517458533366</item>
@@ -63,10 +66,11 @@
         <item>3378378877584692</item>
         <item>8449172964885251</item>
         <item>3942855757229247</item>
-        <item>4951363636973134</item> <!-- GTAD 激励广告位ID -->
     </string-array>
 
     <array name="interstitial_adapter">
+        <item>AdGain</item>
+
         <item>SigMob_全屏视频</item>
         <item>SigMob_新插屏_半</item>
         <item>SigMob_新插屏_全</item>
@@ -79,10 +83,11 @@
         <item>趣盟</item>
         <item>AdMob</item>
         <item>自定义穿山甲</item>
-        <item>GTAD</item>
     </array>
 
     <string-array name="interstitial_id_value">
+        <item>7787547638588492</item> <!-- AdGain 插页广告位ID -->
+
         <item>4753286031006593</item>
         <item>2176248928423385</item>
         <item>8739513476824974</item>
@@ -95,10 +100,11 @@
         <item>8173976725692502</item>
         <item>5787289373711661</item>
         <item>9263961235998074</item>
-        <item>7787547638588492</item> <!-- GTAD 插页广告位ID -->
     </string-array>
 
     <array name="native_adapter">
+        <item>AdGain</item>
+
         <item>SigMob</item>
         <item>穿山甲</item>
         <item>快手</item>
@@ -108,10 +114,11 @@
         <item>趣盟</item>
         <item>百度</item>
         <item>自定义穿山甲</item>
-        <item>GTAD</item>
     </array>
 
     <string-array name="native_id_value">
+        <item>6246197299556931</item> <!-- AdGain 原生广告位id -->
+
         <item>9224761251541712</item>
         <item>5771359946996735</item>
         <item>7264823485628063</item>
@@ -121,10 +128,11 @@
         <item>4772764698616709</item>
         <item>6728444626644345</item>
         <item>4952664543881484</item>
-        <item>6246197299556931</item> <!-- GTAD 原生广告位id -->
     </string-array>
 
     <string-array name="native_draw_id_value">
+        <item>6246197299556931</item> <!-- AdGain 原生广告位id -->
+
         <item>0</item>
         <item>9243878171116818</item>
         <item>3969166469641223</item>
@@ -134,7 +142,6 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
-        <item>6246197299556931</item> <!-- GTAD 原生广告位id -->
     </string-array>
 
     <array name="banner_adapter">

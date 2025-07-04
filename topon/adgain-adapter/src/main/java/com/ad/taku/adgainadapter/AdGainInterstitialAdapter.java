@@ -52,6 +52,9 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
         codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
+        if (TextUtils.isEmpty(codeId)) {
+            codeId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
+        }
         Log.d(TAG, "loadCustomNetworkAd: mAppId = " + mAppId + "  mADUnitId = " + codeId + "   isC2SBidding =  " + isC2SBidding);
 
         if (TextUtils.isEmpty(mAppId)) {

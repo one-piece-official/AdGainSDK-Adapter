@@ -54,6 +54,9 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
         codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
+        if (TextUtils.isEmpty(codeId)) {
+            codeId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
+        }
         mUnitType = ATInitMediation.getIntFromMap(serverExtra, "unit_type");
 
         mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0) == 1;
