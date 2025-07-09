@@ -68,7 +68,7 @@ dependencies {
 //    implementation project(':adgain-adapter')
     implementation(name: "gromore-adgain-adapter-release", ext: 'aar')
 
-    implementation(name: "adgain-sdk-4.1.5-release", ext: 'aar')
+    implementation(name: "adgain-sdk-4.1.6-release", ext: 'aar')
 
 
     implementation(name: "Baidu_MobAds_SDK_v9.37", ext: 'aar')
