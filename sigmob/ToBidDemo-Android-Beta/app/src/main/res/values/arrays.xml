@@ -103,7 +103,8 @@
     </string-array>
 
     <array name="native_adapter">
-        <item>AdGain</item>
+        <item>AdGain--Express</item>
+        <item>AdGain--Native</item>
 
         <item>SigMob</item>
         <item>穿山甲</item>
@@ -118,6 +119,8 @@
 
     <string-array name="native_id_value">
         <item>6246197299556931</item> <!-- AdGain 原生广告位id -->
+        <item>5625938624221650</item> <!-- AdGain 原生广告位id -->
+
 
         <item>9224761251541712</item>
         <item>5771359946996735</item>

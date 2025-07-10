@@ -120,16 +120,32 @@ public class AdGainNativeAdData extends WMNativeAdData {
 
     @Override
     public View getExpressAdView() {
+        if (nativeAdData != null) return nativeAdData.getFeedView();
         return null;
     }
 
     @Override
     public void render() {
         Log.d(TAG, "render");
+        if (isExpressAd()) {
+            if (nativeAdInteractionListener != null) {
+                View feedView = getExpressAdView();
+                AdInfo adInfo = adAdapter.getAdInFo(AdGainNativeAdData.this);
+                if (feedView != null) {
+                    nativeAdData.setNativeAdEventListener(eventListener);
+                    nativeAdData.setNativeAdMediaListener(adgainMediaListener);
+                    nativeAdInteractionListener.onADRenderSuccess(adInfo, feedView, feedView.getWidth(), feedView.getHeight());
+
+                } else {
+                    nativeAdInteractionListener.onADRenderSuccess(adInfo, null, 0, 0);
+                }
+            }
+        }
     }
 
     @Override
     public boolean isExpressAd() {
+        if (nativeAdData != null) return nativeAdData.getFeedView() != null;
         return false;
     }
 
@@ -205,7 +221,6 @@ public class AdGainNativeAdData extends WMNativeAdData {
     @Override
     public void bindImageViews(Context context, List<ImageView> imageViews, int defaultImageRes) {
         Log.d(TAG, "bindImageViews ad: " + nativeAdData);
-
         try {
             if (imageViews != null && !imageViews.isEmpty()) {
                 Glide.with(context.getApplicationContext()).load(nativeAdData.getImageList().get(0).imageUrl).into(imageViews.get(0));
@@ -238,7 +253,7 @@ public class AdGainNativeAdData extends WMNativeAdData {
         if (nativeAdData != null) {
             List<AdGainImage> imgList = nativeAdData.getImageList();
             if (imgList != null) {
-                for (AdGainImage AdGainImage: imgList) {
+                for (AdGainImage AdGainImage : imgList) {
                     ret.add(new GtAdNativeImage(AdGainImage));
                 }
             }
@@ -264,55 +279,7 @@ public class AdGainNativeAdData extends WMNativeAdData {
         if (null == nativeAdData) {
             return;
         }
-        nativeAdData.bindMediaView(mediaLayout, new NativeAdData.NativeAdMediaListener() {
-            @Override
-            public void onVideoLoad() {
-                Log.d(TAG, "onVideoLoad l:" + nativeADMediaListener);
-                if (nativeADMediaListener != null) {
-                    nativeADMediaListener.onVideoLoad();
-                }
-            }
-
-            @Override
-            public void onVideoError(AdError error) {
-                Log.d(TAG, "onVideoError: " + error + " l:" + nativeADMediaListener);
-                if (nativeADMediaListener != null) {
-                    nativeADMediaListener.onVideoError(WindMillError.ERROR_AD_PLAY);
-                }
-            }
-
-            @Override
-            public void onVideoStart() {
-                Log.d(TAG, "onVideoStart l:" + nativeADMediaListener);
-                if (nativeADMediaListener != null) {
-                    nativeADMediaListener.onVideoStart();
-                }
-            }
-
-            @Override
-            public void onVideoPause() {
-                Log.d(TAG, "onVideoPause l:" + nativeADMediaListener);
-                if (nativeADMediaListener != null) {
-                    nativeADMediaListener.onVideoPause();
-                }
-            }
-
-            @Override
-            public void onVideoResume() {
-                Log.d(TAG, "onVideoResume l:" + nativeADMediaListener);
-                if (nativeADMediaListener != null) {
-                    nativeADMediaListener.onVideoResume();
-                }
-            }
-
-            @Override
-            public void onVideoCompleted() {
-                Log.d(TAG, "onVideoCompleted l:" + nativeADMediaListener);
-                if (nativeADMediaListener != null) {
-                    nativeADMediaListener.onVideoCompleted();
-                }
-            }
-        });
+        nativeAdData.bindMediaView(mediaLayout, adgainMediaListener);
     }
 
 
@@ -424,7 +391,7 @@ public class AdGainNativeAdData extends WMNativeAdData {
 
     @Override
     public View getInteractionWidgetView(int width, int height, int actionType, AdShakeViewListener listener) {
-        if (nativeAdData!= null) {
+        if (nativeAdData != null) {
             return nativeAdData.getWidgetView(width, height);
         }
         return super.getInteractionWidgetView(width, height, actionType, listener);
@@ -476,4 +443,55 @@ public class AdGainNativeAdData extends WMNativeAdData {
             return true;
         }
     }
+
+    private NativeAdData.NativeAdMediaListener adgainMediaListener = new NativeAdData.NativeAdMediaListener() {
+        @Override
+        public void onVideoLoad() {
+            Log.d(TAG, "onVideoLoad l:" + nativeADMediaListener);
+            if (nativeADMediaListener != null) {
+                nativeADMediaListener.onVideoLoad();
+            }
+        }
+
+        @Override
+        public void onVideoError(AdError error) {
+            Log.d(TAG, "onVideoError: " + error + " l:" + nativeADMediaListener);
+            if (nativeADMediaListener != null) {
+                nativeADMediaListener.onVideoError(WindMillError.ERROR_AD_PLAY);
+            }
+        }
+
+        @Override
+        public void onVideoStart() {
+            Log.d(TAG, "onVideoStart l:" + nativeADMediaListener);
+            if (nativeADMediaListener != null) {
+                nativeADMediaListener.onVideoStart();
+            }
+        }
+
+        @Override
+        public void onVideoPause() {
+            Log.d(TAG, "onVideoPause l:" + nativeADMediaListener);
+            if (nativeADMediaListener != null) {
+                nativeADMediaListener.onVideoPause();
+            }
+        }
+
+        @Override
+        public void onVideoResume() {
+            Log.d(TAG, "onVideoResume l:" + nativeADMediaListener);
+            if (nativeADMediaListener != null) {
+                nativeADMediaListener.onVideoResume();
+            }
+        }
+
+        @Override
+        public void onVideoCompleted() {
+            Log.d(TAG, "onVideoCompleted l:" + nativeADMediaListener);
+            if (nativeADMediaListener != null) {
+                nativeADMediaListener.onVideoCompleted();
+            }
+        }
+    };
+
 }
