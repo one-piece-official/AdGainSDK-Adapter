@@ -130,8 +130,10 @@ public class AdGainNativeAd extends CustomNativeAd {
     @Override
     public View getAdMediaView(Object... object) {
         if (mUnifiedAdData != null) {
-            if (mUnifiedAdData.getFeedView() != null)
+            if (mUnifiedAdData.getFeedView() != null) {
+                mUnifiedAdData.setNativeAdEventListener(eventListener);
                 return mUnifiedAdData.getFeedView();
+            }
             if (mUnifiedAdData.getAdPatternType() != NativeAdPatternType.NATIVE_VIDEO_AD) {
                 return super.getAdMediaView(object);
             }
@@ -162,7 +164,9 @@ public class AdGainNativeAd extends CustomNativeAd {
     @Override
     public void prepare(View view, ATNativePrepareInfo nativePrepareInfo) {
         if (mUnifiedAdData != null && mContainer != null) {
-
+            if (mUnifiedAdData.getFeedView() != null) {
+                return;
+            }
             List<View> clickViewList = nativePrepareInfo.getClickViewList();
 
             if (clickViewList == null || clickViewList.isEmpty()) {
@@ -178,23 +182,7 @@ public class AdGainNativeAd extends CustomNativeAd {
                 }
             }
 
-            mUnifiedAdData.bindViewForInteraction(view, clickViewList, new NativeAdEventListener() {
-                @Override
-                public void onAdExposed() {
-                    notifyAdImpression();
-                }
-
-                @Override
-                public void onAdClicked() {
-                    mClickView = view;
-                    notifyAdClicked();
-                }
-
-                @Override
-                public void onAdRenderFail(AdError error) {
-
-                }
-            });
+            mUnifiedAdData.bindViewForInteraction(view, clickViewList, eventListener);
 
             try {
                 if (mMediaView == null) {
@@ -220,42 +208,9 @@ public class AdGainNativeAd extends CustomNativeAd {
         }
     }
 
+
     private void bindMediaView() {
-        mUnifiedAdData.bindMediaView(mMediaView, new NativeAdData.NativeAdMediaListener() {
-
-            @Override
-            public void onVideoLoad() {
-                Log.d(TAG, "onVideoLoad: ");
-            }
-
-            @Override
-            public void onVideoError(AdError error) {
-                Log.d(TAG, "onVideoError: " + error);
-                notifyAdVideoVideoPlayFail("" + error.getErrorCode(), error.getMessage());
-            }
-
-            @Override
-            public void onVideoStart() {
-                Log.d(TAG, "onVideoStart: ");
-                notifyAdVideoStart();
-            }
-
-            @Override
-            public void onVideoPause() {
-                Log.d(TAG, "onVideoPause: ");
-            }
-
-            @Override
-            public void onVideoResume() {
-                Log.d(TAG, "onVideoResume: ");
-            }
-
-            @Override
-            public void onVideoCompleted() {
-                Log.d(TAG, "onVideoCompleted: ");
-                notifyAdVideoEnd();
-            }
-        });
+        mUnifiedAdData.bindMediaView(mMediaView, mediaListener);
     }
 
     @Override
@@ -386,4 +341,57 @@ public class AdGainNativeAd extends CustomNativeAd {
             mContainer = null;
         }
     }
+
+    private NativeAdEventListener eventListener = new NativeAdEventListener() {
+        @Override
+        public void onAdExposed() {
+            notifyAdImpression();
+        }
+
+        @Override
+        public void onAdClicked() {
+            notifyAdClicked();
+        }
+
+        @Override
+        public void onAdRenderFail(AdError error) {
+
+        }
+    };
+
+    private NativeAdData.NativeAdMediaListener mediaListener = new NativeAdData.NativeAdMediaListener() {
+
+        @Override
+        public void onVideoLoad() {
+            Log.d(TAG, "onVideoLoad: ");
+        }
+
+        @Override
+        public void onVideoError(AdError error) {
+            Log.d(TAG, "onVideoError: " + error);
+            notifyAdVideoVideoPlayFail("" + error.getErrorCode(), error.getMessage());
+        }
+
+        @Override
+        public void onVideoStart() {
+            Log.d(TAG, "onVideoStart: ");
+            notifyAdVideoStart();
+        }
+
+        @Override
+        public void onVideoPause() {
+            Log.d(TAG, "onVideoPause: ");
+        }
+
+        @Override
+        public void onVideoResume() {
+            Log.d(TAG, "onVideoResume: ");
+        }
+
+        @Override
+        public void onVideoCompleted() {
+            Log.d(TAG, "onVideoCompleted: ");
+            notifyAdVideoEnd();
+        }
+    };
 }

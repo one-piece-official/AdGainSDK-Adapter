@@ -20,6 +20,7 @@
     "All": "b62b028c2a217d"
   },
   "native-selfrender": {
-    "All": "b67ee363edc422"
+    "Express": "b67ee363edc422",
+    "Native": "b686f91fccd5ed"
   }
 }
