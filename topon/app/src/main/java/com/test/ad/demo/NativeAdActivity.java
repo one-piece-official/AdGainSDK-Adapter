@@ -40,7 +40,7 @@ import java.util.Objects;
 
 public class NativeAdActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String TAG = NativeAdActivity.class.getSimpleName();
+    private static final String TAG = "------NativeAdActivity";
     public static final String NATIVE_SELF_RENDER_TYPE = "1";
     public static final String NATIVE_EXPRESS_TYPE = "2";
 
@@ -164,6 +164,8 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initATNativeAd(String placementId) {
+        Log.i(TAG, "initATNativeAd id " + placementId);
+
         mATNative = new ATNative(this, placementId, new ATNativeNetworkListener() {
             @Override
             public void onNativeAdLoaded() {

@@ -56,10 +56,10 @@ repositories {
 
 dependencies {
 
-//    implementation project(':adgain-adapter')
-    implementation(name: 'adgain-adapter-release', ext: 'aar')
+    implementation project(':adgain-adapter')
+//    implementation(name: 'adgain-adapter-release', ext: 'aar')
 
-    implementation(name: 'adgain-sdk-4.1.6-release', ext: 'aar')
+    implementation(name: 'adgain-sdk-4.1.7-release', ext: 'aar')
 
     implementation(name: 'anythink_core', ext: 'aar')
     implementation(name: 'anythink_native', ext: 'aar')

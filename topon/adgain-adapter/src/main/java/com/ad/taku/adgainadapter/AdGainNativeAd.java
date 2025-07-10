@@ -112,7 +112,7 @@ public class AdGainNativeAd extends CustomNativeAd {
             mAdSourceType = NativeAdConst.IMAGE_TYPE;
         }
 
-         //setNetworkInfoMap(unifiedADData.getExtraInfo());
+        //setNetworkInfoMap(unifiedADData.getExtraInfo());
     }
 
     private boolean isAPPAD(NativeAdData data) {
@@ -130,7 +130,8 @@ public class AdGainNativeAd extends CustomNativeAd {
     @Override
     public View getAdMediaView(Object... object) {
         if (mUnifiedAdData != null) {
-
+            if (mUnifiedAdData.getFeedView() != null)
+                return mUnifiedAdData.getFeedView();
             if (mUnifiedAdData.getAdPatternType() != NativeAdPatternType.NATIVE_VIDEO_AD) {
                 return super.getAdMediaView(object);
             }
@@ -154,6 +155,7 @@ public class AdGainNativeAd extends CustomNativeAd {
 
     @Override
     public boolean isNativeExpress() {
+        if (mUnifiedAdData != null) return mUnifiedAdData.getFeedView() != null;
         return false;
     }
 

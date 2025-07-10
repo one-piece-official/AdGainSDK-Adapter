@@ -54,6 +54,8 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
 
         mAppId = ATInitMediation.getStringFromMap(serverExtra, "app_id");
         codeId = ATInitMediation.getStringFromMap(serverExtra, "slot_id");
+        Log.d(TAG, "----native initRequestParams    " + mAppId + "   codeId = " + codeId +" " + serverExtra);
+
         if (TextUtils.isEmpty(codeId)) {
             codeId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
         }
@@ -92,7 +94,7 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
             switch (mUnitType) {
 
                 case 0:   // self rendering
-                    loadSelfRenderingAd(context.getApplicationContext(),serverExtra);
+                    loadSelfRenderingAd(context.getApplicationContext(), serverExtra);
                     break;
 
                 case 1:   //Native Express
