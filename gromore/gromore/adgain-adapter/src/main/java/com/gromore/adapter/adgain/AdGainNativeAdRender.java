@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.adgain.sdk.api.AdAppInfo;
+import com.adgain.sdk.api.AdError;
 import com.adgain.sdk.api.AdGainImage;
 import com.adgain.sdk.api.NativeAdData;
 import com.adgain.sdk.api.NativeAdEventListener;
@@ -34,13 +35,14 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
     private NativeAdData mNativeUnifiedADData;
 
     private Context mContext;
+    private ViewGroup container;
 
-    public AdGainNativeAdRender(Context context, NativeAdData feedAd, NativeUnifiedAd nativeAd) {
+    public AdGainNativeAdRender(Context context, NativeAdData adData, NativeUnifiedAd nativeAd) {
         try {
 
             mContext = context;
             mNativeAD = nativeAd;
-            mNativeUnifiedADData = feedAd;
+            mNativeUnifiedADData = adData;
 
             AdAppInfo info = mNativeUnifiedADData.getAdAppInfo();
 
@@ -60,6 +62,7 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
             setDescription(mNativeUnifiedADData.getDesc());
             setActionText(mNativeUnifiedADData.getCTAText());
             setIconUrl(mNativeUnifiedADData.getIconUrl());
+
 
             List<AdGainImage> list = mNativeUnifiedADData.getImageList();
             if (list != null && !list.isEmpty()) {
@@ -139,7 +142,7 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
                              List<View> creativeViews,
                              List<View> directDownloadViews,
                              MediationViewBinder viewBinder) {
-
+        this.container = container;
         ThreadUtils.runOnUIThreadByThreadPool(() -> {
 
             if (mNativeUnifiedADData != null && container instanceof FrameLayout) {
@@ -151,26 +154,7 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
                     clickViews.addAll(creativeViews);
                     fillChildView(container, clickViews);
                 }
-
-                mNativeUnifiedADData.bindViewForInteraction(container, clickViews, new NativeAdEventListener() {
-                    @Override
-                    public void onAdExposed() {
-                        Log.d(TAG, "onADExposed");
-                        callAdShow();
-                    }
-
-                    @Override
-                    public void onAdClicked() {
-                        Log.d(TAG, "onADClicked");
-                        callAdClick();
-                    }
-
-                    @Override
-                    public void onAdRenderFail(com.adgain.sdk.api.AdError error) {
-                        callRenderFail(container, error.getErrorCode(), error.getMessage());
-
-                    }
-                });
+                mNativeUnifiedADData.bindViewForInteraction(container, clickViews, eventListener);
 
                 View targetView = null;
 
@@ -287,4 +271,37 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
                 MediationConstant.AdIsReadyStatus.AD_IS_READY
                 : MediationConstant.AdIsReadyStatus.AD_IS_NOT_READY;
     }
+
+
+    @Override
+    public View getExpressView() {
+        return mNativeUnifiedADData != null ? mNativeUnifiedADData.getFeedView() : null;
+    }
+
+    @Override
+    public void render() {
+        if (mNativeUnifiedADData != null && mNativeUnifiedADData.getFeedView() != null) {
+            mNativeUnifiedADData.setNativeAdEventListener(eventListener);
+            callRenderSuccess(0, 0);
+        }
+    }
+
+    private NativeAdEventListener eventListener = new NativeAdEventListener() {
+        @Override
+        public void onAdExposed() {
+            Log.d(TAG, "onADExposed");
+            callAdShow();
+        }
+
+        @Override
+        public void onAdClicked() {
+            Log.d(TAG, "onADClicked");
+            callAdClick();
+        }
+
+        @Override
+        public void onAdRenderFail(com.adgain.sdk.api.AdError error) {
+            callRenderFail(container, error.getErrorCode(), error.getMessage());
+        }
+    };
 }

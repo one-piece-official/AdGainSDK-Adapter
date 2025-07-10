@@ -46,26 +46,16 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
                 @Override
                 public void onAdLoad(List<NativeAdData> list) {
                     if (list != null && !list.isEmpty()) {
-
                         List<AdGainNativeAdRender> tempList = new ArrayList<>();
-
                         for (NativeAdData feedAd : list) {
-
-                            AdGainNativeAdRender gdtNativeAd = new AdGainNativeAdRender(context, feedAd, nativeUnifiedAd);
-
-                            Map<String, Object> extraMsg = new HashMap<>();
-                            extraMsg.put("key1_自渲染", "value1_自渲染");
-                            gdtNativeAd.setMediaExtraInfo(extraMsg);
-
+                            AdGainNativeAdRender nativeAd = new AdGainNativeAdRender(context, feedAd, nativeUnifiedAd);
+                            nativeAd.setExpressAd(feedAd.getFeedView() != null);
                             double ecpm = feedAd.getPrice();
                             Log.e(TAG, "ecpm:" + ecpm);
-                            gdtNativeAd.setBiddingPrice(ecpm); //回传竞价广告价格
-
-                            tempList.add(gdtNativeAd);
+                            nativeAd.setBiddingPrice(ecpm); //回传竞价广告价格
+                            tempList.add(nativeAd);
                         }
-
                         callLoadSuccess(tempList);
-
                     }
                 }
 
