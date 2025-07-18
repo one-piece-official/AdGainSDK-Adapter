@@ -31,8 +31,6 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
     String mAppId;
     String codeId;
 
-    int mUnitType;
-
     boolean mVideoMuted;
     int mVideoAutoPlay;
     int mVideoDuration;
@@ -59,7 +57,6 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
         if (TextUtils.isEmpty(codeId)) {
             codeId = ATInitMediation.getStringFromMap(serverExtra, "unit_id");
         }
-        mUnitType = ATInitMediation.getIntFromMap(serverExtra, "unit_type");
 
         mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0) == 1;
         mVideoAutoPlay = ATInitMediation.getIntFromMap(serverExtra, "video_autoplay", 1);
@@ -91,22 +88,14 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
 
     private void startLoadAd(Context context, Map<String, Object> serverExtra) {
         try {
-            switch (mUnitType) {
-
-                case 0:   // self rendering
-                    loadSelfRenderingAd(context.getApplicationContext(), serverExtra);
-                    break;
-
-                case 1:   //Native Express
-                default:
-                    break;
-            }
+            // adgain load 阶段不区分是自渲染 还是 模板，是根据返回区分的
+            loadRenderingAd(context.getApplicationContext(), serverExtra);
         } catch (Throwable e) {
             notifyATLoadFail("", e.getMessage());
         }
     }
 
-    private void loadSelfRenderingAd(final Context context,Map<String, Object> serverExtra) {
+    private void loadRenderingAd(final Context context, Map<String, Object> serverExtra) {
 
         Map<String, Object> options = new HashMap<>(serverExtra);
         options.put("native_test_option_key", "native_test_option_value");
