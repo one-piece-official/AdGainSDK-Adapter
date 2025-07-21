@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.adgain.sdk.api.AdAppInfo;
 import com.adgain.sdk.api.AdError;
 import com.adgain.sdk.api.AdGainImage;
+import com.adgain.sdk.api.NativeAdAllEventListener;
 import com.adgain.sdk.api.NativeAdData;
 import com.adgain.sdk.api.NativeAdEventListener;
 import com.adgain.sdk.api.NativeAdInteractiveType;
@@ -342,7 +343,12 @@ public class AdGainNativeAd extends CustomNativeAd {
         }
     }
 
-    private NativeAdEventListener eventListener = new NativeAdEventListener() {
+    private NativeAdAllEventListener eventListener = new NativeAdAllEventListener() {
+        @Override
+        public void onAdClose(View view) {
+            notifyAdDislikeClick();
+        }
+
         @Override
         public void onAdExposed() {
             notifyAdImpression();
