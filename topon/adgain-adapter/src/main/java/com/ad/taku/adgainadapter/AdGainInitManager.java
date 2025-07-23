@@ -2,7 +2,6 @@ package com.ad.taku.adgainadapter;
 
 
 import android.content.Context;
-import android.location.Location;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -96,7 +95,8 @@ public class AdGainInitManager extends ATInitMediation {
         }
 
         Map<String, Object> customData = new HashMap<>(serviceExtras);
-        customData.put("custom_key", "custom_value");
+        customData.put("thirdMediation","taku");
+
         Log.d(TAG, "initSDK: real start  app_id = " + app_id);
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
                 .appId(app_id)         //必填

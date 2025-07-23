@@ -39,6 +39,7 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
 
         map.put(IBidding.EXPECT_COST_PRICE, costPrice);
         map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
+        map.put("thirdMediation","taku");
 
         if (gtBaseAd != null) {
             gtBaseAd.sendWinNotification(map);
@@ -87,6 +88,7 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
         map.put(IBidding.WIN_PRICE, winPrice);
         map.put(IBidding.LOSS_REASON, gdtLossReason);
         map.put(IBidding.ADN_ID, adnId);
+        map.put("thirdMediation","taku");
 
         if (gtBaseAd != null) {
             gtBaseAd.sendLossNotification(map);

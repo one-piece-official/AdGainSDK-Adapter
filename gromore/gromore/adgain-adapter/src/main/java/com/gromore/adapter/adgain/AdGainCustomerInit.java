@@ -1,9 +1,6 @@
 package com.gromore.adapter.adgain;
 
 import android.content.Context;
-import android.location.Location;
-import android.util.JsonReader;
-import android.util.JsonToken;
 import android.util.Log;
 
 import com.adgain.sdk.AdGainSdk;
@@ -34,6 +31,7 @@ public class AdGainCustomerInit extends MediationCustomInitLoader {
 
         try {
             Map<String, Object> customData = new HashMap<>();
+            customData.put("thirdMediation","gm");
 
             AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
                     .appId(mediationCustomInitConfig.getAppId())       //必填，向广推商务获取,配置到 gromore 后台

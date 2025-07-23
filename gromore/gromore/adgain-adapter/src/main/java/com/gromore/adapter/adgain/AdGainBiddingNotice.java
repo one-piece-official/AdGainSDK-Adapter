@@ -46,6 +46,7 @@ public class AdGainBiddingNotice {
         Map<String, Object> map = new HashMap<>();
         map.put(IBidding.EXPECT_COST_PRICE, costPrice);
         map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
+        map.put("thirdMediation","gm");
         if (extra != null && !extra.isEmpty()) {
             map.putAll(extra);
         }
@@ -66,6 +67,7 @@ public class AdGainBiddingNotice {
         map.put(IBidding.WIN_PRICE, winPrice);
         map.put(IBidding.LOSS_REASON, lossCode);
         map.put(IBidding.ADN_ID, "");
+        map.put("thirdMediation","gm");
         if (extra != null && !extra.isEmpty()) {
             map.putAll(extra);
         }
