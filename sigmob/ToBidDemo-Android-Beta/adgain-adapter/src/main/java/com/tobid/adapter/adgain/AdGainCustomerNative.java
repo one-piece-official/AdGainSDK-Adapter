@@ -1,7 +1,5 @@
 package com.tobid.adapter.adgain;
 
-import static com.tobid.adapter.adgain.AdGainAdapterUtil.getBidFloor;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -42,7 +40,7 @@ public class AdGainCustomerNative extends WMCustomNativeAdapter implements Nativ
                 }
                 AdRequest adRequest = new AdRequest.Builder()
                         .setCodeId(codeId)
-                        .setBidFloor(getBidFloor(serverExtra))
+                        .setBidFloor(AdGainAdapterUtil.getBidFloor(this,serverExtra))
                         .setExtOption(options)
                         .build();
                 nativeUnifiedAd = new NativeUnifiedAd(adRequest, this);

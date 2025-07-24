@@ -1,7 +1,5 @@
 package com.tobid.adapter.adgain;
 
-import static com.tobid.adapter.adgain.AdGainAdapterUtil.getBidFloor;
-
 import android.app.Activity;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -38,7 +36,7 @@ public class AdGainCustomerSplash extends WMCustomSplashAdapter implements Splas
             int w = activity.getApplicationContext().getResources().getDisplayMetrics().widthPixels;
             int h = activity.getApplicationContext().getResources().getDisplayMetrics().heightPixels;
             AdRequest adRequest = new AdRequest.Builder().setCodeId(unitId)
-                    .setBidFloor(getBidFloor(serverExtra))
+                    .setBidFloor(AdGainAdapterUtil.getBidFloor(this,serverExtra))
                     .setWidth(w).setHeight(h).setExtOption(options).build();
             splashAd = new SplashAd(adRequest, this);
             splashAd.loadAd();

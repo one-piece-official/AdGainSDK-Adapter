@@ -3,6 +3,7 @@ package com.tobid.adapter.adgain;
 import com.adgain.sdk.api.IBidding;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.base.WMBidUtil;
+import com.windmill.sdk.custom.WMAdBaseAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,16 +51,24 @@ public class AdGainAdapterUtil {
         return map;
     }
 
-    public static int getBidFloor(Map<String, Object> serverExtra) {
+    public static int getBidFloor(WMAdBaseAdapter adapter, Map<String, Object> serverExtra) {
         int floor = 0;
+
         try {
-            Object bidFloor = serverExtra.get(WMConstants.BID_FLOOR);
-            if (bidFloor != null) {
-                floor = (Integer) bidFloor;
+            return adapter.getBidFloor();
+
+        } catch (Exception ignore) {
+
+            try {
+                Object bidFloor = serverExtra.get(WMConstants.BID_FLOOR);
+                if (bidFloor != null) {
+                    floor = (Integer) bidFloor;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
         return floor;
     }
 }

@@ -1,7 +1,5 @@
 package com.tobid.adapter.adgain;
 
-import static com.tobid.adapter.adgain.AdGainAdapterUtil.getBidFloor;
-
 import android.app.Activity;
 import android.util.Log;
 
@@ -35,7 +33,7 @@ public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter impl
             AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(codeId)
                     .setExtOption(options)
-                    .setBidFloor(getBidFloor(serverExtra))
+                    .setBidFloor(AdGainAdapterUtil.getBidFloor(this,serverExtra))
                     .build();
             interstitialAd = new InterstitialAd(adRequest, this);
             interstitialAd.loadAd();

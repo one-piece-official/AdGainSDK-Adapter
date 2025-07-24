@@ -1,7 +1,5 @@
 package com.tobid.adapter.adgain;
 
-import static com.tobid.adapter.adgain.AdGainAdapterUtil.getBidFloor;
-
 import android.app.Activity;
 import android.util.Log;
 
@@ -25,7 +23,7 @@ public class AdGainCustomerReward extends WMCustomRewardAdapter implements Rewar
 
     @Override
     public void loadAd(Activity activity, Map<String, Object> localExtra, Map<String, Object> serverExtra) {
-        Log.d(TAG, "loadAd: l: " + localExtra + " s: " + serverExtra + "  " + getBidFloor(serverExtra));
+        Log.d(TAG, "loadAd: l: " + localExtra + " s: " + serverExtra + "  " + AdGainAdapterUtil.getBidFloor(this,serverExtra));
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String codeId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
@@ -36,7 +34,7 @@ public class AdGainCustomerReward extends WMCustomRewardAdapter implements Rewar
             AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(codeId)
                     .setExtOption(options)
-                    .setBidFloor(getBidFloor(serverExtra))
+                    .setBidFloor(AdGainAdapterUtil.getBidFloor(this,serverExtra))
                     .build();
             rewardAd = new RewardAd(adRequest, this);
             rewardAd.loadAd();
