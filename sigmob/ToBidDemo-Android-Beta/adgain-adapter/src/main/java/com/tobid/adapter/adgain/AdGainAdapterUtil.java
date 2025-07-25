@@ -57,14 +57,14 @@ public class AdGainAdapterUtil {
         try {
             return adapter.getBidFloor();
 
-        } catch (Exception ignore) {
+        } catch (Throwable ignore) {
 
             try {
                 Object bidFloor = serverExtra.get(WMConstants.BID_FLOOR);
                 if (bidFloor != null) {
                     floor = (Integer) bidFloor;
                 }
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
