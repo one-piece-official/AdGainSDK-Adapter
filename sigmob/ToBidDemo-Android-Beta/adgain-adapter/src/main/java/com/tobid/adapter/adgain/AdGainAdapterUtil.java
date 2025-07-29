@@ -27,7 +27,7 @@ public class AdGainAdapterUtil {
         if (!map.containsKey(IBidding.EXPECT_COST_PRICE) && price != null) {
             map.put(IBidding.EXPECT_COST_PRICE, price);
         }
-        map.put("thirdMediation","tobid");
+        map.put(IBidding.THIRD_MEDIATION,"tobid");
         return map;
     }
 
@@ -47,7 +47,7 @@ public class AdGainAdapterUtil {
         if (!map.containsKey(IBidding.WIN_PRICE) && price != null) {
             map.put(IBidding.WIN_PRICE, price);
         }
-        map.put("thirdMediation","tobid");
+        map.put(IBidding.THIRD_MEDIATION,"tobid");
         return map;
     }
 

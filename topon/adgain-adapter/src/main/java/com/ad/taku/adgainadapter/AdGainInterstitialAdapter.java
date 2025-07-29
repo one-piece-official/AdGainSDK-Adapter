@@ -178,8 +178,6 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
         if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mGTInterstitialAd.showAd(activity);
 
-        } else {
-            mGTInterstitialAd.showAd();
         }
     }
 
@@ -206,7 +204,6 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
     @Override
     public void destory() {
         if (mGTInterstitialAd != null) {
-            mGTInterstitialAd.setInterstitialAdListener(null);
             mGTInterstitialAd.destroyAd();
             mGTInterstitialAd = null;
         }

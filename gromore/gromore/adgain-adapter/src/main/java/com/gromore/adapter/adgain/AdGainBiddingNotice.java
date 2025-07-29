@@ -1,6 +1,8 @@
 package com.gromore.adapter.adgain;
 
 
+import static com.adgain.sdk.api.IBidding.THIRD_MEDIATION;
+
 import android.util.Log;
 
 import com.adgain.sdk.api.IBidding;
@@ -46,7 +48,7 @@ public class AdGainBiddingNotice {
         Map<String, Object> map = new HashMap<>();
         map.put(IBidding.EXPECT_COST_PRICE, costPrice);
         map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
-        map.put("thirdMediation","gm");
+        map.put(THIRD_MEDIATION,"gm");
         if (extra != null && !extra.isEmpty()) {
             map.putAll(extra);
         }

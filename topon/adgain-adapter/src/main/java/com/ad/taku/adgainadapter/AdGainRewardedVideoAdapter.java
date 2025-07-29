@@ -203,8 +203,6 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
         if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mRewardVideoAD.showAd(activity);
 
-        } else {
-            mRewardVideoAD.showAd();
         }
     }
 
@@ -221,7 +219,6 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
     @Override
     public void destory() {
         if (mRewardVideoAD != null) {
-            mRewardVideoAD.setRewardAdListener(null);
             mRewardVideoAD.destroyAd();
             mRewardVideoAD = null;
         }
