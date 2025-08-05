@@ -9,6 +9,8 @@ import com.adgain.sdk.api.AdRequest;
 import com.adgain.sdk.api.InterstitialAd;
 import com.adgain.sdk.api.InterstitialAdListener;
 import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
+import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.interstitial.MediationCustomInterstitialLoader;
 import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig;
@@ -20,7 +22,7 @@ import java.util.Map;
  * Date   :   2025/5/15
  * Time   :   14:24
  */
-public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
+public class AdGainInterAdapter extends MediationCustomInterstitialLoader implements GMBiddingUtil.NotifyBiddingListener {
 
     private static final String TAG = AdGainCustomerInit.TAG;
 
@@ -43,7 +45,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
 
                 @Override
                 public void onInterstitialAdLoadSuccess() {
-                    Log.d(TAG, "onInterstitialAdLoadSuccess: ");
+                    Log.d(TAG, "onInterstitialAdLoadSuccess: " + isClientBidding() + " codeId: " + adSlot.getCodeId() + " slotId: " + serviceConfig.getADNNetworkSlotId());
                     if (isClientBidding())
                         callLoadSuccess(mInterstitialAd.getBidPrice());  // 单位 分 ecpm
                     else
@@ -99,12 +101,13 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
             options.put("inter_extra_test_key", "inter_extra_test_value");
 
             AdRequest adRequest = new AdRequest.Builder()
-                    .setCodeId(serviceConfig.getADNNetworkSlotId())  // 广推广告位 从商务获取
+                    .setCodeId(serviceConfig.getADNNetworkSlotId())
                     .setExtOption(options)
                     .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .build();
 
             mInterstitialAd = new InterstitialAd(adRequest, listener);
+            GMBiddingUtil.addNotifyBiddingListener(this);
 
             mInterstitialAd.loadAd();
 
@@ -135,18 +138,6 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "inter onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "inter onResume");
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "inter onDestroy");
@@ -154,6 +145,7 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
             mInterstitialAd.destroyAd();
             mInterstitialAd = null;
         }
+        GMBiddingUtil.removeNotifyBiddingListener(this);
     }
 
     /**
@@ -174,11 +166,12 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader {
         return getBiddingType() == MediationConstant.AD_TYPE_SERVER_BIDING;
     }
 
-    @Override
-    public void receiveBidResult(boolean b, double v, int i, Map<String, Object> map) {
-        super.receiveBidResult(b, v, i, map);
-        Log.d(TAG, "receiveBidResult: win = " + b + " winnerPrice = " + v + " loseReason = " + i + " extra = " + map);
 
-        AdGainBiddingNotice.notifyADN(mInterstitialAd, b, v, i, map);
+    @Override
+    public void notifyBiddingResult(Object object) {
+        if (object instanceof TTFullScreenVideoAd && mInterstitialAd != null && mInterstitialAd.isReady()) {// 有填充才进行竞败回传
+            String ecpm = ((TTFullScreenVideoAd) object).getMediationManager().getShowEcpm().getEcpm();
+            GMBiddingUtil.adgainNotifyLoss(mInterstitialAd, ecpm, this);
+        }
     }
 }

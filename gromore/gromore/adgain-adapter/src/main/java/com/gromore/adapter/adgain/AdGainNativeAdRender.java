@@ -81,14 +81,11 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
 
             if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_VIDEO_AD) {
                 setAdImageMode(TTAdConstant.IMAGE_MODE_VIDEO);
-
             } else if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_BIG_IMAGE_AD) {
                 setAdImageMode(TTAdConstant.IMAGE_MODE_LARGE_IMG);
-
             } else if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_GROUP_IMAGE_AD) {
                 setAdImageMode(TTAdConstant.IMAGE_MODE_GROUP_IMG);
             }
-
             if (isAPPAD(mNativeUnifiedADData)) {
                 setInteractionType(TTAdConstant.INTERACTION_TYPE_DOWNLOAD);
             } else {
@@ -136,45 +133,16 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
     }
 
     @Override
-    public void registerView(Activity activity,
-                             ViewGroup container,
-                             List<View> clickViews,
-                             List<View> creativeViews,
-                             List<View> directDownloadViews,
-                             MediationViewBinder viewBinder) {
+    public void registerView(Activity activity, ViewGroup container, List<View> clickViews, List<View> creativeViews, List<View> directDownloadViews, MediationViewBinder viewBinder) {
         this.container = container;
-        ThreadUtils.runOnUIThreadByThreadPool(() -> {
-
+        try {
             if (mNativeUnifiedADData != null && container instanceof FrameLayout) {
 
-                FrameLayout nativeAdView = (FrameLayout) container;
-
-                if (clickViews != null) {
-                    clickViews.add(container);
-                    clickViews.addAll(creativeViews);
-                    fillChildView(container, clickViews);
-                }
                 mNativeUnifiedADData.bindViewForInteraction(container, clickViews, eventListener);
 
-                View targetView = null;
-
-                if (clickViews != null) {
-                    for (View view : clickViews) {
-                        // Look for FrameLayout that can be used as video container
-                        if (view instanceof FrameLayout) {
-                            targetView = view;
-                            break;
-                        }
-                    }
-                }
-
-                if (targetView instanceof FrameLayout && mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_VIDEO_AD) {
-
-                    FrameLayout ttMediaView = (FrameLayout) targetView;
-
+                if (mNativeUnifiedADData.getAdPatternType() == NativeAdPatternType.NATIVE_VIDEO_AD) {
                     AdgainNativeAdMediaView gdtMediaView = new AdgainNativeAdMediaView(mContext);
-                    ttMediaView.removeAllViews();
-                    ttMediaView.addView(gdtMediaView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    container.addView(gdtMediaView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                     mNativeUnifiedADData.bindMediaView(gdtMediaView, new NativeAdData.NativeAdMediaListener() {
 
@@ -219,37 +187,8 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
                     });
                 }
             }
-        });
-    }
+        } catch (Exception e) {
 
-    private void fillChildView(View parentView, List<View> childViews) {
-        if (parentView instanceof ViewGroup && !(parentView instanceof AdgainNativeAdMediaView)) {
-            ViewGroup viewGroup = (ViewGroup) parentView;
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                View child = viewGroup.getChildAt(i);
-                fillChildView(child, childViews);
-            }
-        } else {
-            childViews.add(parentView);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "native onPause ");
-        if (mNativeUnifiedADData != null) {
-            mNativeUnifiedADData.pauseVideo();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "native onResume: ");
-
-        if (mNativeUnifiedADData != null) {
-            mNativeUnifiedADData.resumeVideo();
         }
     }
 
@@ -257,7 +196,6 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "native  onDestroy ");
-
         if (mNativeUnifiedADData != null) {
             mNativeUnifiedADData.destroy();
             mNativeUnifiedADData = null;
@@ -267,9 +205,7 @@ public class AdGainNativeAdRender extends MediationCustomNativeAd {
 
     @Override
     public MediationConstant.AdIsReadyStatus isReadyCondition() {
-        return mNativeAD != null && mNativeAD.isReady() ?
-                MediationConstant.AdIsReadyStatus.AD_IS_READY
-                : MediationConstant.AdIsReadyStatus.AD_IS_NOT_READY;
+        return mNativeAD != null && mNativeAD.isReady() ? MediationConstant.AdIsReadyStatus.AD_IS_READY : MediationConstant.AdIsReadyStatus.AD_IS_NOT_READY;
     }
 
 

@@ -14,6 +14,7 @@ import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationAdSlot;
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationNativeToBannerListener;
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationSplashRequestInfo;
+import com.gromore.adapter.adgain.GMBiddingUtil;
 import com.union_test.toutiao.R;
 import com.union_test.toutiao.config.TTAdManagerHolder;
 import com.union_test.toutiao.mediation.java.utils.Const;
@@ -191,7 +192,6 @@ public class MediationRewardActivity extends Activity {
         /** 5、设置展示监听器，展示广告 */
 
         mTTRewardVideoAd.setRewardAdInteractionListener(mRewardVideoAdInteractionListener);
-
         mTTRewardVideoAd.showRewardVideoAd(this);
     }
 
@@ -231,6 +231,7 @@ public class MediationRewardActivity extends Activity {
 
             public void onAdShow() {
                 Log.i(Const.TAG, "reward show");
+                GMBiddingUtil.gmNotifyLoss(mTTRewardVideoAd);
             }
 
             @Override

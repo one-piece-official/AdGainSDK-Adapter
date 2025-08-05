@@ -1,5 +1,7 @@
 package com.gromore.adapter.adgain;
 
+import static com.gromore.adapter.adgain.AdGainCustomerInit.TAG;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +11,8 @@ import com.adgain.sdk.api.AdRequest;
 import com.adgain.sdk.api.RewardAd;
 import com.adgain.sdk.api.RewardAdListener;
 import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.CSJSplashAd;
+import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.reward.MediationCustomRewardVideoLoader;
 import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig;
@@ -23,7 +27,7 @@ import java.util.Map;
  * https://www.csjplatform.com/union/media/union/download/detail?id=195&docId=28430&locale=zh-CN&osType=android
  * MediationConstant.AD_TYPE_CLIENT_BIDING
  */
-public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
+public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader implements GMBiddingUtil.NotifyBiddingListener {
 
     private static final String TAG = AdGainCustomerInit.TAG;
 
@@ -153,6 +157,7 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
                     .build();
 
             mRewardAd = new RewardAd(adRequest, rewardAdListener);
+            GMBiddingUtil.addNotifyBiddingListener(this);
 
             mRewardAd.loadAd();
 
@@ -164,15 +169,12 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
 
     @Override
     public void showAd(Activity activity) {
-        Log.i(TAG, "reward 自定义的 showAd ");
-
         try {
             if (mRewardAd != null && mRewardAd.isReady()) {
                 mRewardAd.showAd(activity);
             }
         } catch (Exception e) {
             Log.d(TAG, "reward showAd: error = " + Log.getStackTraceString(e));
-
         }
     }
 
@@ -182,35 +184,9 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
                 MediationConstant.AdIsReadyStatus.AD_IS_READY
                 : MediationConstant.AdIsReadyStatus.AD_IS_NOT_READY;
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume");
-    }
-
-
     public boolean isClientBidding() {
         return getBiddingType() == MediationConstant.AD_TYPE_CLIENT_BIDING;
     }
-
-
-    @Override
-    public void receiveBidResult(boolean win, double winnerPrice, int loseReason, Map<String, Object> extra) {
-        super.receiveBidResult(win, winnerPrice, loseReason, extra);
-
-        Log.d(TAG, "receiveBidResult: win = " + win + " winnerPrice = " + winnerPrice + " loseReason = " + loseReason + " extra = " + extra);
-
-        AdGainBiddingNotice.notifyADN(mRewardAd, win, winnerPrice, loseReason, extra);
-
-    }
-
 
     @Override
     public void onDestroy() {
@@ -219,6 +195,15 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader {
         if (mRewardAd != null) {
             mRewardAd.destroyAd();
             mRewardAd = null;
+        }
+        GMBiddingUtil.removeNotifyBiddingListener(this);
+    }
+
+    @Override
+    public void notifyBiddingResult(Object object) {
+        if (object instanceof TTRewardVideoAd && mRewardAd != null && mRewardAd.isReady()) {// 有填充才进行竞败回传
+            String ecpm = ((TTRewardVideoAd) object).getMediationManager().getShowEcpm().getEcpm();
+            GMBiddingUtil.adgainNotifyLoss(mRewardAd, ecpm, this);
         }
     }
 }

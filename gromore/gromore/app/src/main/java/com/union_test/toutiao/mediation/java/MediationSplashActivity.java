@@ -12,16 +12,23 @@ import com.bytedance.sdk.openadsdk.CSJAdError;
 import com.bytedance.sdk.openadsdk.CSJSplashAd;
 import com.bytedance.sdk.openadsdk.CSJSplashCloseType;
 import com.bytedance.sdk.openadsdk.TTAdNative;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationAdSlot;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationNativeToBannerListener;
+import com.bytedance.sdk.openadsdk.mediation.ad.IMediationSplashRequestInfo;
+import com.gromore.adapter.adgain.GMBiddingUtil;
 import com.union_test.toutiao.R;
 import com.union_test.toutiao.config.TTAdManagerHolder;
 import com.union_test.toutiao.mediation.java.utils.Const;
 import com.union_test.toutiao.utils.UIUtils;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * 融合demo，开屏广告使用示例。更多功能参考接入文档。
- *
+ * <p>
  * 注意：每次加载的广告，只能展示一次
- *
+ * <p>
  * 接入步骤：
  * 1、创建AdSlot对象
  * 2、创建TTAdNative对象
@@ -58,7 +65,96 @@ public class MediationSplashActivity extends Activity {
 
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(getResources().getString(R.string.splash_media_id))
-                .setImageAcceptedSize(UIUtils.getScreenWidthInPx(this),UIUtils.getScreenHeightInPx(this))
+                .setMediationAdSlot(new IMediationAdSlot() {
+
+                    @Override
+                    public boolean isBidNotify() {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isSplashShakeButton() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isSplashPreLoad() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isMuted() {
+                        return false;
+                    }
+
+                    @Override
+                    public float getVolume() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isUseSurfaceView() {
+                        return false;
+                    }
+
+                    @Nullable
+                    @Override
+                    public Map<String, Object> getExtraObject() {
+                        return Collections.emptyMap();
+                    }
+
+
+                    @Nullable
+                    @Override
+                    public String getScenarioId() {
+                        return "";
+                    }
+
+                    @Override
+                    public boolean isAllowShowCloseBtn() {
+                        return false;
+                    }
+
+                    @Nullable
+                    @Override
+                    public IMediationNativeToBannerListener getMediationNativeToBannerListener() {
+                        return null;
+                    }
+
+                    @Override
+                    public float getShakeViewWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public float getShakeViewHeight() {
+                        return 0;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getWxAppId() {
+                        return "";
+                    }
+
+                    @Nullable
+                    @Override
+                    public IMediationSplashRequestInfo getMediationSplashRequestInfo() {
+                        return null;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getRewardName() {
+                        return "";
+                    }
+
+                    @Override
+                    public int getRewardAmount() {
+                        return 0;
+                    }
+                })
+                .setImageAcceptedSize(UIUtils.getScreenWidthInPx(this), UIUtils.getScreenHeightInPx(this))
                 .build();
 
         /** 2、创建TTAdNative对象 */
@@ -118,13 +214,13 @@ public class MediationSplashActivity extends Activity {
 
         this.mCSJSplashInteractionListener = new CSJSplashAd.SplashAdListener() {
             @Override
-
             public void onSplashAdShow(CSJSplashAd csjSplashAd) {
-                Log.d(Const.TAG, "splash show");
+                String ecpm = mCsjSplashAd.getMediationManager().getShowEcpm().getEcpm();
+                Log.d(Const.TAG, "-----splash show " + ecpm);
+                GMBiddingUtil.gmNotifyLoss(mCsjSplashAd);
             }
 
             @Override
-
             public void onSplashAdClick(CSJSplashAd csjSplashAd) {
                 Log.d(Const.TAG, "splash click");
             }

@@ -9,6 +9,7 @@ import com.adgain.sdk.api.NativeAdData;
 import com.adgain.sdk.api.NativeAdLoadListener;
 import com.adgain.sdk.api.NativeUnifiedAd;
 import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.native_ad.MediationCustomNativeLoader;
 import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig;
@@ -18,10 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AdGainNativeAdapter extends MediationCustomNativeLoader {
+public class AdGainNativeAdapter extends MediationCustomNativeLoader implements GMBiddingUtil.NotifyBiddingListener {
 
     private static final String TAG = AdGainCustomerInit.TAG;
     private NativeUnifiedAd nativeUnifiedAd;
+    private int ecpm;
 
     @Override
     public void load(Context context, AdSlot adSlot, MediationCustomServiceConfig serviceConfig) {
@@ -40,7 +42,6 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
                     .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .setExtOption(options)
                     .build();
-
             nativeUnifiedAd = new NativeUnifiedAd(adRequest, new NativeAdLoadListener() {
 
                 @Override
@@ -50,9 +51,10 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
                         for (NativeAdData feedAd : list) {
                             AdGainNativeAdRender nativeAd = new AdGainNativeAdRender(context, feedAd, nativeUnifiedAd);
                             nativeAd.setExpressAd(feedAd.getFeedView() != null);
-                            double ecpm = feedAd.getPrice();
+                            ecpm = feedAd.getPrice();
                             Log.e(TAG, "ecpm:" + ecpm);
-                            nativeAd.setBiddingPrice(ecpm); //回传竞价广告价格
+                            if (isClientBidding())
+                                nativeAd.setBiddingPrice(ecpm); //回传竞价广告价格
                             tempList.add(nativeAd);
                         }
                         callLoadSuccess(tempList);
@@ -61,7 +63,6 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
 
                 @Override
                 public void onAdError(AdError adError) {
-
                     if (adError != null) {
                         Log.i(TAG, "onNoAD errorCode = " + adError.getErrorCode() + " errorMessage = " + adError.getMessage());
                         callLoadFail(adError.getErrorCode(), adError.getMessage());
@@ -70,7 +71,7 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
                     }
                 }
             });
-
+            GMBiddingUtil.addNotifyBiddingListener(this);
             nativeUnifiedAd.loadAd();
         } catch (Exception e) {
             callLoadFail(40000, "Exception " + e.getMessage());
@@ -82,13 +83,16 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader {
     }
 
 
-
     @Override
-    public void receiveBidResult(boolean win, double winnerPrice, int loseReason, Map<String, Object> extra) {
-        super.receiveBidResult(win, winnerPrice, loseReason, extra);
-
-        Log.d(TAG, "receiveBidResult: win = " + win + " winnerPrice = " + winnerPrice + " loseReason = " + loseReason + " extra = " + extra);
-
-        AdGainBiddingNotice.notifyADN(nativeUnifiedAd, win, winnerPrice, loseReason, extra);
+    public void notifyBiddingResult(Object object) {
+        if (object instanceof TTFeedAd && nativeUnifiedAd != null && nativeUnifiedAd.isReady()) {// 有填充才进行竞败回传
+            String gmEcpm = ((TTFeedAd) object).getMediationManager().getShowEcpm().getEcpm();
+            try {
+                if (ecpm < Double.parseDouble(gmEcpm)) {
+                    GMBiddingUtil.adgainNotifyLoss(nativeUnifiedAd, gmEcpm, this);
+                }
+            } catch (Exception e) {
+            }
+        }
     }
 }

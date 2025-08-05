@@ -1,5 +1,7 @@
 package com.gromore.adapter.adgain;
 
+import static com.gromore.adapter.adgain.AdGainCustomerInit.TAG;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import com.adgain.sdk.api.AdRequest;
 import com.adgain.sdk.api.SplashAd;
 import com.adgain.sdk.api.SplashAdListener;
 import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.CSJSplashAd;
 import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.splash.MediationCustomSplashLoader;
 import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig;
@@ -16,10 +19,7 @@ import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdGainSplashAdapter extends MediationCustomSplashLoader {
-
-    private static final String TAG = AdGainCustomerInit.TAG;
-
+public class AdGainSplashAdapter extends MediationCustomSplashLoader implements GMBiddingUtil.NotifyBiddingListener {
     private SplashAd splashAd;
 
     public AdGainSplashAdapter() {
@@ -39,17 +39,18 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
 
                 @Override
                 public void onAdLoadSuccess() {
-                    Log.d(TAG, "splash ----------onAdLoadSuccess---------- " + splashAd.getBidPrice());
+                    Log.d(TAG, "splash ----------onAdLoadSuccess---------- " + splashAd.getBidPrice() + " " + isClientBidding());
                     if (isClientBidding()) {
                         callLoadSuccess(splashAd.getBidPrice());  // 单位分
-                    }else {
-                        callLoadSuccess();
                     }
                 }
 
                 @Override
                 public void onAdCacheSuccess() {
                     Log.d(TAG, "splash ----------onAdCacheSuccess----------");
+                    if (!isClientBidding()) {
+                        callLoadSuccess();
+                    }
                 }
 
                 @Override
@@ -72,7 +73,6 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
 
                 @Override
                 public void onSplashAdShowError(AdError error) {
-
                 }
 
                 @Override
@@ -84,23 +84,21 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
                 @Override
                 public void onSplashAdClose(boolean isSkip) {
                     Log.d(TAG, "----------onSplashAdClose----------");
-                    callSplashAdDismiss();
+                    if (isSkip) {
+                        callSplashAdSkip();
+                    } else {
+                        callSplashAdDismiss();
+                    }
                 }
 
             };
-
-            Map<String, Object> options = new HashMap<>();
-            options.put("splash_self_key", "splash_self_value");
-
+            GMBiddingUtil.addNotifyBiddingListener(this);
             AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(serviceConfig.getADNNetworkSlotId())
                     .setBidFloor(AdGainCustomerInit.getBidFloor(serviceConfig.getCustomAdapterJson()))
                     .build();
-
             splashAd = new SplashAd(adRequest, mSplashAdListener);
-
             splashAd.loadAd();
-
         } catch (Exception e) {
             callLoadFail(40000, "Exception " + e.getMessage());
             Log.d(TAG, "splash load: error = " + Log.getStackTraceString(e));
@@ -118,17 +116,6 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "splash onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "splash onResume");
-    }
 
     @Override
     public MediationConstant.AdIsReadyStatus isReadyCondition() {
@@ -146,15 +133,6 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
         return getBiddingType() == MediationConstant.AD_TYPE_CLIENT_BIDING;
     }
 
-
-    @Override
-    public void receiveBidResult(boolean b, double v, int i, Map<String, Object> map) {
-        super.receiveBidResult(b, v, i, map);
-        Log.d(TAG, "receiveBidResult: win = " + b + " winnerPrice = " + v + " loseReason = " + i + " extra = " + map);
-
-        AdGainBiddingNotice.notifyADN(splashAd, b, v, i, map);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -163,6 +141,16 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader {
             splashAd.destroyAd();
             splashAd = null;
         }
+        GMBiddingUtil.removeNotifyBiddingListener(this);
     }
+
+    @Override
+    public void notifyBiddingResult(Object object) {
+        if (object instanceof CSJSplashAd && splashAd != null && splashAd.isReady()) {// 有填充才进行竞败回传
+            String ecpm = ((CSJSplashAd) object).getMediationManager().getShowEcpm().getEcpm();
+            GMBiddingUtil.adgainNotifyLoss(splashAd, ecpm, this);
+        }
+    }
+
 
 }

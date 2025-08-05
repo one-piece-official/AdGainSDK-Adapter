@@ -16,6 +16,7 @@ import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationAdSlot;
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationNativeToBannerListener;
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationSplashRequestInfo;
+import com.gromore.adapter.adgain.GMBiddingUtil;
 import com.union_test.toutiao.R;
 import com.union_test.toutiao.config.TTAdManagerHolder;
 import com.union_test.toutiao.mediation.java.utils.Const;
@@ -222,6 +223,7 @@ public final class MediationInterstitialFullActivity extends Activity {
         this.mFullScreenVideoAdInteractionListener = new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
 
             public void onAdShow() {
+                GMBiddingUtil.gmNotifyLoss(mTTFullScreenVideoAd);
                 Log.d(Const.TAG, "InterstitialFull onAdShow");
             }
 

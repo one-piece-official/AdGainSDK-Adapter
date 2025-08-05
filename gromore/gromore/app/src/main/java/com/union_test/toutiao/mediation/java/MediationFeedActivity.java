@@ -24,6 +24,7 @@ import com.bytedance.sdk.openadsdk.mediation.ad.IMediationNativeToBannerListener
 import com.bytedance.sdk.openadsdk.mediation.ad.IMediationSplashRequestInfo;
 import com.bytedance.sdk.openadsdk.mediation.ad.MediationExpressRenderListener;
 import com.bytedance.sdk.openadsdk.mediation.manager.MediationNativeManager;
+import com.gromore.adapter.adgain.GMBiddingUtil;
 import com.union_test.toutiao.R;
 import com.union_test.toutiao.config.TTAdManagerHolder;
 import com.union_test.toutiao.mediation.java.utils.Const;
@@ -219,7 +220,6 @@ public class MediationFeedActivity extends Activity {
 
         /** 4、加载广告 */
         if (adNativeLoader != null) {
-
             adNativeLoader.loadFeedAd(adSlot, mFeedAdListener);
         }
     }
@@ -290,7 +290,7 @@ public class MediationFeedActivity extends Activity {
             public void onAdShow() {
                 Log.d(tag, "feed express show");
                 Toast.makeText(context, "express show", Toast.LENGTH_SHORT).show();
-
+                GMBiddingUtil.gmNotifyLoss(mTTFeedAd);
             }
 
             @Override
