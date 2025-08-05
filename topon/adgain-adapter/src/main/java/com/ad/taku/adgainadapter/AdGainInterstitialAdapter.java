@@ -177,7 +177,6 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
 
         if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mGTInterstitialAd.showAd(activity);
-
         }
     }
 

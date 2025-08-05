@@ -202,7 +202,6 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
         if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             mRewardVideoAD.showAd(activity);
-
         }
     }
 

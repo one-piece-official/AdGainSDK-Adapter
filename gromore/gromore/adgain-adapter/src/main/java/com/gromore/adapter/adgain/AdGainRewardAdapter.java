@@ -191,12 +191,12 @@ public class AdGainRewardAdapter extends MediationCustomRewardVideoLoader implem
     @Override
     public void onDestroy() {
         super.onDestroy();
+        GMBiddingUtil.removeNotifyBiddingListener(this);
         Log.i(TAG, "reward onDestroy");
         if (mRewardAd != null) {
             mRewardAd.destroyAd();
             mRewardAd = null;
         }
-        GMBiddingUtil.removeNotifyBiddingListener(this);
     }
 
     @Override

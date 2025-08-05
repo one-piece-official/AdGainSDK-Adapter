@@ -136,12 +136,12 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader implements 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        GMBiddingUtil.removeNotifyBiddingListener(this);
         Log.i(TAG, "splash onDestroy");
         if (splashAd != null) {
             splashAd.destroyAd();
             splashAd = null;
         }
-        GMBiddingUtil.removeNotifyBiddingListener(this);
     }
 
     @Override

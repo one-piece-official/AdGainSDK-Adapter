@@ -140,12 +140,12 @@ public class AdGainInterAdapter extends MediationCustomInterstitialLoader implem
     @Override
     public void onDestroy() {
         super.onDestroy();
+        GMBiddingUtil.removeNotifyBiddingListener(this);
         Log.i(TAG, "inter onDestroy");
         if (mInterstitialAd != null) {
             mInterstitialAd.destroyAd();
             mInterstitialAd = null;
         }
-        GMBiddingUtil.removeNotifyBiddingListener(this);
     }
 
     /**

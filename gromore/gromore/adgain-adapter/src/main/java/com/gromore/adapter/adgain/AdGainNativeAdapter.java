@@ -82,6 +82,11 @@ public class AdGainNativeAdapter extends MediationCustomNativeLoader implements 
         return getBiddingType() == MediationConstant.AD_TYPE_CLIENT_BIDING;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GMBiddingUtil.removeNotifyBiddingListener(this);
+    }
 
     @Override
     public void notifyBiddingResult(Object object) {
