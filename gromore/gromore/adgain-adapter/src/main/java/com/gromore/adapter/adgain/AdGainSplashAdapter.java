@@ -16,9 +16,6 @@ import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.splash.MediationCustomSplashLoader;
 import com.bytedance.sdk.openadsdk.mediation.custom.MediationCustomServiceConfig;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AdGainSplashAdapter extends MediationCustomSplashLoader implements GMBiddingUtil.NotifyBiddingListener {
     private SplashAd splashAd;
 

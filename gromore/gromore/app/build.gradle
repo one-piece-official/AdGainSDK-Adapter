@@ -67,16 +67,9 @@ repositories {
 
 dependencies {
 
-<<<<<<< HEAD
+    implementation(name: "adgain-sdk-4.2.0-release", ext: 'aar')
+    implementation(name: "mediation_adgain-adapter-4.2.0", ext: 'aar')
 //    implementation project(':adgain-adapter')
-    implementation(name: "gromore-adgain-adapter-release", ext: 'aar')
-
-    implementation(name: "adgain-sdk-4.2.0-release", ext: 'aar')
-=======
-    implementation project(':adgain-adapter')
->>>>>>> 6de728c (Gromore  价格回传)
-
-    implementation(name: "adgain-sdk-4.2.0-release", ext: 'aar')
 
     implementation(name: "Baidu_MobAds_SDK_v9.37", ext: 'aar')
     implementation(name: "mediation_baidu_adapter_9.37.4", ext: 'aar')
