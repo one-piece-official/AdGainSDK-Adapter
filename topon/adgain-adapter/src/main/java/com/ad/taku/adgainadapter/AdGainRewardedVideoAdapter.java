@@ -111,13 +111,15 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
 
             @Override
             public void onRewardAdShow() {
+                // 只展示图片时 ，由于没 videoPlayStart 回调，所以在这里回调
+                if (mImpressionListener != null) {
+                    mImpressionListener.onRewardedVideoAdPlayStart();
+                }
             }
 
             @Override
             public void onRewardAdPlayStart() {
-                if (mImpressionListener != null) {
-                    mImpressionListener.onRewardedVideoAdPlayStart();
-                }
+
             }
 
             @Override
