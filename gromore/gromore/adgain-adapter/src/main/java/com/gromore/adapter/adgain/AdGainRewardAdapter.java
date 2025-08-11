@@ -1,7 +1,5 @@
 package com.gromore.adapter.adgain;
 
-import static com.gromore.adapter.adgain.AdGainCustomerInit.TAG;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -11,7 +9,6 @@ import com.adgain.sdk.api.AdRequest;
 import com.adgain.sdk.api.RewardAd;
 import com.adgain.sdk.api.RewardAdListener;
 import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.CSJSplashAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.mediation.MediationConstant;
 import com.bytedance.sdk.openadsdk.mediation.bridge.custom.reward.MediationCustomRewardVideoLoader;

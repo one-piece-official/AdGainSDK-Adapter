@@ -3,6 +3,7 @@ package com.gromore.adapter.adgain;
 import android.util.Log;
 
 import com.adgain.sdk.api.IBidding;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +45,9 @@ public class GMBiddingUtil {
     // 插屏激励Adapter 调用的方法
     protected static void adgainNotifyLoss(IBidding gtBaseAd, String winPrice, NotifyBiddingListener listener) {
         Map<String, Object> map = new HashMap<>();
+        Log.d("GMBiddingUtil", "adgainNotifyLoss: winPrice " + winPrice + " " + gtBaseAd);
         map.put(IBidding.WIN_PRICE, winPrice);
         if (gtBaseAd != null) {
-            Log.d("GMBiddingUtil", "adgainNotifyLoss: winPrice " + winPrice +" " + gtBaseAd);
             gtBaseAd.sendLossNotification(map);
         }
         GMBiddingUtil.removeNotifyBiddingListener(listener);

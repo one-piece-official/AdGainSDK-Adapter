@@ -142,7 +142,7 @@ public class AdGainSplashAdapter extends MediationCustomSplashLoader implements 
     }
 
     @Override
-    public void notifyBiddingResult(Object object) {
+    public void notifyBiddingResult(Object object) { // 如果是自己竞胜，曝光之后 isReady对应的status 就变了
         if (object instanceof CSJSplashAd && splashAd != null && splashAd.isReady()) {// 有填充才进行竞败回传
             String ecpm = ((CSJSplashAd) object).getMediationManager().getShowEcpm().getEcpm();
             GMBiddingUtil.adgainNotifyLoss(splashAd, ecpm, this);

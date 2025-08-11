@@ -276,6 +276,12 @@ public class MediationFeedActivity extends Activity {
         // 模板广告展示监听器
         this.mExpressAdInteractionListener = new MediationExpressRenderListener() {
             @Override
+            public void onAdShow() {
+                Log.d(tag, "feed express show");
+                GMBiddingUtil.gmNotifyLoss(mTTFeedAd);
+            }
+
+            @Override
             public void onRenderFail(View view, String s, int i) {
                 Log.d(tag, "feed express render fail, errCode: " + i + ", errMsg: " + s);
             }
@@ -286,12 +292,6 @@ public class MediationFeedActivity extends Activity {
                 Toast.makeText(context, "express onAdClick", Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onAdShow() {
-                Log.d(tag, "feed express show");
-                Toast.makeText(context, "express show", Toast.LENGTH_SHORT).show();
-                GMBiddingUtil.gmNotifyLoss(mTTFeedAd);
-            }
 
             @Override
             public void onRenderSuccess(View view, float v, float v1, boolean b) {

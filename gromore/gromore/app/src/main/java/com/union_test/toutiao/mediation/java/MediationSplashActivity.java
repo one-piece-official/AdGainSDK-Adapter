@@ -215,9 +215,7 @@ public class MediationSplashActivity extends Activity {
         this.mCSJSplashInteractionListener = new CSJSplashAd.SplashAdListener() {
             @Override
             public void onSplashAdShow(CSJSplashAd csjSplashAd) {
-                String ecpm = mCsjSplashAd.getMediationManager().getShowEcpm().getEcpm();
-                Log.d(Const.TAG, "-----splash show " + ecpm);
-                GMBiddingUtil.gmNotifyLoss(mCsjSplashAd);
+                GMBiddingUtil.gmNotifyLoss(csjSplashAd);
             }
 
             @Override
