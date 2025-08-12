@@ -58,7 +58,7 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
         Log.d(TAG, "loadCustomNetworkAd: mAppId = " + mAppId + "  mADUnitId = " + codeId + "   isC2SBidding =  " + isC2SBidding);
 
         if (TextUtils.isEmpty(mAppId)) {
-            notifyATLoadFail("", "GT app_id is empty.");
+            notifyATLoadFail("", "AdGain app_id is empty.");
             return;
         }
 
@@ -76,10 +76,6 @@ public class AdGainInterstitialAdapter extends CustomInterstitialAdapter {
     }
 
     private void loadInterstitial(Map<String, Object> serverExtra, Map<String, Object> localExtra) {
-
-        Map<String, Object> options = new HashMap<>(serverExtra);
-        options.put("inter_test_option_key", "inter_test_option_value");
-
         AdRequest adRequest = new AdRequest.Builder()
                 .setCodeId(codeId)
                 .setBidFloor(AdGainInitManager.getBidFloor(serverExtra))

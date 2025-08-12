@@ -8,6 +8,7 @@ import android.util.Log;
 import com.adgain.sdk.AdGainSdk;
 import com.adgain.sdk.api.AdGainSdkConfig;
 import com.adgain.sdk.api.CustomController;
+import com.adgain.sdk.api.IBidding;
 import com.adgain.sdk.api.InitCallback;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATInitMediation;
@@ -94,8 +95,8 @@ public class AdGainInitManager extends ATInitMediation {
             mLocalInitAppId = null;
         }
 
-        Map<String, Object> customData = new HashMap<>(serviceExtras);
-        customData.put("thirdMediation","taku");
+        Map<String, Object> customData = new HashMap<>();
+        customData.put(IBidding.THIRD_MEDIATION, "taku");
 
         Log.d(TAG, "initSDK: real start  app_id = " + app_id);
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()

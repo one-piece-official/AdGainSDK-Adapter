@@ -1,4 +1,5 @@
 package com.ad.taku.adgainadapter;
+
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
@@ -78,15 +79,9 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
     }
 
     private void startLoadAd(final Context context, Map<String, Object> serverExtra) {
-
-        Map<String, Object> options = new HashMap<>(serverExtra);
-        options.put("splash_test_option_key", "splash_test_option_value");
-
         AdRequest adRequest = new AdRequest.Builder()
                 .setCodeId(codeId)
                 .setBidFloor(AdGainInitManager.getBidFloor(serverExtra))
-//                .setWidth(PxUtils.getDeviceWidthInPixel(context))
-//                .setHeight(PxUtils.getDeviceHeightInPixel(context) - PxUtils.dpToPx(context, 100))
                 .build();
 
         splashAD = new SplashAd(adRequest, new SplashAdListener() {
@@ -101,7 +96,6 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
                         if (splashAD != null) {
 
                             AdGainBiddingNotice biddingNotice = new AdGainBiddingNotice(splashAD);
-
                             mBiddingListener.onC2SBiddingResultWithCache(ATBiddingResult.success(splashAD.getBidPrice(), System.currentTimeMillis() + "", biddingNotice, ATAdConst.CURRENCY.RMB_CENT), null);
 
                         } else {
@@ -129,17 +123,17 @@ public class AdGainSplashAdapter extends CustomSplashAdapter {
 
                     if (mImpressionListener != null) {
 
-                        Log.e(TAG, "GDT Splash show fail:[errorCode:" + adError.getErrorCode() + ",errorMsg:" + adError.getMessage() + "]");
+                        Log.e(TAG, "AdGain Splash show fail:[errorCode:" + adError.getErrorCode() + ",errorMsg:" + adError.getMessage() + "]");
                         mDismissType = ATAdConst.DISMISS_TYPE.SHOWFAILED;
                         mImpressionListener.onSplashAdShowFail(ErrorCode.getErrorCode(ErrorCode.adShowError, "" + adError.getErrorCode(), adError.getMessage()));
                         mImpressionListener.onSplashAdDismiss();
                     }
 
                 } else {
-                    notifyATLoadFail("", "GDT Splash show fail");
+                    notifyATLoadFail("", "AdGain Splash show fail");
 
                     if (mImpressionListener != null) {
-                        mImpressionListener.onSplashAdShowFail(ErrorCode.getErrorCode(ErrorCode.adShowError, "", "GDT Splash show fail"));
+                        mImpressionListener.onSplashAdShowFail(ErrorCode.getErrorCode(ErrorCode.adShowError, "", "AdGain Splash show fail"));
                         mImpressionListener.onSplashAdDismiss();
                     }
                 }

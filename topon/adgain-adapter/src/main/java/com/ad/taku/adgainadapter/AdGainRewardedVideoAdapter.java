@@ -57,7 +57,7 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
         mVideoMuted = ATInitMediation.getIntFromMap(serverExtra, "video_muted", 0);
 
         if (TextUtils.isEmpty(mAppId)) {
-            notifyATLoadFail("", "GT app_id is empty.");
+            notifyATLoadFail("", "AdGain app_id is empty.");
             return;
         }
 
@@ -75,9 +75,6 @@ public class AdGainRewardedVideoAdapter extends CustomRewardVideoAdapter {
     }
 
     private void loadGTRewardVideo(Context context, Map<String, Object> serverExtra) {
-
-        Map<String, Object> options = new HashMap<>(serverExtra);
-        options.put("reward_test_option_key", "reward_test_option_value");
 
         AdRequest adRequest = new AdRequest.Builder()
                 .setCodeId(codeId)

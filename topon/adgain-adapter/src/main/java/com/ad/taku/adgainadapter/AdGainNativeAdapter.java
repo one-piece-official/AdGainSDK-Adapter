@@ -69,7 +69,7 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
         initRequestParams(serverExtra, localExtra);
 
         if (TextUtils.isEmpty(mAppId)) {
-            notifyATLoadFail("", "GTD appid is empty...  GTNativeAdapter.class");
+            notifyATLoadFail("", "AdGain appid is empty");
             return;
         }
 
@@ -96,10 +96,6 @@ public class AdGainNativeAdapter extends CustomNativeAdapter {
     }
 
     private void loadRenderingAd(final Context context, Map<String, Object> serverExtra) {
-
-        Map<String, Object> options = new HashMap<>(serverExtra);
-        options.put("native_test_option_key", "native_test_option_value");
-
         AdRequest adRequest = new AdRequest
                 .Builder()
                 .setCodeId(codeId)

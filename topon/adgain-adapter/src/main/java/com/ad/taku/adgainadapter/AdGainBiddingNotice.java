@@ -28,19 +28,12 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
     // secondPrice: 第一位 竞败 的价格, 即 竞胜方后一位的价格（二价）   单位分
     @Override
     public void notifyBidWin(double costPrice, double secondPrice, Map<String, Object> extra) {
-
         Log.d(TAG, "\n\n notifyBidWin   adType = " + getAdType() + "    costPrice = " + costPrice + "   secondPrice = " + secondPrice + "  extra = " + extra);
-
         Map<String, Object> map = new HashMap<>();
-
-        if (extra != null && !extra.isEmpty()) {
-            map.putAll(extra);
-        }
-
         map.put(IBidding.EXPECT_COST_PRICE, costPrice);
-        map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
-        map.put(IBidding.THIRD_MEDIATION,"taku");
-
+        if (secondPrice != costPrice) // 如果只有AdGain 有填充，两个值一样，收集没有意义，tobid 是 二价为0
+            map.put(IBidding.HIGHEST_LOSS_PRICE, (int) Math.round(secondPrice));
+        map.put(IBidding.THIRD_MEDIATION, "taku");
         if (gtBaseAd != null) {
             gtBaseAd.sendWinNotification(map);
         }
@@ -54,42 +47,8 @@ public class AdGainBiddingNotice implements ATBiddingNotice {
         Log.d(TAG, "\n\n  notifyBidLoss adType = " + getAdType() + "     lossCode = " + lossCode + "   winPrice = " + winPrice + "  extra = " + extra);
 
         Map<String, Object> map = new HashMap<>(4);
-
-        String gdtLossReason = "";
-
-        switch (lossCode) {
-            case ATAdConst.BIDDING_TYPE.BIDDING_LOSS_WITH_BIDDING_TIMEOUT:
-                gdtLossReason = "timeout";
-                break;
-
-            case ATAdConst.BIDDING_TYPE.BIDDING_LOSS_WITH_LOW_PRICE_IN_HB:
-                gdtLossReason = "low_price_hb";
-                break;
-
-            case ATAdConst.BIDDING_TYPE.BIDDING_LOSS_WITH_LOW_PRICE_IN_NORMAL:
-                gdtLossReason = "low_price_normal";
-                break;
-
-            case ATAdConst.BIDDING_TYPE.BIDDING_LOSS_WITH_EXPIRE:
-                gdtLossReason = "expire";
-                break;
-
-            case ATAdConst.BIDDING_TYPE.BIDDING_LOSS_WITH_LOW_FLOOR:
-                gdtLossReason = "low_floor";
-                break;
-        }
-
-        int adnId = ATInitMediation.getIntFromMap(extra, ATBiddingNotice.ADN_ID, -1);
-
-        if (extra != null && !extra.isEmpty()) {
-            map.putAll(extra);
-        }
-
         map.put(IBidding.WIN_PRICE, winPrice);
-        map.put(IBidding.LOSS_REASON, gdtLossReason);
-        map.put(IBidding.ADN_ID, adnId);
-        map.put("thirdMediation","taku");
-
+        map.put(IBidding.THIRD_MEDIATION, "taku");
         if (gtBaseAd != null) {
             gtBaseAd.sendLossNotification(map);
         }
