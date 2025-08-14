@@ -81,16 +81,17 @@ public class AdGainInitManager extends ATInitMediation {
             mIsIniting.set(true);
         }
 
-        String app_id = getStringFromMap(serviceExtras, "app_id");
-
+        String appId = getStringFromMap(serviceExtras, "app_id");
+        if (TextUtils.isEmpty(appId)) {
+            appId = getStringFromMap(serviceExtras, "appId");
+        }
         if (onInitCallback != null) {
             mListeners.add(onInitCallback);
         }
 
         if (serviceExtras.containsKey(ATInitMediation.KEY_LOCAL)) {
-            mLocalInitAppId = app_id;
-
-        } else if (mLocalInitAppId != null && !TextUtils.equals(mLocalInitAppId, app_id)) {
+            mLocalInitAppId = appId;
+        } else if (mLocalInitAppId != null && !TextUtils.equals(mLocalInitAppId, appId)) {
             checkToSaveInitData(getNetworkName(), serviceExtras, mLocalInitAppId);
             mLocalInitAppId = null;
         }
@@ -98,9 +99,9 @@ public class AdGainInitManager extends ATInitMediation {
         Map<String, Object> customData = new HashMap<>();
         customData.put(IBidding.THIRD_MEDIATION, "taku");
 
-        Log.d(TAG, "initSDK: real start  app_id = " + app_id);
+        Log.d(TAG, "initSDK: real start  appId = " + appId);
         AdGainSdk.getInstance().init(context, new AdGainSdkConfig.Builder()
-                .appId(app_id)         //必填
+                .appId(appId)         //必填
                 .showLog(false)    // 是否展示 adsdk 日志
                 .addCustomData(customData) //自定义数据
 
