@@ -28,18 +28,41 @@ android {
     lintOptions {
         abortOnError false
     }
+    libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (outputFile != null && outputFileName.endsWith('.aar')) {
+                def fileName = "adgain_gromore_adapter_${extractVersionFromAar()}.aar"
+                outputFileName = fileName
+            }
+        }
+    }
+
+}
+
+dependencies {
+    compileOnly(name: "adgain-sdk-4.2.1", ext: 'aar')
+
+//    compileOnly(name: 'open_ad_sdk_6.8.1.7', ext: 'aar')
+    compileOnly(name: 'open_ad_sdk_6.6.0.7', ext: 'aar')
+
+}
+
+def extractVersionFromAar() { // 获取AdGain SDK 版本号
+    def dir = getParent().projectDir.path + "/app/libs/adn"
+    def aarFiles = fileTree(dir: dir, include: 'adgain-sdk-*.aar')
+    if (aarFiles.isEmpty()) {
+        return null
+    }
+    def aarFile = aarFiles.first()
+    def matcher = (aarFile.name =~ /adgain-sdk-(\d+\.\d+\.\d+)\.aar/)
+    if (matcher.find()) {
+        return matcher.group(1) // 返回版本号 4.2.1
+    }
+    return null
 }
 
 repositories {
     flatDir {
         dirs '../app/libs','../app/libs/adn'
     }
-}
-
-dependencies {
-    compileOnly(name: "adgain-sdk-4.2.1-release", ext: 'aar')
-
-//    compileOnly(name: 'open_ad_sdk_6.8.1.7', ext: 'aar')
-    compileOnly(name: 'open_ad_sdk_6.6.0.7', ext: 'aar')
-
 }
