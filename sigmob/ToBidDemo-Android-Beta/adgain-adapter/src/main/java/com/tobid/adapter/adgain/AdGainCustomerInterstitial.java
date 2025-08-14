@@ -26,13 +26,8 @@ public class AdGainCustomerInterstitial extends WMCustomInterstitialAdapter impl
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String codeId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
-            Map<String, Object> options = new HashMap<>(serverExtra);
-            if (localExtra != null) {
-                options.putAll(localExtra);
-            }
             AdRequest adRequest = new AdRequest.Builder()
                     .setCodeId(codeId)
-                    .setExtOption(options)
                     .setBidFloor(AdGainAdapterUtil.getBidFloor(this,serverExtra))
                     .build();
             interstitialAd = new InterstitialAd(adRequest, this);

@@ -1,5 +1,7 @@
 package com.tobid.adapter.adgain;
 
+import android.util.Log;
+
 import com.adgain.sdk.api.IBidding;
 import com.windmill.sdk.WMConstants;
 import com.windmill.sdk.base.WMBidUtil;
@@ -13,41 +15,60 @@ public class AdGainAdapterUtil {
 
     public static Map<String, Object> getBidingWinNoticeParam(String price, Map<String, Object> referBidInfo) {
         Map<String, Object> map = new HashMap<>();
-        if (referBidInfo != null) {
-            map.putAll(referBidInfo);
-            Object winnerEcpm = referBidInfo.get(WMBidUtil.WINNER_ECPM);
-            if (winnerEcpm != null) {
-                map.put(IBidding.EXPECT_COST_PRICE, String.valueOf(winnerEcpm));
+        try {
+            Log.d("-----AdGainAdapterUtil", "---win " + price + " map: " + referBidInfo);
+            if (referBidInfo != null) { // //13 头条  16 GDT    19 快手  21 百度  22--Gromore
+                Object winnerEcpm = referBidInfo.get(WMBidUtil.WINNER_ECPM);
+                if (winnerEcpm != null && Double.parseDouble(winnerEcpm.toString()) > 0) {
+                    map.put(IBidding.EXPECT_COST_PRICE, String.valueOf(winnerEcpm));
+                } else if (price != null) {
+                    map.put(IBidding.EXPECT_COST_PRICE, price);
+                } else {
+                    map.putAll(referBidInfo);
+                }
+                Object biddingEcpm = referBidInfo.get("bidding_ecpm");
+                Object waterfallEcpm = referBidInfo.get("waterfall_ecpm");
+                if (waterfallEcpm != null && Double.parseDouble(waterfallEcpm.toString()) > 0 && biddingEcpm != null && Double.parseDouble(biddingEcpm.toString()) > 0) {
+                    if (Double.parseDouble(waterfallEcpm.toString()) > Double.parseDouble(biddingEcpm.toString())) {
+                        map.put(IBidding.HIGHEST_LOSS_PRICE, waterfallEcpm);
+                    } else {
+                        map.put(IBidding.HIGHEST_LOSS_PRICE, biddingEcpm);
+                    }
+                } else if (biddingEcpm != null && Double.parseDouble(biddingEcpm.toString()) > 0) {
+                    map.put(IBidding.HIGHEST_LOSS_PRICE, biddingEcpm);
+                } else if (waterfallEcpm != null && Double.parseDouble(waterfallEcpm.toString()) > 0) {
+                    map.put(IBidding.HIGHEST_LOSS_PRICE, waterfallEcpm);
+                }
             }
-            Object biddingEcpm = referBidInfo.get("bidding_ecpm");
-            if (biddingEcpm != null) {
-                map.put(IBidding.HIGHEST_LOSS_PRICE, String.valueOf(biddingEcpm));
-            }
+        } catch (Exception e) {
         }
-        if (!map.containsKey(IBidding.EXPECT_COST_PRICE) && price != null) {
-            map.put(IBidding.EXPECT_COST_PRICE, price);
-        }
-        map.put(IBidding.THIRD_MEDIATION,"tobid");
+        map.put(IBidding.THIRD_MEDIATION, "tobid");
         return map;
     }
 
     public static Map<String, Object> getBidingLossNoticeParam(String price, Map<String, Object> referBidInfo) {
         Map<String, Object> map = new HashMap<>();
-        if (referBidInfo != null) {
-            map.putAll(referBidInfo);
-            Object winnerEcpm = referBidInfo.get(WMBidUtil.WINNER_ECPM);
-            if (winnerEcpm != null) {
-                map.put(IBidding.WIN_PRICE, String.valueOf(winnerEcpm));
+        try {
+            if (referBidInfo != null) {
+                Object winnerEcpm = referBidInfo.get(WMBidUtil.WINNER_ECPM);
+                Object biddingEcpm = referBidInfo.get("bidding_ecpm");
+                if (winnerEcpm != null && Double.parseDouble(winnerEcpm.toString()) > 0) {
+                    map.put(IBidding.WIN_PRICE, winnerEcpm);
+                } else if (biddingEcpm != null && Double.parseDouble(biddingEcpm.toString()) > 0) {
+                    map.put(IBidding.WIN_PRICE, biddingEcpm);
+                } else if (price != null && Double.parseDouble(price.toString()) > 0) {
+                    map.put(IBidding.WIN_PRICE, price);
+                } else {
+                    map.putAll(referBidInfo);
+                }
+                Object winnerChannel = referBidInfo.get(WMBidUtil.WINNER_CHANNEL);
+                if (winnerChannel != null) { //13 头条  16 GDT    19 快手  21 百度  22--Gromore
+                    map.put(IBidding.ADN_ID, String.valueOf(winnerChannel));
+                }
             }
-            Object winnerChannel = referBidInfo.get(WMBidUtil.WINNER_CHANNEL);
-            if (winnerChannel != null) {
-                map.put(IBidding.ADN_ID, String.valueOf(winnerChannel));
-            }
+        } catch (Exception e) {
         }
-        if (!map.containsKey(IBidding.WIN_PRICE) && price != null) {
-            map.put(IBidding.WIN_PRICE, price);
-        }
-        map.put(IBidding.THIRD_MEDIATION,"tobid");
+        map.put(IBidding.THIRD_MEDIATION, "tobid");
         return map;
     }
 

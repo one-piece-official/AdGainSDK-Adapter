@@ -62,7 +62,7 @@ android {
 
 repositories {
     flatDir {
-        dirs 'libs', 'libs/AdNetworks/adgainad'
+        dirs 'libs'
     }
 }
 
@@ -70,11 +70,8 @@ dependencies {
 
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
-    implementation project(':adgain-adapter')
-//    implementation(name: 'adgain-adapter-release', ext: 'aar')
-    implementation(name: 'adgain-sdk-4.2.0', ext: 'aar')
+//    implementation project(':adgain-adapter')
 
-    testImplementation 'junit:junit:4.12'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
@@ -86,29 +83,13 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
-
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/adscope')
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/baidu')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/csj')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/gdt')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/gromore')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/huawei')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/klevin')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/kuaishou')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/mintegral-cn')
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/qumeng')
-
-    //adMate
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/meishu')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/adgain')
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.googlecode.android-query:android-query:0.25.9'
     implementation 'androidx.cardview:cardview:1.0.0'
-//    api(name: 'oaid_sdk_1.0.25', ext: 'aar')
 
-
-
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs/AdNetworks/honor')
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation 'com.airbnb.android:lottie:6.0.1'
     implementation 'androidx.cardview:cardview:1.0.0'

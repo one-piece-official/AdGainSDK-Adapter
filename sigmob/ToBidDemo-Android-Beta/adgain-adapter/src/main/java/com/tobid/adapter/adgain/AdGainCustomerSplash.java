@@ -13,8 +13,6 @@ import com.windmill.sdk.WindMillError;
 import com.windmill.sdk.base.WMAdapterError;
 import com.windmill.sdk.custom.WMCustomSplashAdapter;
 import com.windmill.sdk.models.BidPrice;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class AdGainCustomerSplash extends WMCustomSplashAdapter implements SplashAdListener {
@@ -29,15 +27,11 @@ public class AdGainCustomerSplash extends WMCustomSplashAdapter implements Splas
         try {
             // 这个数值来自sigmob后台广告位ID的配置
             String unitId = (String) serverExtra.get(WMConstants.PLACEMENT_ID);
-            Map<String, Object> options = new HashMap<>(serverExtra);
-            if (localExtra != null) {
-                options.putAll(localExtra);
-            }
             int w = activity.getApplicationContext().getResources().getDisplayMetrics().widthPixels;
             int h = activity.getApplicationContext().getResources().getDisplayMetrics().heightPixels;
             AdRequest adRequest = new AdRequest.Builder().setCodeId(unitId)
-                    .setBidFloor(AdGainAdapterUtil.getBidFloor(this,serverExtra))
-                    .setWidth(w).setHeight(h).setExtOption(options).build();
+                    .setBidFloor(AdGainAdapterUtil.getBidFloor(this, serverExtra))
+                    .setWidth(w).setHeight(h).build();
             splashAd = new SplashAd(adRequest, this);
             splashAd.loadAd();
         } catch (Throwable tr) {
@@ -72,7 +66,7 @@ public class AdGainCustomerSplash extends WMCustomSplashAdapter implements Splas
     @Override
     public void notifyBiddingResult(boolean isWin, String price, Map<String, Object> referBidInfo) {
         if (splashAd != null) {
-            Log.d(TAG, "notifyBiddingResult: win: " + isWin + " price: " + price + " refer: " + referBidInfo);
+            Log.d(TAG, "notifyBiddingResult: win: " + isWin + " price: " + price + " refer: " + AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
             if (isWin) {
                 // 竞价成功
                 splashAd.sendWinNotification(AdGainAdapterUtil.getBidingWinNoticeParam(price, referBidInfo));
@@ -118,6 +112,10 @@ public class AdGainCustomerSplash extends WMCustomSplashAdapter implements Splas
 
     @Override
     public void onSplashAdClose(boolean isSkip) {
-        callSplashAdClosed();
+        if (isSkip) {
+            callSplashAdSkipped();
+        } else {
+            callSplashAdClosed();
+        }
     }
 }

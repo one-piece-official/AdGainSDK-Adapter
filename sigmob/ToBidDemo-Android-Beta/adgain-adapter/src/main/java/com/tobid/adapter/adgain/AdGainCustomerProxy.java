@@ -5,6 +5,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.adgain.sdk.AdGainSdk;
+import com.adgain.sdk.BuildConfig;
 import com.adgain.sdk.api.AdGainSdkConfig;
 import com.adgain.sdk.api.CustomController;
 import com.adgain.sdk.api.IBidding;
@@ -33,7 +34,7 @@ public class AdGainCustomerProxy extends WMCustomAdapterProxy {
             String customInfo = (String) serverExtra.get(WMConstants.CUSTOM_INFO);
             JSONObject joCustom = new JSONObject(customInfo);
             String gtAdAppId = joCustom.getString(SERVER_EXTRA_CUSTOM_APP_ID);
-            HashMap<String, Object> customData = new HashMap<>(serverExtra);
+            HashMap<String, Object> customData = new HashMap<>();
             customData.put(IBidding.THIRD_MEDIATION,"tobid");
             WMAdConfig adConfig = WindMillAd.sharedAds().getAdConfig();
             if (adConfig != null && adConfig.getCustomController() != null) {
@@ -41,7 +42,7 @@ public class AdGainCustomerProxy extends WMCustomAdapterProxy {
             }
             AdGainSdkConfig config = new AdGainSdkConfig.Builder()
                     .appId(gtAdAppId)
-                    .showLog(true)
+                    .showLog(BuildConfig.DEBUG)
                     .addCustomData(customData)
                     .setInitCallback(new InitCallback() {
                         @Override

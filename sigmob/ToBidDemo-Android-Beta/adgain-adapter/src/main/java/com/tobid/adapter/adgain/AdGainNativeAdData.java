@@ -363,47 +363,11 @@ public class AdGainNativeAdData extends WMNativeAdData {
     }
 
     @Override
-    public void startVideo() {
-        Log.d(TAG, "startVideo");
-        super.startVideo();
-        if (nativeAdData != null) {
-            nativeAdData.startVideo();
-        }
-    }
-
-    @Override
-    public void pauseVideo() {
-        Log.d(TAG, "pauseVideo");
-        super.pauseVideo();
-        if (nativeAdData != null) {
-            nativeAdData.pauseVideo();
-        }
-    }
-
-    @Override
-    public void resumeVideo() {
-        Log.d(TAG, "resumeVideo");
-        super.resumeVideo();
-        if (nativeAdData != null) {
-            nativeAdData.resumeVideo();
-        }
-    }
-
-    @Override
     public View getInteractionWidgetView(int width, int height, int actionType, AdShakeViewListener listener) {
         if (nativeAdData != null) {
             return nativeAdData.getWidgetView(width, height);
         }
         return super.getInteractionWidgetView(width, height, actionType, listener);
-    }
-
-    @Override
-    public void stopVideo() {
-        Log.d(TAG, "stopVideo");
-        super.stopVideo();
-        if (nativeAdData != null) {
-            nativeAdData.stopVideo();
-        }
     }
 
     private static class GtAdNativeImage extends WMImage {

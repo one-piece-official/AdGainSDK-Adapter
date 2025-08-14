@@ -22,18 +22,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-}
-
-repositories {
-    flatDir {
-        dirs '../app/libs', '../app/libs/AdNetworks/adgainad'
+    libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (outputFile != null && outputFileName.endsWith('.aar')) {
+                def fileName = "adgain_tobid_adapter_${extractVersionFromAar()}.aar"
+                outputFileName = fileName
+            }
+        }
     }
 }
 
 dependencies {
 
-//    compileOnly(name: "adgain-sdk-4.2.0-release", ext: 'aar')
-    compileOnly(name: 'adgain-sdk-4.2.0', ext: 'aar')
+    compileOnly(name: "adgain-sdk-4.2.1", ext: 'aar')
 
     // WindMill SDK dependencies
     compileOnly(name: 'windmill-sdk-4.6.20', ext: 'aar')
@@ -41,4 +42,25 @@ dependencies {
     compileOnly(name: 'wind-sdk-4.23.2', ext: 'aar')
 
     compileOnly "com.github.bumptech.glide:glide:4.9.0"
+}
+
+
+def extractVersionFromAar() { // 获取AdGain SDK 版本号
+    def dir = getParent().projectDir.path + "/app/libs/AdNetworks/adgain"
+    def aarFiles = fileTree(dir: dir, include: 'adgain-sdk-*.aar')
+    if (aarFiles.isEmpty()) {
+        return null
+    }
+    def aarFile = aarFiles.first()
+    def matcher = (aarFile.name =~ /adgain-sdk-(\d+\.\d+\.\d+)\.aar/)
+    if (matcher.find()) {
+        return matcher.group(1) // 返回版本号 4.2.1
+    }
+    return null
+}
+
+repositories {
+    flatDir {
+        dirs '../app/libs', '../app/libs/AdNetworks/adgain'
+    }
 }
