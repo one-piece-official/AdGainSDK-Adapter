@@ -34,7 +34,7 @@ android {
 
 dependencies {
 
-    compileOnly(name: "adgain-sdk-4.2.1", ext: 'aar')
+    compileOnly(name: "adgain-sdk-4.2.1.2", ext: 'aar')
 
     // WindMill SDK dependencies
     compileOnly(name: 'windmill-sdk-4.6.20', ext: 'aar')

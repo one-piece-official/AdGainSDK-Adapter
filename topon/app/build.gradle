@@ -56,10 +56,10 @@ repositories {
 
 dependencies {
 
-//    implementation project(':adgain-adapter')
-    implementation(name: 'adgain_taku_adapter_4.2.1', ext: 'aar')
+    implementation project(':adgain-adapter')
+//    implementation(name: 'adgain_taku_adapter_4.2.1', ext: 'aar')
 
-    implementation(name: 'adgain-sdk-4.2.1', ext: 'aar')
+    implementation(name: 'adgain-sdk-4.2.1.2', ext: 'aar')
 
     implementation(name: 'anythink_core', ext: 'aar')
     implementation(name: 'anythink_native', ext: 'aar')

@@ -31,7 +31,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    compileOnly(name: 'adgain-sdk-4.2.1', ext: 'aar')
+    compileOnly(name: 'adgain-sdk-4.2.1.2', ext: 'aar')
 
     compileOnly(name: 'anythink_core', ext: 'aar')
     compileOnly(name: 'anythink_native', ext: 'aar')

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.adgain.sdk.AdGainSdk;
+import com.adgain.sdk.BuildConfig;
 import com.adgain.sdk.api.AdGainSdkConfig;
 import com.adgain.sdk.api.CustomController;
 import com.adgain.sdk.api.InitCallback;
